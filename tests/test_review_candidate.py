@@ -46,4 +46,10 @@ def test_candidate_page_does_not_fetch_a_cdn():
     assert "cdn" not in script and "cdn" not in markup
     assert "plotly" not in script
     assert "http://" not in script
-    assert "https://" not in script
+    assert "https://" not in script and "https://" not in markup
+    assert 'id="sky-stage"' in (CANDIDATE / "index.html").read_text()
+    assert "sun-wave" in script
+    assert "pia13523-south-pole.jpg" in script
+    assert (CANDIDATE / "media" / "PIA13523-south-pole.jpg").is_file()
+    # No Three.js module on the demo path (polar sky stage only).
+    assert "scene.js" not in markup

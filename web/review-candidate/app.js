@@ -351,53 +351,235 @@ function whyHtml() {
   }).join("");
   const selectedRun = state.runs[state.site];
   const selectedSample = sampleAt(state.site);
-  const sky = skyHtml();
   const evidence = evidenceHtml(selectedRun, selectedSample);
-  return `<div class="why-layout"><div class="why-cards">${cards}</div><div>${sky}</div></div>${evidence}`;
+  return `<div class="why-layout"><div class="why-cards">${cards}</div></div>${evidence}`;
+}
+
+const SKY = { cx: 220, cy: 220, r0: 148, elScale: 5.2, rMin: 26, rMax: 198 };
+
+function skyPolarRadius(elevationDeg) {
+  if (typeof elevationDeg !== "number") return null;
+  const r = SKY.r0 - elevationDeg * SKY.elScale;
+  return Math.min(SKY.rMax, Math.max(SKY.rMin, r));
+}
+
+function skyXY(azimuthDeg, elevationDeg) {
+  const r = skyPolarRadius(elevationDeg);
+  const rad = (azimuthDeg * Math.PI) / 180;
+  return {
+    x: SKY.cx + r * Math.sin(rad),
+    y: SKY.cy - r * Math.cos(rad),
+  };
+}
+
+/** Display-only invented silhouette — not a reviewed DEM skyline. */
+function displayTerrainPath(seed) {
+  const inner = [];
+  const outer = [];
+  for (let az = 0; az <= 360; az += 4) {
+    const wobble = Math.sin((az + seed * 37) * Math.PI / 180) * 2.4
+      + Math.sin((az * 2.1 + seed * 11) * Math.PI / 180) * 1.1;
+    const el = 1.8 + wobble;
+    inner.push(skyXY(az, el));
+    outer.push(skyXY(az, -14));
+  }
+  let d = `M ${inner[0].x.toFixed(1)} ${inner[0].y.toFixed(1)}`;
+  for (let i = 1; i < inner.length; i += 1) d += ` L ${inner[i].x.toFixed(1)} ${inner[i].y.toFixed(1)}`;
+  for (let i = outer.length - 1; i >= 0; i -= 1) d += ` L ${outer[i].x.toFixed(1)} ${outer[i].y.toFixed(1)}`;
+  return `${d} Z`;
+}
+
+function sunGlyph() {
+  const rays = [0, 45, 90, 135, 180, 225, 270, 315]
+    .map((a) => `<rect class="sky-sun-ray" x="-1.15" y="-17" width="2.3" height="6.5" rx="1" transform="rotate(${a})"></rect>`)
+    .join("");
+  return `<circle r="18" class="sky-pulse"></circle>
+    <circle r="14" class="sky-sun-halo"></circle>
+    <g class="sky-sun-rays">${rays}</g>
+    <circle r="7.4" class="sky-sun-core"></circle>`;
+}
+
+function earthGlyph() {
+  return `<circle r="16" class="sky-pulse earth-pulse"></circle>
+    <circle r="12" class="sky-earth-halo"></circle>
+    <circle r="8" class="sky-earth-core"></circle>
+    <ellipse class="sky-earth-eq" rx="8" ry="3.1"></ellipse>
+    <path class="sky-earth-mer" d="M0,-8 A3.1,8 0 0 0 0,8 A3.1,8 0 0 0 0,-8"></path>
+    <path class="sky-earth-land" d="M-5,-1 C-3,-4 1,-5 4,-2 C5,1 1,4 -2,3 C-5,2 -6,1 -5,-1Z"></path>`;
+}
+
+function landerGlyph() {
+  return `<g class="sky-lander" aria-hidden="true">
+    <rect x="-5.5" y="-3.5" width="11" height="6.5" rx="1.4"></rect>
+    <circle cx="0" cy="-6.6" r="2.1"></circle>
+    <path d="M-4.5 3 L-9.5 12 M4.5 3 L9.5 12 M0 3 L0 11"></path>
+    <circle cx="-9.5" cy="12" r="1.15"></circle>
+    <circle cx="9.5" cy="12" r="1.15"></circle>
+    <circle cx="0" cy="11" r="1.15"></circle>
+  </g>`;
+}
+
+function sunWavesMarkup(x, y, active) {
+  if (!active) return "";
+  return `<g class="sun-waves" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})" aria-hidden="true">
+    <circle class="sun-wave sun-wave-1" r="12"></circle>
+    <circle class="sun-wave sun-wave-2" r="12"></circle>
+    <circle class="sun-wave sun-wave-3" r="12"></circle>
+  </g>`;
 }
 
 function skyHtml() {
   const plots = state.runs.map((run, runIndex) => skyPlot(run, runIndex)).join("");
-  return `<h3>Sky position</h3><div class="sky-pair">${plots}</div><p class="muted">Azimuth clockwise from north. The dashed circle is 0°. Markers outside it are below the horizon. No terrain skyline is drawn.</p>`;
+  return `<div class="sky-pair">${plots}</div>`;
 }
 
 function skyPlot(run, runIndex) {
   const sample = sampleAt(runIndex);
-  const markers = ["sun", "earth"].map((body) => {
-    const item = sample[body];
-    if (typeof item.azimuth_deg !== "number" || typeof item.elevation_deg !== "number") {
-      return `<text x="70" y="${body === "sun" ? 20 : 34}">${body === "sun" ? "Sun" : "Earth"} position unknown</text>`;
-    }
-    const horizon = 78;
-    let radius = horizon * (1 - item.elevation_deg / 15);
-    radius = Math.max(16, Math.min(108, radius));
-    const rad = item.azimuth_deg * Math.PI / 180;
-    const x = 120 + radius * Math.sin(rad);
-    const y = 120 - radius * Math.cos(rad);
-    const selected = runIndex === state.site && state.lane === body;
-    const stroke = selected ? "#ffffff" : "#8b9cb3";
-    const shape = body === "sun"
-      ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6" fill="#f0cb8a" stroke="${stroke}" stroke-width="2"></circle>`
-      : `<rect x="${(x - 5).toFixed(1)}" y="${(y - 5).toFixed(1)}" width="10" height="10" fill="#9cc4ff" stroke="${stroke}" stroke-width="2"></rect>`;
-    return `<g tabindex="0" role="button" data-site="${runIndex}" data-lane="${body}" aria-label="${body === "sun" ? "Sun" : "Earth"} at ${esc(siteName(run))}">${shape}</g>`;
+  const cx = SKY.cx;
+  const cy = SKY.cy;
+  const streaming = state.live && state.partial;
+  const selected = runIndex === state.site;
+  const slot = runIndex === 0 ? "Site A" : "Site B";
+  const rings = [15, 0].map((elev) => {
+    const r = skyPolarRadius(elev);
+    return `<circle cx="${cx}" cy="${cy}" r="${r.toFixed(1)}" class="sky-ring${elev === 0 ? " sky-ring-geo" : ""}"></circle>
+      <text x="${(cx + 6).toFixed(1)}" y="${(cy - r + (elev === 0 ? 14 : -4)).toFixed(1)}" class="sky-annote">${elev === 0 ? "0° geometric" : "+15°"}</text>`;
   }).join("");
-  const caption = ["sun", "earth"].map((body) => {
+  const dirs = [[0, "N"], [90, "E"], [180, "S"], [270, "W"]].map(([az, lab]) => {
+    const p = skyXY(az, -12);
+    const rose = lab === "N"
+      ? `<path class="sky-compass" d="M ${p.x.toFixed(1)} ${(p.y - 14).toFixed(1)} l 4 10 -4 -2.4 -4 2.4 z"></path>`
+      : "";
+    return `${rose}<text class="sky-dir" x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle">${lab}</text>`;
+  }).join("");
+
+  const sun = sample.sun;
+  const earth = sample.earth;
+  let sunMark = "";
+  let earthMark = "";
+  let sunWaves = "";
+  let rays = "";
+  if (typeof sun.azimuth_deg === "number" && typeof sun.elevation_deg === "number") {
+    const p = skyXY(sun.azimuth_deg, sun.elevation_deg);
+    const waveOn = streaming || sun.state === "clear";
+    sunWaves = sunWavesMarkup(p.x, p.y, waveOn);
+    rays += `<line class="sky-ray-line sun-ray" x1="${cx}" y1="${cy}" x2="${p.x.toFixed(1)}" y2="${p.y.toFixed(1)}"></line>`;
+    sunMark = `<g class="sky-marker sky-sun" tabindex="0" role="button" data-site="${runIndex}" data-lane="sun"
+      transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})"
+      aria-label="Sun ${esc(sun.state)}: az ${esc(sun.azimuth_deg)}°, el ${esc(sun.elevation_deg)}°, margin ${esc(show(sun.margin_deg))}°">
+      <title>Sun ${esc(sun.state)} · az ${esc(sun.azimuth_deg)}° · el ${esc(sun.elevation_deg)}°</title>
+      ${sunGlyph()}
+      <text class="marker-name" y="-24" text-anchor="middle">Sun</text>
+      <text class="marker-el" y="30" text-anchor="middle">${esc(show(sun.elevation_deg))}°</text>
+    </g>`;
+  }
+  if (typeof earth.azimuth_deg === "number" && typeof earth.elevation_deg === "number") {
+    const p = skyXY(earth.azimuth_deg, earth.elevation_deg);
+    rays += `<line class="sky-ray-line earth-ray" x1="${cx}" y1="${cy}" x2="${p.x.toFixed(1)}" y2="${p.y.toFixed(1)}"></line>`;
+    earthMark = `<g class="sky-marker sky-earth" tabindex="0" role="button" data-site="${runIndex}" data-lane="earth"
+      transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})"
+      aria-label="Earth ${esc(earth.state)}: az ${esc(earth.azimuth_deg)}°, el ${esc(earth.elevation_deg)}°, margin ${esc(show(earth.margin_deg))}°">
+      <title>Earth ${esc(earth.state)} · az ${esc(earth.azimuth_deg)}° · el ${esc(earth.elevation_deg)}°</title>
+      ${earthGlyph()}
+      <text class="marker-name earth-name" y="-22" text-anchor="middle">Earth</text>
+      <text class="marker-el" y="28" text-anchor="middle">${esc(show(earth.elevation_deg))}°</text>
+    </g>`;
+  }
+
+  const pills = `
+    <span class="status-pill status-${esc(sun.state)}">Sun ${esc(sun.state)}</span>
+    <span class="status-pill status-${esc(earth.state)}">Earth ${esc(earth.state)}</span>
+    <span class="status-pill status-${esc(sample.both.state)}">Both ${esc(sample.both.state)}</span>`;
+
+  const stats = ["sun", "earth"].map((body) => {
     const item = sample[body];
-    const shape = body === "sun" ? "circle" : "square";
-    const name = body === "sun" ? "Sun" : "Earth";
-    if (typeof item.azimuth_deg !== "number" || typeof item.elevation_deg !== "number") return name + " " + shape + ": position unknown";
-    return name + " " + shape + ": azimuth " + item.azimuth_deg + "°, elevation " + item.elevation_deg + "°";
-  }).join("<br>");
-  return `<figure class="sky-figure"><svg class="sky" viewBox="0 0 240 240" role="group" aria-label="Sky position for ${esc(siteName(run))}">
-    <circle cx="120" cy="120" r="108" fill="#12182a"></circle>
-    <circle cx="120" cy="120" r="78" fill="#1a2332"></circle>
-    <circle cx="120" cy="120" r="78" fill="none" stroke="#f0f4f8" stroke-dasharray="4 3"></circle>
-    <text x="112" y="16">N</text><text x="214" y="124">E</text><text x="112" y="232">S</text><text x="6" y="124">W</text>
-    <text x="128" y="48">0°</text>
-    ${markers}
-  </svg>
-  <figcaption><strong>${esc(siteName(run))}</strong><br>${caption}</figcaption>
-  </figure>`;
+    return `<div class="sky-stat" data-state="${esc(item.state)}">
+      <strong>${body === "sun" ? "Sun" : "Earth"} · ${esc(item.state)}</strong>
+      <span>Az ${esc(show(item.azimuth_deg))}° · El ${esc(show(item.elevation_deg))}° · Margin ${esc(show(item.margin_deg))}°</span>
+    </div>`;
+  }).join("");
+
+  const gapStart = skyXY(28, 14);
+  const gapA = skyXY(28, -14);
+  const gapB = skyXY(48, -14);
+  const gapEnd = skyXY(48, 14);
+  const gapPath = `M ${gapStart.x.toFixed(1)} ${gapStart.y.toFixed(1)} L ${gapA.x.toFixed(1)} ${gapA.y.toFixed(1)} L ${gapB.x.toFixed(1)} ${gapB.y.toFixed(1)} L ${gapEnd.x.toFixed(1)} ${gapEnd.y.toFixed(1)} Z`;
+
+  return `<article class="sky-panel${selected ? " is-selected" : ""}" data-site="${runIndex}">
+    <div class="sky-panel-head">
+      <div>
+        <p class="sky-slot">${esc(slot)}</p>
+        <h3>${esc(siteName(run))}</h3>
+      </div>
+      <div class="sky-pills">${pills}</div>
+    </div>
+    <svg class="sky-svg" viewBox="0 0 440 460" role="img" aria-label="Polar sky for ${esc(siteName(run))}">
+      <defs>
+        <radialGradient id="sky-grad-${runIndex}" cx="50%" cy="48%" r="62%">
+          <stop offset="0%" stop-color="#1c2438"></stop>
+          <stop offset="70%" stop-color="#0c1018"></stop>
+          <stop offset="100%" stop-color="#07080c"></stop>
+        </radialGradient>
+        <pattern id="sky-hatch-${runIndex}" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#c45c5c" stroke-width="2" opacity="0.7"></line>
+        </pattern>
+        <pattern id="sky-regolith-${runIndex}" width="220" height="220" patternUnits="userSpaceOnUse" patternTransform="rotate(-8 ${cx} ${cy})">
+          <image href="media/PIA13523-south-pole.jpg" width="220" height="220" preserveAspectRatio="xMidYMid slice" opacity="0.9"></image>
+        </pattern>
+        <linearGradient id="sky-terr-shade-${runIndex}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#f0e8dc" stop-opacity="0.12"></stop>
+          <stop offset="45%" stop-color="#1a1814" stop-opacity="0.38"></stop>
+          <stop offset="100%" stop-color="#0a0908" stop-opacity="0.22"></stop>
+        </linearGradient>
+        <filter id="sky-glow-${runIndex}" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="3.2" result="b"></feGaussianBlur>
+          <feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+        </filter>
+      </defs>
+      <circle class="sky-disc" cx="${cx}" cy="${cy}" r="${SKY.rMax}" fill="url(#sky-grad-${runIndex})"></circle>
+      ${rings}
+      <path class="sky-terrain" d="${displayTerrainPath(runIndex + 1)}" fill="url(#sky-regolith-${runIndex})" stroke="url(#sky-terr-shade-${runIndex})"></path>
+      <path class="sky-gap" d="${gapPath}" fill="url(#sky-hatch-${runIndex})"></path>
+      <circle class="sky-geo-dash" cx="${cx}" cy="${cy}" r="${skyPolarRadius(0).toFixed(1)}"></circle>
+      ${dirs}
+      <g class="sky-rays">${rays}</g>
+      ${sunWaves}
+      <g class="sky-observer" transform="translate(${cx} ${cy})">
+        <text class="sky-zenith" x="0" y="-18" text-anchor="middle">zenith</text>
+        ${landerGlyph()}
+      </g>
+      <g filter="url(#sky-glow-${runIndex})">${sunMark}${earthMark}</g>
+      <text class="sky-caption" x="${cx}" y="448" text-anchor="middle">Inward = higher elevation · terrain ring display only · hatch = Unknown · centre-ray vs 0°</text>
+    </svg>
+    <div class="sky-stats">${stats}</div>
+  </article>`;
+}
+
+function updateStreamSkyInfo() {
+  const node = document.getElementById("stream-sky-info");
+  const note = document.getElementById("scene-stream-note");
+  const caption = document.getElementById("context-caption");
+  if (!node) return;
+  const samples = currentSamples();
+  const sample = samples[state.site] || samples[0];
+  const utc = sample?.timestamp_utc || "—";
+  const shared = sharedSampleCount();
+  if (state.live && state.partial) {
+    node.dataset.state = "streaming";
+    node.innerHTML = `<strong>Streaming</strong><span>${esc(utc)} · shared ${esc(shared)} samples · Sun ${esc(sample?.sun?.state || "pending")} · Earth ${esc(sample?.earth?.state || "pending")} · sun waves active</span>`;
+    if (note) note.textContent = "Following stream batches. Markers and sun waves update as samples resolve.";
+  } else if (state.live) {
+    node.dataset.state = "complete";
+    node.innerHTML = `<strong>Stream complete</strong><span>${esc(utc)} · ${esc(shared)} shared samples · totals locked to centre-ray 0°</span>`;
+    if (note) note.textContent = "Stream complete. Sky maps still track the shared playhead.";
+  } else {
+    node.dataset.state = "idle";
+    node.innerHTML = `<strong>Replay</strong><span>${esc(utc)} · scrub the playhead · Start stream for live sun waves</span>`;
+    if (note) note.textContent = "Sky maps track the shared UTC playhead. Sun waves pulse while streaming or when the Sun centre is clear.";
+  }
+  if (caption && sample) {
+    caption.textContent = `Polar sky · ${utc} · Sun ${sample.sun?.state || "—"} · Earth ${sample.earth?.state || "—"} · geometric 0° · terrain Unknown`;
+  }
 }
 
 function evidenceHtml(run, sample) {
@@ -464,31 +646,62 @@ function contextSitesFromRuns() {
   });
 }
 
-function updateContextMap() {
-  const svg = document.getElementById("context-pins");
-  const caption = document.getElementById("context-caption");
-  if (!svg) return;
-  const sites = contextSitesFromRuns();
-  svg.innerHTML = sites.map((site, index) => {
-    const point = polarPin(site.longitude_east_deg, site.latitude_deg);
-    const fill = site.role === "a" ? "#e3b34a" : "#5ba8d8";
-    const selected = index === state.site ? " is-selected" : "";
-    return `<g class="pin-hit${selected}" data-site="${index}" tabindex="0" role="button" aria-label="Select ${esc(site.name)}">
-      <circle cx="${point.x.toFixed(2)}" cy="${point.y.toFixed(2)}" r="3.2" fill="${fill}" stroke="#fff" stroke-width="0.6"></circle>
-      <text x="${(point.x + 3.6).toFixed(2)}" y="${(point.y + 1.1).toFixed(2)}" fill="#f6f6f6" font-size="3.2">${esc(site.name)}</text>
-    </g>`;
-  }).join("");
-  if (caption) {
-    const labels = sites.map((site) => `${site.name} ${site.longitude_east_deg}°E, ${site.latitude_deg}°N`).join(" · ");
-    caption.textContent = "South-pole context · approximate pins · click to select site · not a DEM · " + labels;
+function currentSamples() {
+  const count = sharedSampleCount();
+  if (!count) return [];
+  const index = Math.max(0, Math.min(count - 1, state.index));
+  return state.runs.map((run) => run.payload.samples[index] || null);
+}
+
+function setLiveChip() {
+  const chip = document.getElementById("live-chip");
+  if (!chip) return;
+  if (state.live && state.partial) {
+    chip.textContent = "Live stream";
+    chip.classList.remove("soft");
+  } else if (state.live) {
+    chip.textContent = "Live complete";
+    chip.classList.remove("soft");
+  } else if (state.source === "qa") {
+    chip.textContent = "QA fixture";
+    chip.classList.add("soft");
+  } else {
+    chip.textContent = "Replay";
+    chip.classList.add("soft");
   }
-  publishSceneEvent("lunar:scene-updated", {
-    sites,
+}
+
+function scenePayload(extra) {
+  return Object.assign({
+    sites: contextSitesFromRuns(),
     selectedSite: state.site,
     sampleIndex: state.index,
+    samples: currentSamples(),
+    sharedCount: sharedSampleCount(),
     partial: state.partial,
     live: state.live,
-  });
+  }, extra || {});
+}
+
+function updateContextMap() {
+  const skyHost = document.getElementById("sky-stage");
+  if (skyHost && state.runs.length) skyHost.innerHTML = skyHtml();
+  const svg = document.getElementById("context-pins");
+  const sites = contextSitesFromRuns();
+  if (svg) {
+    svg.innerHTML = sites.map((site, index) => {
+      const point = polarPin(site.longitude_east_deg, site.latitude_deg);
+      const fill = site.role === "a" ? "#e3b34a" : "#5ba8d8";
+      const selected = index === state.site ? " is-selected" : "";
+      return `<g class="pin-hit${selected}" data-site="${index}" tabindex="0" role="button" aria-label="Select ${esc(site.name)}">
+        <circle cx="${point.x.toFixed(2)}" cy="${point.y.toFixed(2)}" r="3.2" fill="${fill}" stroke="#fff" stroke-width="0.6"></circle>
+        <text x="${(point.x + 3.6).toFixed(2)}" y="${(point.y + 1.1).toFixed(2)}" fill="#f6f6f6" font-size="3.2">${esc(site.name)}</text>
+      </g>`;
+    }).join("");
+  }
+  setLiveChip();
+  updateStreamSkyInfo();
+  publishSceneEvent("lunar:scene-updated", scenePayload());
 }
 
 function publishSceneEvent(name, detail) {
@@ -560,34 +773,36 @@ function initStarfield() {
 function bindSceneInteractions() {
   const stage = document.getElementById("scene-stage");
   const pins = document.getElementById("context-pins");
-  if (!stage || !pins) return;
-  pins.addEventListener("click", (event) => {
+  if (!stage) return;
+  const onSite = (event) => {
     const hit = event.target.closest("[data-site]");
     if (!hit) return;
+    const lane = hit.dataset.lane;
+    if (lane === "sun" || lane === "earth" || lane === "both") state.lane = lane;
     selectSiteFromScene(Number(hit.dataset.site));
-  });
-  pins.addEventListener("keydown", (event) => {
+  };
+  stage.addEventListener("click", onSite);
+  stage.addEventListener("keydown", (event) => {
     if (event.key !== "Enter" && event.key !== " ") return;
     const hit = event.target.closest("[data-site]");
     if (!hit) return;
     event.preventDefault();
-    selectSiteFromScene(Number(hit.dataset.site));
+    onSite(event);
   });
-  stage.addEventListener("click", (event) => {
-    if (event.target.closest("[data-site]")) return;
-    const host = document.getElementById("context-map");
-    if (!host) return;
-    const rect = host.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width;
-    const y = (event.clientY - rect.top) / rect.height;
-    if (x < 0 || y < 0 || x > 1 || y > 1) return;
-    // Horizontal position maps to shared playhead; vertical reserved for future 3D elevation look.
-    scrubFromSceneFraction(x);
-  });
+  if (pins) {
+    pins.addEventListener("click", onSite);
+    pins.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const hit = event.target.closest("[data-site]");
+      if (!hit) return;
+      event.preventDefault();
+      onSite(event);
+    });
+  }
   publishSceneEvent("lunar:scene-ready", {
-    host: "scene-3d",
+    host: "sky-stage",
     interim: "pia13523-context",
-    supports: ["site-select", "scrub-fraction", "stream-target"],
+    supports: ["site-select", "stream-target", "sun-waves"],
   });
 }
 
@@ -701,6 +916,7 @@ function applyLiveEvent(event) {
     state.siteProgress = [event.samples_emitted];
     state.index = Math.max(0, payload.samples.length - 1);
     setRunStatus("Calculating. Run " + event.run_id + ". Samples " + event.samples_emitted + ".");
+    publishSceneEvent("lunar:stream-batch", scenePayload());
     render();
     return;
   }
@@ -800,12 +1016,11 @@ function applyLiveComparisonEvent(event) {
       + ", " + siteName(state.runs[1]) + " " + state.siteProgress[1]
       + ", shared " + shared + "."
     );
-    publishSceneEvent("lunar:stream-batch", {
+    publishSceneEvent("lunar:stream-batch", scenePayload({
       comparison_id: event.comparison_id,
       role: event.role,
       shared_samples: shared,
-      partial: true,
-    });
+    }));
     render();
     return;
   }
@@ -826,11 +1041,11 @@ function applyLiveComparisonEvent(event) {
       "Complete. Comparison " + event.comparison_id
       + ". Results " + event.result_run_id_a + " / " + event.result_run_id_b + "."
     );
-    publishSceneEvent("lunar:stream-complete", {
+    publishSceneEvent("lunar:stream-complete", scenePayload({
       comparison_id: event.comparison_id,
       result_run_id_a: event.result_run_id_a,
       result_run_id_b: event.result_run_id_b,
-    });
+    }));
     render();
     return;
   }

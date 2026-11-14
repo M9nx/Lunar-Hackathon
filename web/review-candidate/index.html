@@ -27,7 +27,7 @@
         <span class="demo-chip">Practice</span>
         <span class="demo-chip soft">Centre ray</span>
         <span class="demo-chip soft">Terrain unknown</span>
-        <span class="demo-chip soft">3D stage ready</span>
+        <span id="live-chip" class="demo-chip soft">Replay</span>
       </div>
     </div>
   </header>
@@ -64,9 +64,9 @@
 
   <main class="bleed workspace">
     <section class="workspace-copy">
-      <p class="kicker">Surface sky · shared UTC · saved Horizons · stream + 3D stage</p>
+      <p class="kicker">Shared UTC · saved Horizons · polar sky stage</p>
       <h1>Compare two landing sites</h1>
-      <p class="lede">Full-width console. Stream fills the timeline; the scene stage is the interaction surface for site picks now and for 3D orbit/scrub when Three.js is vendored offline.</p>
+      <p class="lede">One playhead drives the lanes, inspector, and sky maps. Stream batches update Sun/Earth markers and the stream strip. Terrain stays Unknown.</p>
       <p id="mode" class="mode"></p>
       <p id="banner" class="banner"></p>
     </section>
@@ -97,15 +97,30 @@
         </section>
       </div>
 
-      <aside class="workspace-scene" aria-label="Scene stage">
+      <aside class="workspace-scene" aria-label="Sky stage">
         <section class="panel scene-panel">
-          <div class="panel-head">
-            <h2 id="scene-heading">Scene stage</h2>
-            <p class="note scene-hint">Click a pin to select a site. Future 3D orbit and stream scrub attach here.</p>
+          <div class="panel-head scene-toolbar">
+            <div>
+              <h2 id="scene-heading">Sky stage</h2>
+              <p class="note scene-hint">Zenith-centred polar maps · geometric 0° · centre-ray only.</p>
+            </div>
           </div>
+
+          <ul class="sky-gloss" aria-label="Map layers">
+            <li><span class="swatch swatch-geo"></span> Geometric 0° · smooth sphere, no craters</li>
+            <li><span class="swatch swatch-terr"></span> Terrain ring · display only · not reviewed</li>
+            <li><span class="swatch swatch-sun"></span> Centre-ray · one line of sight, not the full disc</li>
+            <li><span class="swatch swatch-unk"></span> Unknown · missing terrain · never counted as clear</li>
+          </ul>
+
+          <div id="stream-sky-info" class="stream-sky-info" aria-live="polite" data-state="idle">
+            <strong>Idle</strong>
+            <span>Start a stream to watch markers and sun waves update live.</span>
+          </div>
+
           <div
             id="scene-stage"
-            class="scene-stage"
+            class="scene-stage sky-stage"
             data-stream-target="scene"
             data-interaction="site-select"
             tabindex="0"
@@ -113,21 +128,24 @@
             aria-labelledby="scene-heading"
             aria-describedby="context-caption"
           >
-            <div id="scene-host" class="scene-host">
-              <div class="context-map" id="context-map">
-                <img src="media/PIA13523-south-pole.jpg" alt="Lunar south pole context mosaic from NASA Photojournal PIA13523." width="800" height="800">
-                <svg id="context-pins" viewBox="0 0 100 100" aria-hidden="true"></svg>
-              </div>
-              <div id="scene-3d" class="scene-3d" hidden aria-hidden="true"></div>
-            </div>
+            <div id="sky-stage" class="sky-stage-plots"></div>
           </div>
-          <figcaption id="context-caption" class="context-caption">South-pole context · approximate site pins · not a map product</figcaption>
-          <ul class="context-legend" aria-label="Context symbols">
-            <li><span class="pin-swatch pin-a"></span> Site A</li>
-            <li><span class="pin-swatch pin-b"></span> Site B</li>
-          </ul>
-          <p class="credit-line">Image credit: NASA / GSFC / Arizona State University · PIA13523</p>
-          <p id="scene-stream-note" class="note">Stream events can drive this stage. 3D host is reserved at <code>#scene-3d</code>.</p>
+
+          <details class="map-drawer">
+            <summary>South-pole context map (PIA13523)</summary>
+            <div
+              class="context-map context-map-compact"
+              id="context-map"
+              data-interaction="site-select"
+            >
+              <img src="media/PIA13523-south-pole.jpg" alt="Lunar south pole context mosaic from NASA Photojournal PIA13523." width="800" height="800">
+              <svg id="context-pins" viewBox="0 0 100 100" aria-hidden="true"></svg>
+            </div>
+          </details>
+
+          <figcaption id="context-caption" class="context-caption">Polar sky · geometric 0° · terrain Unknown · not SPICE</figcaption>
+          <p class="credit-line">Map credit: NASA / GSFC / ASU · PIA13523. Polar stage adapted from the educational console. Classification stays centre-ray vs geometric 0°.</p>
+          <p id="scene-stream-note" class="note">Sky maps track the shared UTC playhead. Sun waves pulse while streaming or when the Sun centre is clear.</p>
         </section>
       </aside>
     </div>
@@ -135,7 +153,7 @@
 
   <footer class="bleed shell-foot">
     <p id="limits"></p>
-    <p class="credit-line">NASA chrome and starfield adapted from the educational console. Three.js globe mounts into <code>#scene-3d</code> once vendored offline.</p>
+    <p class="credit-line">NASA chrome and starfield adapted from the educational console. Offline assets only.</p>
   </footer>
   <script src="app.js"></script>
 </body>

@@ -28,6 +28,8 @@ Persistent record of milestone work. Status: `planned` | `in_progress` | `passed
 | M6.1 | in_progress | 2026-11-14 | — | Judging record drafted in `docs/evidence/m6_0deg_submission_package.md`. No tag. Eligibility still false. |
 | Stream | passed | 2026-11-14 | 2026-11-14 | Local `run`/`stream`/`serve` against saved Horizons. Batch-stream parity. Evidence `docs/evidence/stream_local_run.md`. |
 | Stream-comparison | passed | 2026-11-14 | 2026-11-14 | Two-site live pair from saved Horizons. Shared-prefix totals, uneven batches, fail/cancel. Evidence `docs/evidence/stream_comparison_live.md`. |
+| Review-candidate Trek UI | superseded | 2026-11-14 | 2026-11-14 | Replaced by polar sky stage (no Moon Trek globe on demo path). |
+| Review-candidate sky stage | passed | 2026-11-14 | 2026-11-14 | Edu-style dual polar maps, sun waves, stream info strip. Evidence `docs/evidence/review_candidate_sky_polar.png`. |
 
 ## M0.4 runtime pin
 

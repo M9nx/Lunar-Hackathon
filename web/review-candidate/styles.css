@@ -41,7 +41,7 @@ body {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.72;
   width: 100%;
   height: 100%;
 }
@@ -228,7 +228,7 @@ main,
 
 .workspace-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(18rem, 0.9fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(22rem, 1fr);
   gap: 1rem;
   align-items: start;
 }
@@ -518,24 +518,248 @@ button[aria-pressed="true"] {
 .state-word.blocked { color: var(--blocked); }
 .state-word.unknown { color: var(--unknown); }
 
-.sky-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-
-.sky {
-  width: 100%;
-  height: auto;
-  background: #0b0d12;
-  border: 1px solid #2e3340;
-}
-
-.sky-figure { margin: 0; }
-
-.sky-figure figcaption {
+.sky-gloss {
+  list-style: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
   color: var(--muted);
-  font-size: 0.92rem;
-  margin-top: 0.35rem;
+  letter-spacing: 0.03em;
 }
 
-.sky text { fill: var(--text); font-size: 11px; font-family: var(--font-mono); }
+.sky-gloss li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.swatch {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+  border: 1px solid #3a4558;
+}
+
+.swatch-geo { background: #8d8d92; }
+.swatch-terr { background: linear-gradient(135deg, #a3988c, #5c564a); }
+.swatch-sun { background: #e3b34a; }
+.swatch-unk {
+  background: repeating-linear-gradient(-45deg, #5a2020, #5a2020 2px, #2a1212 2px, #2a1212 5px);
+}
+
+.stream-sky-info {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0 0 0.75rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #2e3340;
+  background: #0b0d12;
+  font-size: 0.92rem;
+}
+
+.stream-sky-info strong {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c9d3e0;
+}
+
+.stream-sky-info span { color: var(--muted); }
+
+.stream-sky-info[data-state="streaming"] {
+  border-color: #6b5630;
+  box-shadow: 0 0 0 1px rgba(227, 179, 74, 0.18);
+}
+
+.stream-sky-info[data-state="streaming"] strong { color: #e3b34a; }
+.stream-sky-info[data-state="complete"] strong { color: #3ea072; }
+
+.sky-stage-plots { width: 100%; }
+
+.sky-pair {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+}
+
+.sky-panel {
+  border: 1px solid #2e3340;
+  background: #0a0c10;
+  padding: 0.65rem;
+}
+
+.sky-panel.is-selected {
+  border-color: #5a6a82;
+  box-shadow: 0 0 0 1px rgba(155, 180, 210, 0.2);
+}
+
+.sky-panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  align-items: flex-start;
+  margin-bottom: 0.45rem;
+}
+
+.sky-panel-head h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.sky-slot {
+  margin: 0 0 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8d8d92;
+}
+
+.sky-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: flex-end;
+}
+
+.status-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.45rem;
+  border: 1px solid #3a4558;
+  color: #c9d3e0;
+}
+
+.status-pill.status-clear { border-color: #2f6b4f; color: #7dcea0; }
+.status-pill.status-blocked { border-color: #6b5630; color: #e3b34a; }
+.status-pill.status-unknown { border-color: #5a4d7a; color: #c4b5fd; }
+
+.sky-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.sky-ring { fill: none; stroke: #2a3344; stroke-width: 1; }
+.sky-ring-geo { stroke: #8d8d92; stroke-dasharray: 5 6; stroke-width: 1.4; }
+.sky-geo-dash { fill: none; stroke: #9aa0aa; stroke-width: 1.2; stroke-dasharray: 7 5; opacity: 0.85; }
+.sky-terrain { stroke-width: 1.2; }
+.sky-gap { stroke: #ff8a8a; stroke-width: 1; fill-opacity: 0.85; }
+.sky-dir { fill: #8d8d92; font-size: 12px; font-family: var(--font-mono); }
+.sky-zenith { fill: #5a6270; font-size: 10px; font-family: var(--font-mono); letter-spacing: 0.12em; }
+.sky-caption { fill: #6b6b72; font-size: 10px; font-family: var(--font-mono); }
+.sky-annote { fill: #9aa0aa; font-size: 10px; font-family: var(--font-mono); }
+.sky-compass { fill: #e3b34a; }
+.sky-ray-line { stroke: #e3b34a; stroke-width: 1; stroke-dasharray: 3 4; opacity: 0.45; }
+.sky-ray-line.earth-ray { stroke: #5ba8d8; }
+.sky-marker { cursor: pointer; }
+.sky-sun-halo { fill: #e3b34a; opacity: 0.28; }
+.sky-sun-core { fill: #ffd978; }
+.sky-sun-ray { fill: #ffd27a; }
+.sky-earth-halo { fill: #5ba8d8; opacity: 0.3; }
+.sky-earth-core { fill: #6eb6e4; }
+.sky-earth-eq,
+.sky-earth-mer { fill: none; stroke: #0d3554; stroke-width: 1.05; }
+.sky-earth-land { fill: #3d8f5a; opacity: 0.9; }
+.sky-lander { fill: #cfd3da; stroke: #8d939c; stroke-width: 1; stroke-linecap: round; }
+.marker-name { fill: #f0f4f8; font-size: 11px; font-family: var(--font-mono); }
+.earth-name,
+.sky-earth .marker-el { fill: #d4eefc; }
+.marker-el { fill: #c9d3e0; font-size: 10px; font-family: var(--font-mono); }
+
+.sky-pulse {
+  fill: none;
+  stroke: #e3b34a;
+  stroke-width: 1.2;
+  opacity: 0.35;
+  animation: sky-pulse 2.4s ease-out infinite;
+}
+
+.earth-pulse { stroke: #5ba8d8; }
+
+.sun-wave {
+  fill: none;
+  stroke: #ffd27a;
+  stroke-width: 1.4;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sun-wave 2.2s ease-out infinite;
+}
+
+.sun-wave-2 { animation-delay: 0.55s; }
+.sun-wave-3 { animation-delay: 1.1s; }
+
+@keyframes sky-pulse {
+  0% { opacity: 0.45; }
+  70% { opacity: 0.08; }
+  100% { opacity: 0.45; }
+}
+
+@keyframes sun-wave {
+  0% { transform: scale(0.85); opacity: 0.55; }
+  70% { opacity: 0.12; }
+  100% { transform: scale(3.4); opacity: 0; }
+}
+
+.sky-stats {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.55rem;
+}
+
+.sky-stat {
+  border: 1px solid #2e3340;
+  background: #0b0d12;
+  padding: 0.4rem 0.5rem;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.sky-stat strong {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sky-stat span { color: var(--muted); font-size: 0.88rem; }
+
+.sky-stat[data-state="clear"] { border-color: #2f6b4f; }
+.sky-stat[data-state="blocked"] { border-color: #6b5630; }
+.sky-stat[data-state="unknown"] { border-color: #5a4d7a; }
+
+.map-drawer {
+  margin-top: 0.85rem;
+  border: 1px solid #2e3340;
+  padding: 0 0.65rem 0.65rem;
+  background: #0a0c10;
+}
+
+.map-drawer summary {
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8d8d92;
+}
+
+.context-map-compact {
+  margin-top: 0.45rem;
+  aspect-ratio: 1;
+  max-height: 280px;
+}
+
+@media (min-width: 1100px) {
+  .sky-pair { grid-template-columns: 1fr 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sky-pulse,
+  .sun-wave { animation: none; opacity: 0.25; }
+}
 
 details { margin-top: 0.8rem; }
 
@@ -707,12 +931,92 @@ select, input[type="checkbox"] {
 
 .pin-a { background: var(--sun); }
 .pin-b { background: var(--earth); }
+.pin-sun { background: #ffe08a; }
+.pin-earth { background: #5ba8d8; }
+
+.scene-toolbar {
+  align-items: flex-start;
+}
+
+.scene-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.follow-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 40px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.scene-hud {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+  margin-bottom: 0.7rem;
+}
+
+.scene-hud div {
+  border: 1px solid #2e3340;
+  background: #0b0d12;
+  padding: 0.45rem 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  min-height: 2.6rem;
+}
+
+.scene-hud div[data-state="clear"] {
+  border-color: #2f6b4f;
+  color: var(--clear);
+}
+
+.scene-hud div[data-state="blocked"] {
+  border-color: #6b5630;
+  color: var(--blocked);
+}
+
+.scene-hud div[data-state="unknown"] {
+  border-color: #5a4d7a;
+  color: var(--unknown);
+}
+
+.scene-hud div[data-state="pending"] {
+  color: var(--muted);
+}
+
+.scene-host {
+  min-height: min(52vh, 560px);
+}
+
+.scene-3d,
+.context-map {
+  min-height: min(52vh, 560px);
+  aspect-ratio: auto;
+  height: min(52vh, 560px);
+}
+
+.scene-3d canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
 
 .credit-line {
   font-family: var(--font-mono);
   font-size: 11px;
   color: #8d8d92;
   letter-spacing: 0.04em;
+}
+
+.trek-ref {
+  color: var(--label);
 }
 
 :focus-visible {
@@ -741,13 +1045,20 @@ select, input[type="checkbox"] {
   .answers,
   .why-layout,
   .sky-pair,
-  .facts {
+  .facts,
+  .scene-hud {
     grid-template-columns: 1fr;
   }
 
   .conductor { flex-wrap: wrap; }
   #playhead { flex-basis: 100%; }
   .lane-row { grid-template-columns: 3.4rem 1fr; }
+  .scene-host,
+  .scene-3d,
+  .context-map {
+    min-height: 320px;
+    height: 320px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

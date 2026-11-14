@@ -122,7 +122,7 @@ The submission package is prepared around the witnessed replay. Detail: `docs/ev
 
 ## Review-candidate NASA chrome (2026-11-14)
 
-- **Decision:** Adapt educational-console visual patterns (NASA banner, brand header, mono kickers, stage pipe, starfield, south-pole context) into `web/review-candidate/` only. Keep `web/replay/` witnessed. Do not pull CDN Google Fonts or Three.js. Full-width layout with sticky action rail for Start/Cancel/status. Context uses local `PIA13523` with approximate pins; labeled not a DEM and not terrain clearance. Scene stage emits `lunar:site-select`, `lunar:scene-scrub`, and `lunar:scene-ready` for stream/3D wiring. Three.js mounts into `#scene-3d` once vendored offline.
+- **Decision:** Adapt educational-console visual patterns (NASA banner, brand header, mono kickers, stage pipe, starfield, south-pole context) into `web/review-candidate/` only. Keep `web/replay/` witnessed. Full-width sticky action rail. Offline-vendored Three.js drives an illustrative globe in `#scene-3d` that follows the shared playhead and stream batches. Procedural moon texture (no CDN albedo). Map toggle keeps local `PIA13523`. Scene emits `lunar:site-select`, `lunar:scene-scrub`, `lunar:stream-batch`, and `lunar:stream-complete`. Labels: not SPICE, not terrain clearance; terrain Unknown.
 - **Source:** `~/Documents/Learning/lunar-landing-site-navigator` (read-only historical). Fresh CSS/HTML/JS in this repo.
 
 ## Two-site live stream (2026-11-14)
@@ -135,6 +135,11 @@ The submission package is prepared around the witnessed replay. Detail: `docs/ev
 - **Workbook sheets:** `Timeline`, `Milestone decisions` (high-level M0–M6 phases).
 - **JSON snapshot:** 32 executable tasks (`M0.1` … `M6.5`, `Rest`).
 - **Agent routing:** Use JSON unless Lead replaces snapshot and updates this log.
+
+## Review-candidate sky stage (2026-11-14)
+
+- **Decision:** Drop the Moon Trek-style Three.js globe from the demo path. The scene stage is the educational dual polar sky map (Site A / Site B): geometric 0°, display-only moon-textured silhouette, Unknown hatch, centre-ray markers, animated sun waves while streaming or when Sun is clear, plus a stream info strip. PIA13523 remains as texture + optional context map drawer.
+- **Unchanged:** Classification is centre-ray vs geometric 0° only. Terrain Unknown. Eligibility false. No CDN.
 
 ## Educational archive (read-only)
 

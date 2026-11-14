@@ -2,7 +2,9 @@
 
 A judge-facing comparison screen for the witnessed geometric replay, plus a local on-demand calculation path. It does not replace `web/replay/`.
 
-NASA chrome (banner, brand header, red accents, stage pipe, starfield) and the south-pole context panel are adapted from the educational console at `~/Documents/Learning/lunar-landing-site-navigator`. That repo stays read-only history. No CDN fonts or Three.js: the context image is vendored `PIA13523`. The page is full-width with a sticky action rail. `#scene-stage` / `#scene-3d` are the interaction surface for site select, scrub, and future streamed 3D once Three.js is vendored offline.
+NASA chrome (banner, brand header, red accents, stage pipe, starfield) adapted from the educational console at `~/Documents/Learning/lunar-landing-site-navigator`. That repo stays read-only history.
+
+The sky stage is a dual zenith-centred polar map (edu-console style): geometric 0° ring, display-only terrain silhouette textured with `PIA13523`, Unknown hatch, centre-ray Sun/Earth markers, and animated sun waves during stream or when Sun is clear. A compact PIA south-pole map sits in a drawer. Classification stays centre-ray vs geometric 0°. Terrain stays Unknown. No CDN. No Moon Trek globe on the demo path.
 
 ## Replay only
 
