@@ -17,9 +17,12 @@ This directory is the **Cursor agent worker**. It is not the hackathon product.
 | Implementation | `lunar-engine-impl`, `lunar-data-intake`, `lunar-result-contract` |
 | UI / UX | `lunar-nasa-ui-theme`, `lunar-comparison-ux` |
 | QA / routing | `lunar-qa-evidence`, `lunar-milestone-router`, `lunar-harness-loop`, `lunar-m0-offline-smoke` |
+| Session context | `lunar-builder-progress` |
 | Scope / pitch | `lunar-challenge-scope` |
 
 ## Active workflow
+
+At **session start**, read skill **`lunar-builder-progress`** (paste prompt + snapshot), then:
 
 ```sh
 cd builder

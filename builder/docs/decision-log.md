@@ -11,11 +11,11 @@ Record amendments with date, owner, previous/new decision, evidence, and milesto
 
 | Item | Owner | Status |
 |------|-------|--------|
-| **Selected case** (Site A observers, UTC window, or approved one-site/two-window fallback) | Data + Science | **Open** |
-| **Kickoff disposition** (brief, eligibility, submission format, AI disclosure) | Lead | **Open** (challenge page unverified 2026-11-14) |
-| **Wi-Fi-off witness** | QA | **Pending** → `builder/docs/evidence/wifi_off_attestation.txt` |
-| **Backup data copy** on demo laptop | QA / Data | **Pending** |
-| M0.3 vs M0.2 alignment | Lead if bundle precedes final case | Practice OK; submission case-fit **not** done |
+| **Selected case** (Site A observers, UTC window, or approved one-site/two-window fallback) | Data + Science | **Proposed, not accepted** (2026-11-14 session). Practice pair below. |
+| **Kickoff disposition** (brief, eligibility, submission format, AI disclosure) | Lead | **Open** — challenge page HTTP 500 again 2026-11-14 |
+| **Wi-Fi-off witness** | QA | **Pending** — `wlan0` was connected at 2026-11-14T09:32:41Z on `m9nx-83dg`; attestation file absent |
+| **Backup data copy** on demo laptop | QA / Data | **Pending** — no second copy found; `data/` is 5.2G |
+| M0.3 vs M0.2 alignment | Lead if bundle precedes final case | Staged bundle includes both practice exports. Submission claim **not** accepted |
 
 Run: `cd builder && python3 scripts/check_m0_closure.py`
 
@@ -32,12 +32,12 @@ Run: `cd builder && python3 scripts/check_m0_closure.py`
 
 | Decision | Status | Owner | Notes / evidence |
 |----------|--------|-------|------------------|
-| Submission format and required outputs | **Open** | Lead | Challenge page fetch returned HTTP 500 (2026-11-14). Confirm live wording, Resources tab, and local organizer instructions at kickoff. |
+| Submission format and required outputs | **Open** | Lead | Challenge page fetch returned HTTP 500 (2026-11-14, rechecked this session). Working design (UTC `Z`, Unknown states, centre-ray only) stays. Do not promote practice exports to an eligible demo claim until Lead confirms the Resources list and submission format. |
 | Actual submission cutoff | **Open** | Lead | Use workbook submit H34 until organizers state otherwise. |
 | Eligible NASA data sources | **Proposed** | Data | Global Awards: ≥1 NASA data source from challenge Resources list (Master Reference §2). Enumerate chosen sources when case is selected. |
 | Permitted tools / AI use | **Proposed** | Lead | Follow [organizer guidance](https://github.com/nasa/spaceapps/discussions/1827) and [AI disclosure](https://github.com/nasa/spaceapps/discussions/1849); document tools in freeze package (M6). |
 | Result format (UTC, Unknown states) | **Confirmed (design)** | Lead + QA | Versioned run JSON per §5; states `clear` / `blocked` / `unknown`; ISO 8601 UTC with `Z`. |
-| Practice Horizons for demo claim | **Confirmed (practice only)** | Data | Site04-P02 and Malapert practice exports are smoke/fixture inputs until eligibility + case-fit pass (§12). |
+| Practice Horizons for demo claim | **Confirmed (practice only)** | Data | Site04-P02 and Malapert case-fit passed 2026-11-14 with `eligible_for_submission_claim=false`. Eligibility and demo-claim acceptance remain open (§12). |
 
 ### M0.2 — Observer selection (in progress)
 
@@ -45,10 +45,27 @@ Run: `cd builder && python3 scripts/check_m0_closure.py`
 |------|--------|--------|
 | Practice Site04-P02 | Recorded | `data/horizons/site04-p02-practice/` — 193-row Sun/Earth CSVs; **practice only** |
 | Practice Malapert | Recorded | `data/horizons/malapert-practice/` — **practice only** |
-| Submission Site A | **Open** | Data + Science |
-| Submission Site B | **Open** | Data + Science; two-window one-site fallback per §3 |
-| UTC window & cadence | **Open** | Default proposal 48 h @ 15 min in reference examples; confirm at kickoff |
-| Observer height reference | **Open** | Horizons `SITE_COORD` km; separate surface vs reference height for terrain (edu: *historical* frame notes) |
+| Submission Site A | **Proposed, not accepted** | `site04-p02-practice`: east lon −156.4386°, lat −89.7812°, Horizons reference altitude 1.738902 km. Sun `10`, Earth `399`, `coord@301`, Q4 airless, MEAN_ME, DE441. `practice=true`. |
+| Submission Site B | **Proposed, not accepted** | `malapert-practice`: east lon −2.93°, lat −85.99°, reference altitude **0 km** (not a reviewed surface height). Same bodies and query shape. If Science rejects 0 km, the on-disk fallback is Site A alone: no second window is saved. |
+| UTC window & cadence | **Proposed, not accepted** | `2025-01-01T00:00:00Z` through `2025-01-03T00:00:00Z`, step 900 s (193 samples, 192 intervals, 172800 s). Only shared window on disk. |
+| Observer height reference | **Open for any height-dependent claim** | Site A uses the Horizons `SITE_COORD` kilometres. Site B uses 0 km. Terrain height review stays at M4. |
+| Why this pair | Recommendation | Only Sun+Earth pair staged under `data/horizons/`. Case-fit passed for both practice scenarios with `eligible_for_submission_claim=false`. Recomputed 0° totals: Site A Sun clear 172800 s, Earth and Both blocked 172800 s; Site B all three lanes blocked 172800 s; Unknown 0 s. Visible difference is Sun-centre clearance. Joint Both clearance ties. |
+| Appendix B raw SHA-256 | **Unresolved** | On-disk `angles.csv` matches Appendix B and `provenance.json`. On-disk `response.json` matches provenance `raw_sha256` and does not match Appendix B raw-response digests. Matching angle rows do not close raw-file identity. Reference text was not edited. |
+
+## Centre-ray versus Product 69 (2026-11-14)
+
+Confirmed for the sprint and enforced in `builder/.cursor/rules/lunar-guardrails.mdc`. Previous working rule already kept centre-ray clearance and forbade power or radio-link claims. This amendment fixes the labels and bars Product 69 from validating a centre-ray window.
+
+| Decision | Status | Owner | Notes |
+|----------|--------|-------|--------|
+| Navigator math | **Confirmed** | Science | Horizons quantity 4, apparent airless azimuth and elevation of the **target centre** from the lunar observer’s local horizontal. Sun `10`, Earth `399`. |
+| M1–M3 labels | **Confirmed** | Science + UI | **Sun-centre clearance**, **Earth-centre clearance**, **Both centres clear**. Practice 48-hour 0° totals stay valid under that sampled policy. Submission eligibility stays pending. |
+| Validation | **Confirmed** | QA | Trace angles to saved Horizons rows. Test horizon, interval, and Unknown rules on their own. |
+| Product 69 role | **Confirmed (context only)** | Science | South-pole 240 m solar layer: fraction of modeled timesteps when **any portion of the Sun’s disc** was visible. A crescent and a full disc both count. No weighting by visible area or received power. Earth layer: fraction of timesteps when **any portion of Earth’s disc** was unobscured, not a specific ground station. |
+| Product 69 as a centre-ray benchmark | **Rejected** | Science | A pixel is not a timestamped answer and not a like-for-like check of a centre-ray window. |
+| Product 69 dates | **Unresolved** | Science | Product page: hourly averages over 18.6 years. PDS labels also carry `START_TIME` and `STOP_TIME` in 2009–2013. Do not invent the simulation start or end. |
+| Any-disc metric | **Deferred** | Science | Separate from centre-ray. Needs angular size and terrain coverage across the disc’s azimuth span. Match period, cadence, location, observer height, terrain basis, and visibility definition before comparing averages. |
+| Malapert definition check | **Recorded** | User, 2026-11-14 | A fresh Horizons query with quantities 4 and 13 matched the saved CSVs at reported precision for both bodies at the two requested timestamps. At `2025-01-02T23:45:00Z`, Earth centre elevation **−0.474336°**, apparent diameter **6999.524 arcsec**. Circular-disc upper limb about **+0.497820°** relative to the 0° plane, so the centre is Blocked while part of the disc clears that plane. Terrain clearance and ground-station visibility stay unverified. This limb figure is not a navigator state. |
 
 ### M0.4 — Runtime (passed 2026-11-14)
 

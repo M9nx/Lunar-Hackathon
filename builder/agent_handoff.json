@@ -36,7 +36,9 @@
       "Master-Reference/MASTER_REFERENCE.html",
       "Master-Reference/MASTER_REFERENCE.json",
       ".cursor/skills/",
-      "scripts/"
+      "scripts/",
+      "docs/evidence/m0_5_observed_2026-11-14.md",
+      "tests/fixtures/malapert_practice_scenario.json"
     ],
     "commands_run": [
       "python3 scripts/validate_handoff.py",
@@ -46,18 +48,23 @@
       "scripts/sync_master_reference.py",
       "scripts/compare_workbook_schedule.py",
       "scripts/run_m0_offline_smoke.sh",
-      "scripts/verify_offline_wheels.sh"
+      "scripts/verify_offline_wheels.sh",
+      "cd builder && ./scripts/run_harness_cycle.sh --lane qa",
+      "builder/scripts/wifi_off_smoke.sh",
+      "python3 builder/scripts/case_fit_horizons.py --scenario tests/fixtures/site04_p02_practice_scenario.json --json",
+      "python3 builder/scripts/case_fit_horizons.py --scenario tests/fixtures/malapert_practice_scenario.json --json"
     ],
     "evidence_refs": [
       "docs/evidence/m0_offline_smoke.log",
       "docs/evidence/m0_4_wheels.log",
       "docs/evidence/m0_4_open_dem.log",
+      "docs/evidence/m0_5_observed_2026-11-14.md",
       "docs/decision-log.md#workbook-vs-json-schedule-2026-11-14"
     ],
     "blockers": [
-      "M0.1: live challenge brief not verified (HTTP 500 on 2026-11-14) — owner Lead",
-      "M0.5: Wi-Fi-off witness not recorded on demo laptop — owner QA",
-      "M0.2: submission observers/coordinates/dates not selected — owner Data+Science"
+      "M0.1: live challenge brief not verified (HTTP 500 rechecked 2026-11-14) — owner Lead",
+      "M0.5: Wi-Fi still on at 2026-11-14T09:32:41Z on m9nx-83dg (wlan0 connected); attestation missing; backup of data/ not found — owner QA",
+      "M0.2: practice pair proposed, not accepted (site04-p02-practice + malapert-practice, 48 h @ 15 min). Malapert reference altitude is 0 km. Appendix B raw SHA-256 does not match on-disk response.json — owner Data+Science"
     ]
   },
   "parallel_completed": ["M0.3", "M0.4"],
@@ -66,7 +73,10 @@
       "status": "passed_with_open_decisions",
       "evidence_refs": ["docs/decision-log.md"]
     },
-    "M0.2": { "status": "in_progress", "note": "Practice sites recorded; submission A/B open" },
+    "M0.2": {
+      "status": "in_progress",
+      "note": "Practice pair proposed, not accepted: site04-p02-practice and malapert-practice, 2025-01-01T00:00:00Z to 2025-01-03T00:00:00Z, step 900s. Case-fit pass, eligible_for_submission_claim false."
+    },
     "M0.3": { "status": "passed", "evidence_refs": ["docs/evidence/m0_offline_smoke.log"] },
     "M0.4": {
       "status": "passed",

@@ -10,6 +10,7 @@ description: >-
 
 ## Read first
 
+0. `lunar-builder-progress` — snapshot + paste prompt for session context.
 1. `builder/agent_handoff.json` (live — **not** Master Reference embedded example).
 2. `Master-Reference/MASTER_REFERENCE.json` → `schedule.tasks`.
 3. `builder/docs/task-log.md` and `builder/docs/decision-log.md`.

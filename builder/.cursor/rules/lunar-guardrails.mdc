@@ -6,7 +6,12 @@ alwaysApply: true
 # Lunar builder guardrails
 
 - **Fresh repo only** for submission code; `~/Documents/Learning/lunar-landing-site-navigator` is read-only *historical* context.
-- **Never** claim power or radio-link availability from centre-ray clearance alone.
+- **Centre-ray navigator.** Classify Horizons quantity 4 apparent airless elevation of the target centre (Sun `10`, Earth `399`) against the selected horizon. M1–M3 labels are **Sun-centre clearance**, **Earth-centre clearance**, and **Both centres clear**. The practice 48-hour 0° totals stay valid under that sampled policy. Submission eligibility stays pending.
+- **Centre-ray limits.** Never claim disc visibility, received power, radio-link availability, or ground-station contact from centre-ray clearance. A centre below the horizon can still leave part of the disc above that plane; that does not change the centre-ray state.
+- **Product 69 is long-term context.** The south-pole 240 m solar layer is the fraction of modeled timesteps when any portion of the Sun’s disc was visible (a crescent and a full disc both count; no area or power weighting). The Earth layer is the fraction of timesteps when any portion of Earth’s disc was unobscured, and is not visibility of a specific ground station. A Product 69 pixel supplies neither a timestamped answer nor a like-for-like benchmark for a centre-ray window. Validate by tracing angles to saved Horizons rows and by testing horizon, interval, and Unknown rules on their own.
+- **Product 69 dates.** The product page describes hourly averages over 18.6 years. The PDS labels also carry `START_TIME` and `STOP_TIME` in 2009–2013. Those sources do not fix the simulation start and end. Leave that interval unresolved.
+- **Any-disc later.** A separate any-disc metric needs angular size and terrain coverage across the disc’s azimuth span. Before comparing averages, match period, cadence, location, observer height, terrain basis, and visibility definition. Keep the centre-ray output comparable and unchanged.
+- **Raw-file identity.** Matching angle rows do not close a raw-response hash mismatch. Keep the Appendix B versus on-disk `response.json` mismatch open until that file check is done.
 - **Unknown** applies to the affected body or interval. Do not invent angles or skyline values.
 - **Both lane:** Blocked if either body is Blocked; Unknown if neither is Blocked and either is Unknown; Clear only if both are Clear.
 - **Body IDs:** Sun `10`, Earth `399`, Moon observer `301`; reject Earth–Moon barycentre `3` for centre-ray.
