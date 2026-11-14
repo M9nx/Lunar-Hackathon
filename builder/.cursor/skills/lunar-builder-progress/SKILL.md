@@ -41,7 +41,7 @@ builder/scripts/install_git_hooks.sh   # once per clone
 |------|--------|
 | **Active task** | **M2.5** terrain audit — not started. 0° replay stays the demo |
 | **M0** | M0.5 **passed** (Wi-Fi off 2026-11-14T09:54:24Z, backup `/home/m9nx/Lunar-Hackathon-data-backup`). M0.1 eligibility open. Reported deadline Sunday, November 15, 2026, 11:59 p.m. local event time |
-| **M1–M3** | Practice 0° package at commit `1f3fb06`. M3.2 clean-profile pass 2026-11-14T10:34:43Z. M3.3 pitch drafted. M3.4 handed off with terrain still open. Runs `site04-p02-practice-q4-centre-0deg-a24325ba50c4` and `malapert-practice-q4-centre-0deg-88b9b3cfef57` |
+| **M1–M3** | Practice 0° package at commit `1f3fb06`. M3.2 clean-profile pass 2026-11-14T10:35:24Z. M3.3 pitch drafted. M3.4 handed off with terrain still open. Runs `site04-p02-practice-q4-centre-0deg-a24325ba50c4` and `malapert-practice-q4-centre-0deg-88b9b3cfef57` |
 | **Product** | `src/lunar_navigator/` centre-ray engine; `web/replay/` offline shell |
 | **Agent worker** | `builder/` handoff, 16 skills, harness scripts, guardrails in `lunar-guardrails.mdc` |
 | **Data** | Local `data/` ~5.5 GB **gitignored**; practice Horizons under `data/horizons/*-practice/` |

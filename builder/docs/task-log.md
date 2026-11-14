@@ -20,7 +20,7 @@ Persistent record of milestone work. Status: `planned` | `in_progress` | `passed
 | M2.4 | passed | 2026-11-14 | 2026-11-14 | Sun-centre clear differs by 172800 s. Both-centres clear ties at 0. Unknown 0 s. |
 | M2.5 | blocked | — | — | Terrain gate. No M4 science review. 0° package stays the demo. |
 | M3.1 | passed | 2026-11-14 | 2026-11-14 | `web/replay/` plus `web/replay/README.md` |
-| M3.2 | passed | 2026-11-14 | 2026-11-14T10:34:43Z | Clean Chromium profile, Wi-Fi off, playhead and both exports. `docs/evidence/m3_clean_browser.md`. Commit `1f3fb06`. |
+| M3.2 | passed | 2026-11-14 | 2026-11-14T10:35:24Z | Clean Chromium profile, Wi-Fi off, playhead and both exports. `docs/evidence/m3_clean_browser.md`. Commit `1f3fb06`. |
 | M3.3 | passed | 2026-11-14 | 2026-11-14 | Pitch draft `docs/evidence/m3_3_pitch.md`. Practice label kept. |
 | M3.4 | passed_with_open_decisions | 2026-11-14 | 2026-11-14 | Run IDs and 0° package handed off. M2.5 terrain questions stay open. |
 

@@ -38,4 +38,4 @@ Window `2025-01-01T00:00:00Z` through `2025-01-03T00:00:00Z`, step 900 s. At `20
 
 ## Screenshots
 
-Clean-profile offline pass at 2026-11-14T10:34:43Z, commit `1f3fb06`. `m3_clean_00.png` is the shared playhead at `2025-01-01T00:00:00Z`. `m3_clean_15.png` is the next step, `2025-01-01T00:15:00Z`. Record: `m3_clean_browser.md`.
+Clean-profile offline pass at 2026-11-14T10:35:24Z, commit `1f3fb06`. `m3_clean_00.png` is the shared playhead at `2025-01-01T00:00:00Z`. `m3_clean_15.png` is the next step, `2025-01-01T00:15:00Z`. Record: `m3_clean_browser.md`.

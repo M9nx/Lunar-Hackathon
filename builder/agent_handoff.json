@@ -109,7 +109,7 @@
     "M3.1": { "status": "passed", "evidence_refs": ["web/replay/README.md"] },
       "M3.2": {
       "status": "passed",
-      "note": "Clean Chromium profile, Wi-Fi off, 2026-11-14T10:34:43Z. Commit 1f3fb06. Both exports opened.",
+      "note": "Clean Chromium profile, Wi-Fi off, 2026-11-14T10:35:24Z. Commit 1f3fb06. Both exports opened.",
       "evidence_refs": ["docs/evidence/m3_clean_browser.md"]
     },
     "M3.3": {
