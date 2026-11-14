@@ -7,8 +7,14 @@ import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from lunar_navigator.horizons_table import index_response, load_angles_csv, response_angles
-from lunar_navigator.visibility import both_lane, classify_margin
+from lunar_navigator.horizons_table import (
+    index_result_text,
+    load_angles_csv,
+    load_response_text,
+    parse_response_header,
+    response_angles,
+)
+from lunar_navigator.visibility import both_lane, classify_margin, validate_body_id
 
 LANE_LABELS = {
     "sun": "Sun-centre clearance",
@@ -17,6 +23,9 @@ LANE_LABELS = {
 }
 STATES = ("clear", "blocked", "unknown")
 SCHEMA_VERSION = "run-result-1"
+# Horizons prints the center-geodetic line to about four decimal places.
+HEADER_ANGLE_TOL_DEG = 5e-4
+HEADER_ALTITUDE_TOL_KM = 5e-4
 
 
 def parse_utc(value: str) -> datetime:
@@ -70,16 +79,21 @@ def build_intervals(samples: list[dict], lane: str) -> list[dict]:
     return intervals
 
 
+def joint_lane(sun_state: str, earth_state: str, sun_reason: str | None, earth_reason: str | None) -> dict:
+    joint = both_lane(sun_state, earth_state)
+    if joint == "unknown":
+        reason = sun_reason or earth_reason or "unknown"
+    elif joint == "blocked":
+        blocked = [name for name, state in (("sun", sun_state), ("earth", earth_state)) if state == "blocked"]
+        reason = "centre_below_or_on_horizon:" + "+".join(blocked)
+    else:
+        reason = None
+    return {"state": joint, "reason": reason, "label": LANE_LABELS["both"]}
+
+
 def classify_bodies(sun_elevation, sun_azimuth, earth_elevation, earth_azimuth, sun_ref, earth_ref, sun_line, earth_line) -> dict:
     sun = classify_margin(sun_elevation, 0.0, horizon_mode="geometric_0deg")
     earth = classify_margin(earth_elevation, 0.0, horizon_mode="geometric_0deg")
-    joint = both_lane(sun.state, earth.state)
-    reason = None
-    if joint == "unknown":
-        reason = sun.reason or earth.reason or "unknown"
-    elif joint == "blocked":
-        blocked = [name for name, state in (("sun", sun.state), ("earth", earth.state)) if state == "blocked"]
-        reason = "centre_below_or_on_horizon:" + "+".join(blocked)
     return {
         "sun": {
             "azimuth_deg": sun_azimuth,
@@ -103,12 +117,42 @@ def classify_bodies(sun_elevation, sun_azimuth, earth_elevation, earth_azimuth, 
             "source_ref": earth_ref,
             "response_line": earth_line,
         },
-        "both": {
-            "state": joint,
-            "reason": reason,
-            "label": LANE_LABELS["both"],
-        },
+        "both": joint_lane(sun.state, earth.state, sun.reason, earth.reason),
     }
+
+
+def _angles_usable(azimuth, elevation) -> bool:
+    return azimuth is not None and elevation is not None
+
+
+def apply_both_endpoints(classified: dict, nxt: dict | None) -> None:
+    """Keep the left sample's state only when the next sample has usable angles.
+
+    The span is half-open. A missing right endpoint makes that body's interval
+    Unknown. The left sample's angles stay on the record.
+    """
+    if nxt is None:
+        return
+    endpoints = (
+        ("sun", "sun_azimuth_deg", "sun_elevation_deg"),
+        ("earth", "earth_azimuth_deg", "earth_elevation_deg"),
+    )
+    for body, azimuth_key, elevation_key in endpoints:
+        left_ok = _angles_usable(classified[body]["azimuth_deg"], classified[body]["elevation_deg"])
+        right_ok = _angles_usable(nxt[azimuth_key], nxt[elevation_key])
+        if left_ok and right_ok:
+            continue
+        classified[body]["state"] = "unknown"
+        if left_ok:
+            classified[body]["reason"] = "missing_right_endpoint"
+        else:
+            classified[body]["reason"] = classified[body]["reason"] or "missing_ephemeris"
+    classified["both"] = joint_lane(
+        classified["sun"]["state"],
+        classified["earth"]["state"],
+        classified["sun"]["reason"],
+        classified["earth"]["reason"],
+    )
 
 
 def geometric_run_from_rows(
@@ -157,6 +201,7 @@ def geometric_run_from_rows(
             row.get("sun_response_line"),
             row.get("earth_response_line"),
         )
+        apply_both_endpoints(classified, None if terminal else rows[index + 1])
         for lane in ("sun", "earth", "both"):
             add_duration(elapsed, lane, classified[lane]["state"], duration)
         samples.append({"timestamp_utc": row["timestamp_utc"], "duration_seconds": duration, **classified})
@@ -216,6 +261,32 @@ def geometric_run_from_rows(
     }
 
 
+def _east_longitude_delta_deg(left: float, right: float) -> float:
+    return abs((left - right + 180.0) % 360.0 - 180.0)
+
+
+def verify_response_belongs_to_case(result: str, *, body: str, observer: dict) -> None:
+    """Reject a response whose target or observer is not the scenario's case.
+
+    SHA-256 checks that the bytes match provenance. This check reads the raw
+    header so a swapped Sun and Earth export cannot pass on checksums alone.
+    """
+    meta = parse_response_header(result)
+    if not validate_body_id(body, meta["target_id"]):
+        raise ValueError(f"{body} response target id {meta['target_id']} does not match the scenario")
+    expected_center = int(observer.get("center_body_id", 301))
+    if expected_center == 3 or meta["center_body_id"] != expected_center:
+        raise ValueError(
+            f"{body} response center body {meta['center_body_id']} does not match the scenario observer"
+        )
+    if _east_longitude_delta_deg(meta["longitude_east_deg"], float(observer["longitude_east_deg"])) > HEADER_ANGLE_TOL_DEG:
+        raise ValueError(f"{body} response longitude does not match the scenario observer")
+    if abs(meta["latitude_deg"] - float(observer["latitude_deg"])) > HEADER_ANGLE_TOL_DEG:
+        raise ValueError(f"{body} response latitude does not match the scenario observer")
+    if abs(meta["reference_altitude_km"] - float(observer["reference_altitude_km"])) > HEADER_ALTITUDE_TOL_KM:
+        raise ValueError(f"{body} response altitude does not match the scenario observer")
+
+
 def _match_response(utc: str, csv_azimuth: float | None, csv_elevation: float | None, line: str) -> None:
     if csv_azimuth is None or csv_elevation is None:
         return
@@ -236,8 +307,22 @@ def run_from_scenario(scenario: dict, data_root: Path, code_revision: str | None
     earth_rows = load_angles_csv(earth_csv)
     if [row["timestamp_utc"] for row in sun_rows] != [row["timestamp_utc"] for row in earth_rows]:
         raise ValueError("Sun and Earth timestamp grids differ")
-    sun_lines = index_response(sun_response)
-    earth_lines = index_response(earth_response)
+    sun_text = load_response_text(sun_response)
+    earth_text = load_response_text(earth_response)
+    sun_prov = json.loads((sun_dir / "provenance.json").read_text(encoding="utf-8"))
+    earth_prov = json.loads((earth_dir / "provenance.json").read_text(encoding="utf-8"))
+    sun_csv_sha = sha256_file(sun_csv)
+    earth_csv_sha = sha256_file(earth_csv)
+    sun_raw_sha = sha256_file(sun_response)
+    earth_raw_sha = sha256_file(earth_response)
+    if sun_csv_sha != sun_prov.get("csv_sha256") or earth_csv_sha != earth_prov.get("csv_sha256"):
+        raise ValueError("angle CSV SHA-256 does not match provenance")
+    if sun_raw_sha != sun_prov.get("raw_sha256") or earth_raw_sha != earth_prov.get("raw_sha256"):
+        raise ValueError("response.json SHA-256 does not match provenance")
+    verify_response_belongs_to_case(sun_text, body="sun", observer=observer)
+    verify_response_belongs_to_case(earth_text, body="earth", observer=observer)
+    sun_lines = index_result_text(sun_text, sun_response)
+    earth_lines = index_result_text(earth_text, earth_response)
 
     joined = []
     for index, (sun, earth) in enumerate(zip(sun_rows, earth_rows)):
@@ -261,17 +346,6 @@ def run_from_scenario(scenario: dict, data_root: Path, code_revision: str | None
                 "earth_response_line": earth_line,
             }
         )
-
-    sun_prov = json.loads((sun_dir / "provenance.json").read_text(encoding="utf-8"))
-    earth_prov = json.loads((earth_dir / "provenance.json").read_text(encoding="utf-8"))
-    sun_csv_sha = sha256_file(sun_csv)
-    earth_csv_sha = sha256_file(earth_csv)
-    sun_raw_sha = sha256_file(sun_response)
-    earth_raw_sha = sha256_file(earth_response)
-    if sun_csv_sha != sun_prov.get("csv_sha256") or earth_csv_sha != earth_prov.get("csv_sha256"):
-        raise ValueError("angle CSV SHA-256 does not match provenance")
-    if sun_raw_sha != sun_prov.get("raw_sha256") or earth_raw_sha != earth_prov.get("raw_sha256"):
-        raise ValueError("response.json SHA-256 does not match provenance")
 
     practice = scenario.get("status") == "practice" or scenario.get("eligible_for_submission_claim") is False
     eligible = bool(scenario.get("eligible_for_submission_claim", False))

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 from pathlib import Path
 
 MONTHS = {
@@ -70,11 +71,40 @@ def load_angles_csv(path: Path) -> list[dict]:
     return parsed
 
 
-def index_response(path: Path) -> dict[str, str]:
+def load_response_text(path: Path) -> str:
     payload = json.loads(path.read_text(encoding="utf-8"))
     result = payload.get("result")
     if not isinstance(result, str):
         raise ValueError(f"{path} has no Horizons result text")
+    return result
+
+
+def parse_response_header(result: str) -> dict:
+    """Read target id and observer geodetic metadata from the raw Horizons header.
+
+    Horizons prints east longitude in [0, 360). Callers compare that to a signed
+    scenario longitude. Altitude is the header's printed kilometres, often
+    rounded to four decimal places.
+    """
+    header = result.split("$$SOE", 1)[0]
+    target = re.search(r"Target body name:\s*.*\((\d+)\)", header)
+    center = re.search(r"Center body name:\s*.*\((\d+)\)", header)
+    geodetic = re.search(
+        r"Center geodetic\s*:\s*([+-]?\d+(?:\.\d+)?)\s*,\s*([+-]?\d+(?:\.\d+)?)\s*,\s*([+-]?\d+(?:\.\d+)?)",
+        header,
+    )
+    if target is None or center is None or geodetic is None:
+        raise ValueError("Horizons response header is missing target id or observer geodetic metadata")
+    return {
+        "target_id": int(target.group(1)),
+        "center_body_id": int(center.group(1)),
+        "longitude_east_deg": float(geodetic.group(1)),
+        "latitude_deg": float(geodetic.group(2)),
+        "reference_altitude_km": float(geodetic.group(3)),
+    }
+
+
+def index_result_text(result: str, source: Path | str) -> dict[str, str]:
     indexed: dict[str, str] = {}
     for line in result.splitlines():
         parsed = parse_response_line(line)
@@ -82,9 +112,13 @@ def index_response(path: Path) -> dict[str, str]:
             continue
         utc, _azimuth, _elevation = parsed
         if utc in indexed:
-            raise ValueError(f"duplicate Horizons timestamp {utc} in {path}")
+            raise ValueError(f"duplicate Horizons timestamp {utc} in {source}")
         indexed[utc] = line.strip()
     return indexed
+
+
+def index_response(path: Path) -> dict[str, str]:
+    return index_result_text(load_response_text(path), path)
 
 
 def response_angles(line: str) -> tuple[float, float]:

@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -64,6 +66,38 @@ class SyntheticHour(unittest.TestCase):
         self.assertEqual(sum(sample["duration_seconds"] for sample in result["samples"]), 3600)
         self.assertEqual(result["labels"]["both"], "Both centres clear")
 
+    def test_missing_right_endpoint_is_unknown(self) -> None:
+        rows = [
+            _row("2025-01-01T00:00:00Z", 0.8, 0.4),
+            _row("2025-01-01T00:15:00Z", None, 0.4),
+        ]
+        result = geometric_run_from_rows(
+            site_id="missing-right",
+            observer={"longitude_east_deg": 0, "latitude_deg": 0, "reference_altitude_km": 0},
+            start_utc=rows[0]["timestamp_utc"],
+            end_utc=rows[-1]["timestamp_utc"],
+            step_seconds=900,
+            rows=rows,
+            run_id="missing-right",
+            code_revision="test",
+            practice=True,
+            eligible_for_submission_claim=False,
+            inputs={},
+            limitations=["synthetic"],
+        )
+        self.assertEqual(result["elapsed_seconds"]["sun"], {"clear": 0, "blocked": 0, "unknown": 900})
+        self.assertEqual(result["elapsed_seconds"]["earth"], {"clear": 900, "blocked": 0, "unknown": 0})
+        self.assertEqual(result["elapsed_seconds"]["both"], {"clear": 0, "blocked": 0, "unknown": 900})
+        opening = result["samples"][0]
+        self.assertEqual(opening["sun"]["state"], "unknown")
+        self.assertEqual(opening["sun"]["reason"], "missing_right_endpoint")
+        self.assertAlmostEqual(opening["sun"]["elevation_deg"], 0.8)
+        self.assertEqual(opening["earth"]["state"], "clear")
+        self.assertEqual(opening["both"]["state"], "unknown")
+        self.assertEqual(result["samples"][-1]["duration_seconds"], 0)
+        self.assertEqual(result["intervals"][0]["lane"], "sun")
+        self.assertEqual(result["intervals"][0]["state"], "unknown")
+
 
 class ResponseLine(unittest.TestCase):
     def test_horizons_stamp(self) -> None:
@@ -119,6 +153,103 @@ class ReplayPackage(unittest.TestCase):
             payload = json.loads(path.read_text())
             self.assertEqual(payload["run_id"], run["run_id"])
             self.assertEqual(payload["schema_version"], "run-result-1")
+
+
+def _write_export(folder: Path, *, target_name: str, target_id: int, azimuth: float, elevation: float) -> None:
+    folder.mkdir(parents=True)
+    stamps = (
+        ("2025-Jan-01 00:00", "2025-01-01T00:00:00Z", azimuth, elevation),
+        ("2025-Jan-01 00:15", "2025-01-01T00:15:00Z", azimuth + 1.0, elevation),
+    )
+    data_lines = [f" {stamp},*, , {az:.6f}, {el:.6f}," for stamp, _utc, az, el in stamps]
+    result = (
+        f"Target body name: {target_name} ({target_id}) {{source: DE441}}\n"
+        "Center body name: Moon (301) {source: DE441}\n"
+        "Center geodetic : 203.5614, -89.7812, 1.7389 {E-lon(deg),Lat(deg),Alt(km)}\n"
+        "$$SOE\n"
+        + "\n".join(data_lines)
+        + "\n$$EOE\n"
+    )
+    response = folder / "response.json"
+    csv_path = folder / "angles.csv"
+    response.write_text(json.dumps({"result": result}), encoding="utf-8")
+    csv_body = "timestamp_utc,azimuth_deg,elevation_deg,angle_status\n" + "".join(
+        f"{utc},{az:.6f},{el:.6f},available\n" for _stamp, utc, az, el in stamps
+    )
+    csv_path.write_text(csv_body, encoding="utf-8")
+    provenance = {
+        "csv_sha256": hashlib.sha256(csv_path.read_bytes()).hexdigest(),
+        "raw_sha256": hashlib.sha256(response.read_bytes()).hexdigest(),
+    }
+    (folder / "provenance.json").write_text(json.dumps(provenance), encoding="utf-8")
+
+
+def _two_sample_scenario(sun_rel: str, earth_rel: str) -> dict:
+    return {
+        "status": "practice",
+        "site_id": "header-check",
+        "observer": {
+            "longitude_east_deg": -156.4386,
+            "latitude_deg": -89.7812,
+            "reference_altitude_km": 1.738902,
+            "center_body_id": 301,
+        },
+        "start_utc": "2025-01-01T00:00:00Z",
+        "end_utc": "2025-01-01T00:15:00Z",
+        "step_seconds": 900,
+        "horizons_paths": {"sun": sun_rel, "earth": earth_rel},
+        "eligible_for_submission_claim": False,
+    }
+
+
+class ResponseCaseIdentity(unittest.TestCase):
+    def setUp(self) -> None:
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        self.sun_rel = "horizons/sun"
+        self.earth_rel = "horizons/earth"
+        _write_export(
+            self.root / self.sun_rel,
+            target_name="Sun",
+            target_id=10,
+            azimuth=318.623526,
+            elevation=1.683925,
+        )
+        _write_export(
+            self.root / self.earth_rel,
+            target_name="Earth",
+            target_id=399,
+            azimuth=151.799812,
+            elevation=-6.503228,
+        )
+        self.scenario = _two_sample_scenario(self.sun_rel, self.earth_rel)
+
+    def tearDown(self) -> None:
+        self.tmp.cleanup()
+
+    def test_matching_headers_keep_each_body(self) -> None:
+        result = run_from_scenario(self.scenario, self.root, "test")
+        sun, earth = result["traces"]
+        self.assertAlmostEqual(sun["elevation_deg"], 1.683925)
+        self.assertAlmostEqual(earth["elevation_deg"], -6.503228)
+        self.assertEqual(result["elapsed_seconds"]["both"]["clear"], 0)
+        self.assertEqual(result["elapsed_seconds"]["both"]["blocked"], 900)
+
+    def test_swapped_sun_and_earth_files_are_rejected(self) -> None:
+        swapped = json.loads(json.dumps(self.scenario))
+        swapped["horizons_paths"] = {"sun": self.earth_rel, "earth": self.sun_rel}
+        with self.assertRaises(ValueError) as caught:
+            run_from_scenario(swapped, self.root, "test")
+        message = str(caught.exception)
+        self.assertIn("sun", message)
+        self.assertIn("399", message)
+
+    def test_observer_longitude_must_match_header(self) -> None:
+        shifted = json.loads(json.dumps(self.scenario))
+        shifted["observer"]["longitude_east_deg"] = -10.0
+        with self.assertRaises(ValueError) as caught:
+            run_from_scenario(shifted, self.root, "test")
+        self.assertIn("longitude", str(caught.exception))
 
 
 if __name__ == "__main__":
