@@ -10,7 +10,7 @@ Persistent record of milestone work. Status: `planned` | `in_progress` | `passed
 | M0.4 | passed | 2026-11-14 | 2026-11-14 | `docs/evidence/m0_4_wheels.log`, `docs/evidence/m0_4_open_dem.log` |
 | M0.5 | passed | 2026-11-14 | 2026-11-14T09:54:24Z | `docs/evidence/wifi_off_attestation.txt`, `docs/evidence/m0_5_wifi_off.log`, `docs/evidence/m0_5_backup_checksums.log` |
 | M1.1 | passed | 2026-11-14 | 2026-11-14 | Practice Sun/Earth tables joined by the engine. Case-fit already passed. |
-| M1.2 | passed | 2026-11-14 | 2026-11-14 | `src/lunar_navigator/engine.py`. Pytest 13 passed. |
+| M1.2 | passed | 2026-11-14 | 2026-11-14 | `src/lunar_navigator/engine.py`. Later endpoint and header checks: pytest 17 passed at `1f3fb06`. |
 | M1.3 | passed | 2026-11-14 | 2026-11-14 | `web/replay/` timeline shell. |
 | M1.4 | passed | 2026-11-14 | 2026-11-14 | `web/replay/runs/site04-p02-practice.json` |
 | M1.5 | passed | 2026-11-14 | 2026-11-14 | Trace in that run. Separate review `docs/evidence/m3_review.md`. |
@@ -20,8 +20,9 @@ Persistent record of milestone work. Status: `planned` | `in_progress` | `passed
 | M2.4 | passed | 2026-11-14 | 2026-11-14 | Sun-centre clear differs by 172800 s. Both-centres clear ties at 0. Unknown 0 s. |
 | M2.5 | blocked | — | — | Terrain gate. No M4 science review. 0° package stays the demo. |
 | M3.1 | passed | 2026-11-14 | 2026-11-14 | `web/replay/` plus `web/replay/README.md` |
-| M3.2 | passed_with_open_decisions | 2026-11-14 | 2026-11-14T10:11:45Z | Offline localhost replay in the Cursor browser. Not a second clean-profile witness. |
-| M3.3 | planned | — | — | Pitch not started. |
+| M3.2 | passed | 2026-11-14 | 2026-11-14T10:34:43Z | Clean Chromium profile, Wi-Fi off, playhead and both exports. `docs/evidence/m3_clean_browser.md`. Commit `1f3fb06`. |
+| M3.3 | passed | 2026-11-14 | 2026-11-14 | Pitch draft `docs/evidence/m3_3_pitch.md`. Practice label kept. |
+| M3.4 | passed_with_open_decisions | 2026-11-14 | 2026-11-14 | Run IDs and 0° package handed off. M2.5 terrain questions stay open. |
 
 ## M0.4 runtime pin
 
@@ -53,7 +54,7 @@ scripts/verify_offline_wheels.sh
 ## Next
 
 - **M2.5:** Do not present terrain until Science records frame, height, radial coverage, and one checked skyline. The 0° replay stays available.
-- **M3.3 / M3.4:** Pitch and freeze handoff are not done. Lead still owns the live Resources tab (HTTP 500) and submission eligibility.
+- **Lead:** Resources tab and submission eligibility stay open. Reported deadline is Sunday, November 15, 2026, 11:59 p.m. local event time.
 - **Replay:** `python3 -m http.server 8765 --directory web/replay` then `http://127.0.0.1:8765/`.
 
 ## M0.5 gate (session operator, 2026-11-14T09:54:24Z)
@@ -71,11 +72,11 @@ scripts/verify_offline_wheels.sh
 | Field | Value |
 | --- | --- |
 | Verdict | passed_with_open_decisions |
-| Reviewer | separate reviewer [centre-ray replay review](89204d16-ed87-4a7b-99b9-d1d4bc52fafb) |
-| Revision | `4ddc29b-dirty` |
+| Reviewer | separate reviewer [centre-ray replay review](89204d16-ed87-4a7b-99b9-d1d4bc52fafb); clean-profile pass by the session operator |
+| Revision | `1f3fb06` |
 | Run IDs | `site04-p02-practice-q4-centre-0deg-a24325ba50c4`, `malapert-practice-q4-centre-0deg-88b9b3cfef57` |
-| Evidence | `docs/evidence/m3_review.md` |
-| Unresolved | Submission eligibility, Malapert 0 km as a reviewed height, Appendix B raw-response hash, M2.5 terrain, M3.3 pitch, clean-profile second witness |
+| Evidence | `docs/evidence/m3_review.md`, `docs/evidence/m3_clean_browser.md`, `docs/evidence/m3_3_pitch.md` |
+| Unresolved | Submission eligibility, Malapert 0 km as a reviewed height, Appendix B raw-response hash, M2.5 terrain |
 
 ## Earlier M0.5 note (superseded, 2026-11-14T09:34:18Z)
 

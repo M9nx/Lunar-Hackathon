@@ -39,9 +39,9 @@ builder/scripts/install_git_hooks.sh   # once per clone
 
 | Area | State |
 |------|--------|
-| **Active task** | **M2.5** terrain audit — not started. 0° replay is the verified package |
-| **M0** | M0.5 **passed** (Wi-Fi off 2026-11-14T09:54:24Z, backup `/home/m9nx/Lunar-Hackathon-data-backup`). M0.1 Resources tab still HTTP 500. M0.2 practice pair selected for replay; eligibility open |
-| **M1–M3** | Practice 0° package **passed** with open decisions. Runs `site04-p02-practice-q4-centre-0deg-a24325ba50c4` and `malapert-practice-q4-centre-0deg-88b9b3cfef57` |
+| **Active task** | **M2.5** terrain audit — not started. 0° replay stays the demo |
+| **M0** | M0.5 **passed** (Wi-Fi off 2026-11-14T09:54:24Z, backup `/home/m9nx/Lunar-Hackathon-data-backup`). M0.1 eligibility open. Reported deadline Sunday, November 15, 2026, 11:59 p.m. local event time |
+| **M1–M3** | Practice 0° package at commit `1f3fb06`. M3.2 clean-profile pass 2026-11-14T10:34:43Z. M3.3 pitch drafted. M3.4 handed off with terrain still open. Runs `site04-p02-practice-q4-centre-0deg-a24325ba50c4` and `malapert-practice-q4-centre-0deg-88b9b3cfef57` |
 | **Product** | `src/lunar_navigator/` centre-ray engine; `web/replay/` offline shell |
 | **Agent worker** | `builder/` handoff, 16 skills, harness scripts, guardrails in `lunar-guardrails.mdc` |
 | **Data** | Local `data/` ~5.5 GB **gitignored**; practice Horizons under `data/horizons/*-practice/` |
@@ -61,7 +61,7 @@ builder/scripts/install_git_hooks.sh   # once per clone
 ### Next (in order)
 
 1. M2.5 stays blocked until Science reviews frame, height, coverage, and one skyline. Keep the 0° replay.
-2. Lead: Resources tab and submission eligibility. Appendix B raw-response hash stays open.
+2. Lead: confirm Resources, deliverables, and whether the practice pair may be a submission claim. Deadline reported as Sunday, November 15, 2026, 11:59 p.m. local event time.
 3. Replay: `python3 -m http.server 8765 --directory web/replay`.
 
 ---
@@ -78,7 +78,7 @@ You are the **lunar builder agent** (worker in `builder/`, not the product). Rea
 **Master Reference:** revision **0.5** at `Master-Reference/MASTER_REFERENCE.json`.  
 **Fresh repo only** — `~/Documents/Learning/lunar-landing-site-navigator` is read-only history.
 
-**Active work:** M0.5 passed. Practice 0° replay is in `web/replay/` at git `4ddc29b-dirty`. Run IDs `site04-p02-practice-q4-centre-0deg-a24325ba50c4` and `malapert-practice-q4-centre-0deg-88b9b3cfef57`. Next open task is **M2.5** terrain, which stays gated. Submission eligibility and the Appendix B raw-response hash stay open.
+**Active work:** M0.5 passed. Practice 0° replay is in `web/replay/` at engine commit `1f3fb06`. Run IDs `site04-p02-practice-q4-centre-0deg-a24325ba50c4` and `malapert-practice-q4-centre-0deg-88b9b3cfef57`. M3.2 clean-profile offline pass is recorded. Next open task is **M2.5** terrain, which stays gated. Submission eligibility and the Appendix B raw-response hash stay open.
 
 **Repo:** `Lunar-Hackathon` on GitHub (private). Product: `src/lunar_navigator/`, `tests/`, `web/`. Worker: `builder/` (scripts, handoff, skills, evidence). Local `data/` is gitignored.
 
@@ -86,7 +86,7 @@ You are the **lunar builder agent** (worker in `builder/`, not the product). Rea
 
 **Result definition (2026-11-14):** Keep the centre-ray calculation. Label **Sun-centre clearance**, **Earth-centre clearance**, and **Both centres clear**. The practice 48-hour 0° totals stay valid under that policy. Product 69 is a long-term any-portion-of-disc fraction, not a timestamped or like-for-like check of those windows. Any-disc comparison is a later metric and must match period, cadence, location, height, terrain, and visibility definition first. Leave the Product 69 simulation bounds and the Appendix B raw-response hash mismatch unresolved. Submission eligibility stays pending.
 
-**Open decisions:** Resources tab still HTTP 500; submission eligibility open; Malapert reference altitude 0 km; Appendix B raw-response hash open; M3.3 pitch not started. Practice pair is the replay, not a submission claim.
+**Open decisions:** Resources and required deliverables unverified; submission eligibility open; reported deadline Sunday, November 15, 2026, 11:59 p.m. local event time; Malapert reference altitude 0 km; Appendix B raw-response hash open; M2.5 terrain not reviewed. Practice pair is the replay, not a submission claim.
 
 **Your first commands:**
 

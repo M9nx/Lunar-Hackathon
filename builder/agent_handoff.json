@@ -28,7 +28,8 @@
     "run_ids": [
       "site04-p02-practice-q4-centre-0deg-a24325ba50c4",
       "malapert-practice-q4-centre-0deg-88b9b3cfef57"
-    ]
+    ],
+    "candidate_commit": "1f3fb06"
   },
   "report": {
     "status": "pending",
@@ -63,12 +64,14 @@
       "docs/evidence/m0_5_wifi_off.log",
       "docs/evidence/m0_5_backup_checksums.log",
       "docs/evidence/m3_review.md",
+      "docs/evidence/m3_clean_browser.md",
+      "docs/evidence/m3_3_pitch.md",
       "web/replay/comparison.json"
     ],
     "blockers": [
-      "M0.1: Resources tab still HTTP 500. Title page loaded without a requirements body. Submission eligibility stays open — owner Lead",
+      "M0.1: Resources tab and required deliverables unverified. Reported deadline is Sunday, November 15, 2026, 11:59 p.m. local event time. Submission eligibility stays open — owner Lead",
       "M0.2: practice replay selected. Malapert reference altitude is 0 km. Appendix B raw-response hash mismatch stays open — owner Data+Science",
-      "M2.5: terrain audit not started. 0° replay is the verified package — owner Science"
+      "M2.5: terrain audit not started. 0° replay remains the demo — owner Science"
     ]
   },
   "parallel_completed": ["M0.3", "M0.4", "M1.2", "M1.3"],
@@ -104,9 +107,18 @@
     "M2.3": { "status": "passed" },
     "M2.4": { "status": "passed" },
     "M3.1": { "status": "passed", "evidence_refs": ["web/replay/README.md"] },
-    "M3.2": {
+      "M3.2": {
+      "status": "passed",
+      "note": "Clean Chromium profile, Wi-Fi off, 2026-11-14T10:34:43Z. Commit 1f3fb06. Both exports opened.",
+      "evidence_refs": ["docs/evidence/m3_clean_browser.md"]
+    },
+    "M3.3": {
+      "status": "passed",
+      "evidence_refs": ["docs/evidence/m3_3_pitch.md"]
+    },
+    "M3.4": {
       "status": "passed_with_open_decisions",
-      "note": "Offline localhost replay in the Cursor browser at 2026-11-14T10:11:45Z. Not a second clean-profile witness."
+      "note": "0° package and run IDs handed off. M2.5 terrain review is still open, so terrain stays out of the demo."
     }
   }
 }

@@ -33,7 +33,7 @@ Run: `cd builder && python3 scripts/check_m0_closure.py`
 | Decision | Status | Owner | Notes / evidence |
 |----------|--------|-------|------------------|
 | Submission format and required outputs | **Open** | Lead | 2026-11-14 later fetch returned a page titled Lunar Landing Site Navigator and no requirements body. The Resources tab URL still returned HTTP 500. Eligibility stays open. The replay is labeled practice. |
-| Actual submission cutoff | **Open** | Lead | Use workbook submit H34 until organizers state otherwise. |
+| Actual submission cutoff | **Reported** | Lead | The 2026 listing gives Sunday, November 15 at 11:59 p.m. local event time. Resources and required deliverables were not verified from the challenge page. |
 | Eligible NASA data sources | **Proposed** | Data | Global Awards: ≥1 NASA data source from challenge Resources list (Master Reference §2). Enumerate chosen sources when case is selected. |
 | Permitted tools / AI use | **Proposed** | Lead | Follow [organizer guidance](https://github.com/nasa/spaceapps/discussions/1827) and [AI disclosure](https://github.com/nasa/spaceapps/discussions/1849); document tools in freeze package (M6). |
 | Result format (UTC, Unknown states) | **Confirmed (design)** | Lead + QA | Versioned run JSON per §5; states `clear` / `blocked` / `unknown`; ISO 8601 UTC with `Z`. |
@@ -83,6 +83,14 @@ Staged tree under `data/` (~5.5 GB inventory). Core + Horizons practice checks: 
 | Submission coordinates & height refs | Not set | Data + Science |
 | Terrain DEM for M4 | Product 90 vs 78 — defer to M4 | Science |
 | Python pin | Match demo laptop to wheel tag `cpython-314-linux-x86_64` | Engine |
+
+## Engine corrections (2026-11-14, commit `1f3fb06`)
+
+| Decision | Status | Notes |
+| --- | --- | --- |
+| File belongs to the case | **Confirmed** | SHA-256 still checks the bytes against provenance. The production path also reads the raw Horizons header and rejects a target id or observer that does not match the scenario. A swapped Sun and Earth export fails this check. |
+| Both endpoints | **Confirmed** | For `[t_i, t_(i+1))`, the left sample’s state counts only when both endpoints have usable angles. A clear Sun sample whose next Sun sample is missing is Unknown for that span. Earth stays on its own endpoint rule, then the Both rule applies. |
+| Practice totals | **Unchanged** | Site A Sun clear 172800 s and Both clear 0 s. Site B Sun, Earth, and Both blocked 172800 s. Unknown 0 s. Run IDs unchanged. |
 
 ## Workbook vs JSON schedule (2026-11-14)
 
