@@ -1,0 +1,594 @@
+{
+  "site_id": "malapert-practice",
+  "dem_path": "data/LOLA_20mpp/LDEM_60S_240MPP_ADJ.TIF",
+  "longitude_east_deg": -2.93,
+  "latitude_deg": -85.99,
+  "observer_height_m": 4864.24951171875,
+  "height_source": "dem_surface",
+  "max_range_m": 50000,
+  "step_m": 1500,
+  "azimuth_step_deg": 5,
+  "status": "diagnostic_unreviewed",
+  "bins": [
+    {
+      "azimuth_deg": 0.0,
+      "horizon_deg": -0.574502210273,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 5.0,
+      "horizon_deg": -0.19785164562082122,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 10.0,
+      "horizon_deg": -0.19785164561441237,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 15.0,
+      "horizon_deg": 0.345248266632731,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 20.0,
+      "horizon_deg": 0.34524826663321295,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 25.0,
+      "horizon_deg": 2.652118098919414,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 30.0,
+      "horizon_deg": 2.652118098919022,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 35.0,
+      "horizon_deg": 3.3608644715147165,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 40.0,
+      "horizon_deg": 3.3608644715125378,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 45.0,
+      "horizon_deg": 4.459152788362399,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 50.0,
+      "horizon_deg": 4.459152788362281,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 55.0,
+      "horizon_deg": 4.1062378267085125,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 60.0,
+      "horizon_deg": 4.6667599541048395,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 65.0,
+      "horizon_deg": 4.666759954102773,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 70.0,
+      "horizon_deg": 3.8617993366220817,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 75.0,
+      "horizon_deg": 3.7440072927015056,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 80.0,
+      "horizon_deg": 2.534971512451075,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 85.0,
+      "horizon_deg": 2.534971512456557,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 90.0,
+      "horizon_deg": 1.40738091175541,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 10500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 95.0,
+      "horizon_deg": 1.1911362237962568,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 10500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 100.0,
+      "horizon_deg": 0.7719236582771865,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 12000.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 105.0,
+      "horizon_deg": -0.09468876908200619,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 12000.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 110.0,
+      "horizon_deg": -1.4096349922851994,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 12000.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 115.0,
+      "horizon_deg": -2.9294016405039756,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 12000.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 120.0,
+      "horizon_deg": -4.7289724514419,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 12000.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 125.0,
+      "horizon_deg": -6.074541218673636,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 13500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 130.0,
+      "horizon_deg": -7.274904361810694,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 18000.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 135.0,
+      "horizon_deg": -7.6637442696732,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 19500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 140.0,
+      "horizon_deg": -7.492156357647637,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 19500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 145.0,
+      "horizon_deg": -7.208618522796051,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 19500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 150.0,
+      "horizon_deg": -7.5164183003747835,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 28500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 155.0,
+      "horizon_deg": -8.15564342155244,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 49500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 160.0,
+      "horizon_deg": -9.371390826099953,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 16500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 165.0,
+      "horizon_deg": -9.795417140118792,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 16500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 170.0,
+      "horizon_deg": -10.097788510558372,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 18000.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 175.0,
+      "horizon_deg": -10.361838418128867,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 49500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 180.0,
+      "horizon_deg": -10.382135127159934,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 49500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 185.0,
+      "horizon_deg": -10.378281188500992,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 49500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 190.0,
+      "horizon_deg": -10.351409053393454,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 49500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 195.0,
+      "horizon_deg": -10.626213121801031,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 45000.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 200.0,
+      "horizon_deg": -9.063892456619994,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 49500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 205.0,
+      "horizon_deg": -7.680774819515757,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 49500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 210.0,
+      "horizon_deg": -6.373809809701065,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 49500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 215.0,
+      "horizon_deg": -5.9030405593566515,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 49500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 220.0,
+      "horizon_deg": -4.548529358270929,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 49500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 225.0,
+      "horizon_deg": -4.498948769083809,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 49500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 230.0,
+      "horizon_deg": -4.872001398594068,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 45000.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 235.0,
+      "horizon_deg": -4.448561172275553,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 40500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 240.0,
+      "horizon_deg": -3.994213952365172,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 40500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 245.0,
+      "horizon_deg": -3.4882259479873268,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 42000.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 250.0,
+      "horizon_deg": -4.296638147632365,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 42000.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 255.0,
+      "horizon_deg": -4.828674282365562,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 42000.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 260.0,
+      "horizon_deg": -5.053503911435518,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 42000.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 265.0,
+      "horizon_deg": -5.773087287038881,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 45000.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 270.0,
+      "horizon_deg": -4.967249401317393,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 37500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 275.0,
+      "horizon_deg": -4.485203084511162,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 280.0,
+      "horizon_deg": -4.4852030845125705,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 285.0,
+      "horizon_deg": -2.5785227273439806,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 290.0,
+      "horizon_deg": 0.1635050762305141,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 295.0,
+      "horizon_deg": 0.16350507622502267,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 300.0,
+      "horizon_deg": 1.8150808945146952,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 305.0,
+      "horizon_deg": 1.8150808945196502,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 310.0,
+      "horizon_deg": 2.4325247316742353,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 315.0,
+      "horizon_deg": 3.4637305132199763,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 320.0,
+      "horizon_deg": 3.4637305132156047,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 325.0,
+      "horizon_deg": 2.931714222431055,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 330.0,
+      "horizon_deg": 2.931714222431092,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 335.0,
+      "horizon_deg": 1.729891152653047,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 340.0,
+      "horizon_deg": 1.729891152649658,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 345.0,
+      "horizon_deg": -0.11149725890934091,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 350.0,
+      "horizon_deg": -0.11149725891521063,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 355.0,
+      "horizon_deg": -0.5745022102786315,
+      "known": true,
+      "sample_count": 33,
+      "limiting_range_m": 1500.0,
+      "reason": null
+    }
+  ],
+  "notes": [
+    "Diagnostic only \u2014 terrain mode stays Unknown until M4 review.",
+    "Centre-ray classification in the demo still uses geometric 0\u00b0."
+  ]
+}

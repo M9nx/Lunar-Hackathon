@@ -1,0 +1,5778 @@
+{
+  "site_id": "site04-p02-practice",
+  "dem_path": "/home/m9nx/Documents/Learning/lunar-landing-site-navigator/research-results/sprint-b5-b7-2026-11-06/multiband_horizon/S04-P02_horizon_profile_farfield.csv",
+  "longitude_east_deg": -156.4386,
+  "latitude_deg": -89.7812,
+  "observer_height_m": 1738.902,
+  "height_source": "horizons_reference_altitude",
+  "max_range_m": 100000.0,
+  "step_m": 0.0,
+  "azimuth_step_deg": 0.5,
+  "status": "diagnostic_unreviewed",
+  "bins": [
+    {
+      "azimuth_deg": 0.0,
+      "horizon_deg": -0.36159013,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 0.5,
+      "horizon_deg": -0.07189764,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 1.0,
+      "horizon_deg": 0.05671425,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 1.5,
+      "horizon_deg": -0.2125029,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 2.0,
+      "horizon_deg": -0.4694772,
+      "known": true,
+      "sample_count": 950,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 2.5,
+      "horizon_deg": -0.44796631,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 3.0,
+      "horizon_deg": 0.36333899,
+      "known": true,
+      "sample_count": 1173,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 3.5,
+      "horizon_deg": -0.56502574,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 4.0,
+      "horizon_deg": -0.5550394,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 4.5,
+      "horizon_deg": 0.04601105,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 5.0,
+      "horizon_deg": 0.3891943,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 5.5,
+      "horizon_deg": 0.33833767,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 6.0,
+      "horizon_deg": 0.4324786,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 6.5,
+      "horizon_deg": 0.25022561,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 7.0,
+      "horizon_deg": -0.46222872,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 7.5,
+      "horizon_deg": 0.5381319,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 8.0,
+      "horizon_deg": 0.04442435,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 8.5,
+      "horizon_deg": 0.66561712,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 9.0,
+      "horizon_deg": 0.37393567,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 9.5,
+      "horizon_deg": -0.51933088,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 10.0,
+      "horizon_deg": 0.83867018,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 10.5,
+      "horizon_deg": -0.69353473,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 11.0,
+      "horizon_deg": -0.04558258,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 11.5,
+      "horizon_deg": 0.62850468,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 12.0,
+      "horizon_deg": 0.89251999,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 12.5,
+      "horizon_deg": 0.35836519,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 13.0,
+      "horizon_deg": -0.62369679,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 13.5,
+      "horizon_deg": 1.04699185,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 14.0,
+      "horizon_deg": -0.21444359,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 14.5,
+      "horizon_deg": 1.04060612,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 15.0,
+      "horizon_deg": 0.59897862,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 15.5,
+      "horizon_deg": 0.04789136,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 16.0,
+      "horizon_deg": 0.98315505,
+      "known": true,
+      "sample_count": 952,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 16.5,
+      "horizon_deg": -0.37075083,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 17.0,
+      "horizon_deg": 1.59019162,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 17.5,
+      "horizon_deg": 1.37904675,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 18.0,
+      "horizon_deg": 1.33322807,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 18.5,
+      "horizon_deg": 0.2584607,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 19.0,
+      "horizon_deg": -0.38771788,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 19.5,
+      "horizon_deg": -0.38659326,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 20.0,
+      "horizon_deg": -0.3449442,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 20.5,
+      "horizon_deg": -0.24977552,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 21.0,
+      "horizon_deg": -0.13565328,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 21.5,
+      "horizon_deg": 1.48091097,
+      "known": true,
+      "sample_count": 1003,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 22.0,
+      "horizon_deg": 0.0257034,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 22.5,
+      "horizon_deg": 0.11411368,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 23.0,
+      "horizon_deg": 0.2137272,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 23.5,
+      "horizon_deg": 0.31189695,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 24.0,
+      "horizon_deg": 0.36031957,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 24.5,
+      "horizon_deg": 0.43518522,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 25.0,
+      "horizon_deg": 0.63714141,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 25.5,
+      "horizon_deg": 1.11625374,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 26.0,
+      "horizon_deg": 1.28723852,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 26.5,
+      "horizon_deg": 1.34085176,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 27.0,
+      "horizon_deg": 0.71940243,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 27.5,
+      "horizon_deg": 0.82554913,
+      "known": true,
+      "sample_count": 937,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 28.0,
+      "horizon_deg": 0.98124674,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 28.5,
+      "horizon_deg": 0.91007302,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 29.0,
+      "horizon_deg": 0.9468593,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 29.5,
+      "horizon_deg": 0.99000539,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 30.0,
+      "horizon_deg": 1.00704405,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 30.5,
+      "horizon_deg": 1.01768018,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 31.0,
+      "horizon_deg": 1.7043286,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 31.5,
+      "horizon_deg": 1.05146876,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 32.0,
+      "horizon_deg": 1.04586275,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 32.5,
+      "horizon_deg": 1.64596249,
+      "known": true,
+      "sample_count": 959,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 33.0,
+      "horizon_deg": 0.99624485,
+      "known": true,
+      "sample_count": 928,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 33.5,
+      "horizon_deg": 0.9382308,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 34.0,
+      "horizon_deg": 0.87125719,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 34.5,
+      "horizon_deg": 1.55402918,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 35.0,
+      "horizon_deg": 0.68247872,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 35.5,
+      "horizon_deg": 1.31716278,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 36.0,
+      "horizon_deg": 0.43113656,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 36.5,
+      "horizon_deg": 1.99165238,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 37.0,
+      "horizon_deg": 0.1471685,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 37.5,
+      "horizon_deg": 1.15256837,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 38.0,
+      "horizon_deg": -0.14874705,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 38.5,
+      "horizon_deg": -0.18779769,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 39.0,
+      "horizon_deg": -0.15253701,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 39.5,
+      "horizon_deg": -0.61945896,
+      "known": true,
+      "sample_count": 933,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 40.0,
+      "horizon_deg": 2.18550168,
+      "known": true,
+      "sample_count": 952,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 40.5,
+      "horizon_deg": -0.24137017,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 41.0,
+      "horizon_deg": -0.57954354,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 41.5,
+      "horizon_deg": -0.1505096,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 42.0,
+      "horizon_deg": -0.18771894,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 42.5,
+      "horizon_deg": 0.92123574,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 43.0,
+      "horizon_deg": 2.65790675,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 43.5,
+      "horizon_deg": -0.10674053,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 44.0,
+      "horizon_deg": -0.42562006,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 44.5,
+      "horizon_deg": 1.68553589,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 45.0,
+      "horizon_deg": -0.2984568,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 45.5,
+      "horizon_deg": -0.06584063,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 46.0,
+      "horizon_deg": 1.87936067,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 46.5,
+      "horizon_deg": -0.26161265,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 47.0,
+      "horizon_deg": -0.36385649,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 47.5,
+      "horizon_deg": -0.3538586,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 48.0,
+      "horizon_deg": 2.75903582,
+      "known": true,
+      "sample_count": 903,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 48.5,
+      "horizon_deg": -0.49178905,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 49.0,
+      "horizon_deg": -0.47672147,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 49.5,
+      "horizon_deg": -0.20176818,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 50.0,
+      "horizon_deg": -0.4919392,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 50.5,
+      "horizon_deg": 3.54577963,
+      "known": true,
+      "sample_count": 952,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 51.0,
+      "horizon_deg": -0.54542188,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 51.5,
+      "horizon_deg": -0.51893481,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 52.0,
+      "horizon_deg": -0.54132399,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 52.5,
+      "horizon_deg": 2.11647789,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 53.0,
+      "horizon_deg": -0.48633539,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 53.5,
+      "horizon_deg": -0.57939598,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 54.0,
+      "horizon_deg": 0.68113297,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 54.5,
+      "horizon_deg": -0.4170658,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 55.0,
+      "horizon_deg": 1.78011352,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 55.5,
+      "horizon_deg": -0.65254115,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 56.0,
+      "horizon_deg": -0.59993948,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 56.5,
+      "horizon_deg": -0.54246836,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 57.0,
+      "horizon_deg": 2.41007479,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 57.5,
+      "horizon_deg": -0.45845615,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 58.0,
+      "horizon_deg": -0.43465261,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 58.5,
+      "horizon_deg": 2.4680217,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 59.0,
+      "horizon_deg": -0.48835641,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 59.5,
+      "horizon_deg": 1.47214174,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 60.0,
+      "horizon_deg": 0.53920453,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 60.5,
+      "horizon_deg": -0.20954104,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 61.0,
+      "horizon_deg": -0.79467822,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 61.5,
+      "horizon_deg": -0.91695186,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 62.0,
+      "horizon_deg": -0.68136597,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 62.5,
+      "horizon_deg": -0.90415917,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 63.0,
+      "horizon_deg": -1.17868255,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 63.5,
+      "horizon_deg": -0.75596636,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 64.0,
+      "horizon_deg": -1.05852053,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 64.5,
+      "horizon_deg": -1.54787016,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 65.0,
+      "horizon_deg": -0.77333185,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 65.5,
+      "horizon_deg": -1.43723567,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 66.0,
+      "horizon_deg": -1.38575636,
+      "known": true,
+      "sample_count": 916,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 66.5,
+      "horizon_deg": 1.51280349,
+      "known": true,
+      "sample_count": 998,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 67.0,
+      "horizon_deg": -1.26043491,
+      "known": true,
+      "sample_count": 929,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 67.5,
+      "horizon_deg": -1.19185855,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 68.0,
+      "horizon_deg": -0.62601627,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 68.5,
+      "horizon_deg": -1.07128905,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 69.0,
+      "horizon_deg": -0.80338216,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 69.5,
+      "horizon_deg": -0.43678797,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 70.0,
+      "horizon_deg": -0.51571029,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 70.5,
+      "horizon_deg": -0.71748291,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 71.0,
+      "horizon_deg": -0.43600596,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 71.5,
+      "horizon_deg": -0.46040477,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 72.0,
+      "horizon_deg": 0.20760581,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 72.5,
+      "horizon_deg": -0.43491829,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 73.0,
+      "horizon_deg": 0.3848943,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 73.5,
+      "horizon_deg": 0.95238868,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 74.0,
+      "horizon_deg": -0.35867905,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 74.5,
+      "horizon_deg": 0.88846743,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 75.0,
+      "horizon_deg": -0.42983353,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 75.5,
+      "horizon_deg": -0.28273589,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 76.0,
+      "horizon_deg": 0.80329268,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 76.5,
+      "horizon_deg": -0.30645037,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 77.0,
+      "horizon_deg": -0.28146535,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 77.5,
+      "horizon_deg": 0.68441971,
+      "known": true,
+      "sample_count": 954,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 78.0,
+      "horizon_deg": -0.26456812,
+      "known": true,
+      "sample_count": 931,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 78.5,
+      "horizon_deg": -0.31350478,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 79.0,
+      "horizon_deg": -0.36535656,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 79.5,
+      "horizon_deg": -0.22296443,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 80.0,
+      "horizon_deg": -0.22918837,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 80.5,
+      "horizon_deg": 0.50769794,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 81.0,
+      "horizon_deg": -0.28639554,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 81.5,
+      "horizon_deg": -0.26841176,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 82.0,
+      "horizon_deg": -0.19195607,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 82.5,
+      "horizon_deg": 0.28713324,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 83.0,
+      "horizon_deg": -0.24801633,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 83.5,
+      "horizon_deg": -0.16362576,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 84.0,
+      "horizon_deg": -0.3154167,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 84.5,
+      "horizon_deg": -0.07374335,
+      "known": true,
+      "sample_count": 937,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 85.0,
+      "horizon_deg": 0.2202495,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 85.5,
+      "horizon_deg": -0.02535207,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 86.0,
+      "horizon_deg": 0.06800274,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 86.5,
+      "horizon_deg": -0.0682788,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 87.0,
+      "horizon_deg": 0.11003513,
+      "known": true,
+      "sample_count": 924,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 87.5,
+      "horizon_deg": 0.1230651,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 88.0,
+      "horizon_deg": 0.1600555,
+      "known": true,
+      "sample_count": 953,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 88.5,
+      "horizon_deg": 0.21323904,
+      "known": true,
+      "sample_count": 933,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 89.0,
+      "horizon_deg": 0.28678347,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 89.5,
+      "horizon_deg": 0.24974196,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 90.0,
+      "horizon_deg": 0.22793185,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 90.5,
+      "horizon_deg": 0.25764219,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 91.0,
+      "horizon_deg": 0.31478964,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 91.5,
+      "horizon_deg": 0.20111124,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 92.0,
+      "horizon_deg": 0.3756026,
+      "known": true,
+      "sample_count": 950,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 92.5,
+      "horizon_deg": -0.34778664,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 93.0,
+      "horizon_deg": 0.5445502,
+      "known": true,
+      "sample_count": 1173,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 93.5,
+      "horizon_deg": -0.62378514,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 94.0,
+      "horizon_deg": 0.77883006,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 94.5,
+      "horizon_deg": 0.30511446,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 95.0,
+      "horizon_deg": 0.53526053,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 95.5,
+      "horizon_deg": 0.50966717,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 96.0,
+      "horizon_deg": 0.55313348,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 96.5,
+      "horizon_deg": 0.37486321,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 97.0,
+      "horizon_deg": 0.29860703,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 97.5,
+      "horizon_deg": 0.21323903,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 98.0,
+      "horizon_deg": 0.23127363,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 98.5,
+      "horizon_deg": 0.21573103,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 99.0,
+      "horizon_deg": 0.07818,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 99.5,
+      "horizon_deg": 0.08584976,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 100.0,
+      "horizon_deg": -0.02982028,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 100.5,
+      "horizon_deg": -0.11809583,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 101.0,
+      "horizon_deg": 0.08909198,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 101.5,
+      "horizon_deg": -0.0879314,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 102.0,
+      "horizon_deg": -0.20671565,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 102.5,
+      "horizon_deg": 0.02957505,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 103.0,
+      "horizon_deg": -0.03161049,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 103.5,
+      "horizon_deg": -0.29190212,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 104.0,
+      "horizon_deg": -0.27965418,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 104.5,
+      "horizon_deg": 0.0899807,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 105.0,
+      "horizon_deg": -0.37368952,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 105.5,
+      "horizon_deg": -0.40000754,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 106.0,
+      "horizon_deg": -0.27037347,
+      "known": true,
+      "sample_count": 952,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 106.5,
+      "horizon_deg": -0.45213374,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 107.0,
+      "horizon_deg": -0.57423671,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 107.5,
+      "horizon_deg": -0.48395383,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 108.0,
+      "horizon_deg": -0.46420609,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 108.5,
+      "horizon_deg": -0.4959934,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 109.0,
+      "horizon_deg": -0.47372452,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 109.5,
+      "horizon_deg": -0.63048282,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 110.0,
+      "horizon_deg": -0.43904388,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 110.5,
+      "horizon_deg": -0.587569,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 111.0,
+      "horizon_deg": -2.3063386,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 111.5,
+      "horizon_deg": -0.24775892,
+      "known": true,
+      "sample_count": 1003,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 112.0,
+      "horizon_deg": -2.33588304,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 112.5,
+      "horizon_deg": -0.28805574,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 113.0,
+      "horizon_deg": -0.25526163,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 113.5,
+      "horizon_deg": -0.65457547,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 114.0,
+      "horizon_deg": -0.1199998,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 114.5,
+      "horizon_deg": -0.17509112,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 115.0,
+      "horizon_deg": -0.35946685,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 115.5,
+      "horizon_deg": 0.11773787,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 116.0,
+      "horizon_deg": -0.28021189,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 116.5,
+      "horizon_deg": -0.15917735,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 117.0,
+      "horizon_deg": -0.07276934,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 117.5,
+      "horizon_deg": -0.4418176,
+      "known": true,
+      "sample_count": 937,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 118.0,
+      "horizon_deg": -0.20800279,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 118.5,
+      "horizon_deg": -0.16992019,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 119.0,
+      "horizon_deg": -0.29190212,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 119.5,
+      "horizon_deg": -0.25871389,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 120.0,
+      "horizon_deg": -0.41770985,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 120.5,
+      "horizon_deg": -0.34280014,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 121.0,
+      "horizon_deg": -0.40633531,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 121.5,
+      "horizon_deg": -0.37826648,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 122.0,
+      "horizon_deg": -0.39542733,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 122.5,
+      "horizon_deg": -0.36875898,
+      "known": true,
+      "sample_count": 959,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 123.0,
+      "horizon_deg": -0.62762924,
+      "known": true,
+      "sample_count": 928,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 123.5,
+      "horizon_deg": -0.38497205,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 124.0,
+      "horizon_deg": -0.33115737,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 124.5,
+      "horizon_deg": -0.67836434,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 125.0,
+      "horizon_deg": -0.49333229,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 125.5,
+      "horizon_deg": -0.69742429,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 126.0,
+      "horizon_deg": -0.51466582,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 126.5,
+      "horizon_deg": -0.58767062,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 127.0,
+      "horizon_deg": -0.85583517,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 127.5,
+      "horizon_deg": -0.65859397,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 128.0,
+      "horizon_deg": -0.73594833,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 128.5,
+      "horizon_deg": -0.68452427,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 129.0,
+      "horizon_deg": -0.75170603,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 129.5,
+      "horizon_deg": -2.25788332,
+      "known": true,
+      "sample_count": 933,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 130.0,
+      "horizon_deg": -0.31328122,
+      "known": true,
+      "sample_count": 952,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 130.5,
+      "horizon_deg": -0.80545605,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 131.0,
+      "horizon_deg": -1.18639609,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 131.5,
+      "horizon_deg": -0.79471677,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 132.0,
+      "horizon_deg": -0.92713654,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 132.5,
+      "horizon_deg": -0.81607957,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 133.0,
+      "horizon_deg": -0.80528129,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 133.5,
+      "horizon_deg": -0.81339505,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 134.0,
+      "horizon_deg": -0.73726863,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 134.5,
+      "horizon_deg": -0.64941674,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 135.0,
+      "horizon_deg": -0.76894216,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 135.5,
+      "horizon_deg": -0.6123209,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 136.0,
+      "horizon_deg": -0.75926568,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 136.5,
+      "horizon_deg": -0.63679291,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 137.0,
+      "horizon_deg": -0.53377872,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 137.5,
+      "horizon_deg": -0.64292157,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 138.0,
+      "horizon_deg": -0.22165473,
+      "known": true,
+      "sample_count": 903,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 138.5,
+      "horizon_deg": -0.41028598,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 139.0,
+      "horizon_deg": -0.56549305,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 139.5,
+      "horizon_deg": -0.60492809,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 140.0,
+      "horizon_deg": -0.5005374,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 140.5,
+      "horizon_deg": -0.5282517,
+      "known": true,
+      "sample_count": 952,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 141.0,
+      "horizon_deg": -0.59522685,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 141.5,
+      "horizon_deg": -0.5790409,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 142.0,
+      "horizon_deg": -0.59191609,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 142.5,
+      "horizon_deg": -0.50905564,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 143.0,
+      "horizon_deg": -0.55840705,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 143.5,
+      "horizon_deg": -0.47253251,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 144.0,
+      "horizon_deg": -0.50664169,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 144.5,
+      "horizon_deg": -0.44047308,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 145.0,
+      "horizon_deg": -0.390812,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 145.5,
+      "horizon_deg": -0.46733673,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 146.0,
+      "horizon_deg": -0.40811681,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 146.5,
+      "horizon_deg": -0.2713497,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 147.0,
+      "horizon_deg": -0.08821441,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 147.5,
+      "horizon_deg": -0.16055727,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 148.0,
+      "horizon_deg": -0.22652237,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 148.5,
+      "horizon_deg": -0.14948435,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 149.0,
+      "horizon_deg": -0.09234374,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 149.5,
+      "horizon_deg": -0.03094016,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 150.0,
+      "horizon_deg": -0.11731045,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 150.5,
+      "horizon_deg": -0.17553806,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 151.0,
+      "horizon_deg": 0.02974484,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 151.5,
+      "horizon_deg": 0.17296611,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 152.0,
+      "horizon_deg": 0.02573619,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 152.5,
+      "horizon_deg": -0.04781021,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 153.0,
+      "horizon_deg": 0.28572138,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 153.5,
+      "horizon_deg": 0.19222422,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 154.0,
+      "horizon_deg": 0.33189026,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 154.5,
+      "horizon_deg": 0.07530255,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 155.0,
+      "horizon_deg": -0.68635099,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 155.5,
+      "horizon_deg": -0.67247515,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 156.0,
+      "horizon_deg": -0.67774454,
+      "known": true,
+      "sample_count": 916,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 156.5,
+      "horizon_deg": 0.86156966,
+      "known": true,
+      "sample_count": 998,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 157.0,
+      "horizon_deg": -0.736043,
+      "known": true,
+      "sample_count": 929,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 157.5,
+      "horizon_deg": -0.73421176,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 158.0,
+      "horizon_deg": -0.70822266,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 158.5,
+      "horizon_deg": 0.13751251,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 159.0,
+      "horizon_deg": 0.33189026,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 159.5,
+      "horizon_deg": 0.26973843,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 160.0,
+      "horizon_deg": 0.28572138,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 160.5,
+      "horizon_deg": -0.18293662,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 161.0,
+      "horizon_deg": 0.14301901,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 161.5,
+      "horizon_deg": 0.21951987,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 162.0,
+      "horizon_deg": 0.16380554,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 162.5,
+      "horizon_deg": 0.18121329,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 163.0,
+      "horizon_deg": 0.0370098,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 163.5,
+      "horizon_deg": 0.02683648,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 164.0,
+      "horizon_deg": 0.28132117,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 164.5,
+      "horizon_deg": 0.03112297,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 165.0,
+      "horizon_deg": -0.03628568,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 165.5,
+      "horizon_deg": 0.03466598,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 166.0,
+      "horizon_deg": -0.20308176,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 166.5,
+      "horizon_deg": -0.2713497,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 167.0,
+      "horizon_deg": -0.49208388,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 167.5,
+      "horizon_deg": -0.13772355,
+      "known": true,
+      "sample_count": 954,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 168.0,
+      "horizon_deg": -0.48658704,
+      "known": true,
+      "sample_count": 931,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 168.5,
+      "horizon_deg": -0.68536829,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 169.0,
+      "horizon_deg": -0.9488391,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 169.5,
+      "horizon_deg": -0.97102275,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 170.0,
+      "horizon_deg": -0.84459694,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 170.5,
+      "horizon_deg": -0.17014174,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 171.0,
+      "horizon_deg": -1.32456747,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 171.5,
+      "horizon_deg": -1.48107407,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 172.0,
+      "horizon_deg": -1.42831694,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 172.5,
+      "horizon_deg": -1.70648137,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 173.0,
+      "horizon_deg": -1.69657027,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 173.5,
+      "horizon_deg": -2.03058684,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 174.0,
+      "horizon_deg": -1.54332302,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 174.5,
+      "horizon_deg": -1.98230203,
+      "known": true,
+      "sample_count": 937,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 175.0,
+      "horizon_deg": -0.22165473,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 175.5,
+      "horizon_deg": -1.79800934,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 176.0,
+      "horizon_deg": -1.79134903,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 176.5,
+      "horizon_deg": -1.76469261,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 177.0,
+      "horizon_deg": -1.71549773,
+      "known": true,
+      "sample_count": 924,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 177.5,
+      "horizon_deg": -1.68370309,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 178.0,
+      "horizon_deg": 0.1290445,
+      "known": true,
+      "sample_count": 953,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 178.5,
+      "horizon_deg": -1.62680606,
+      "known": true,
+      "sample_count": 933,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 179.0,
+      "horizon_deg": -1.60142234,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 179.5,
+      "horizon_deg": -1.57613408,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 180.0,
+      "horizon_deg": -1.5451601,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 180.5,
+      "horizon_deg": -1.44337646,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 181.0,
+      "horizon_deg": -1.28504163,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 181.5,
+      "horizon_deg": -1.16656165,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 182.0,
+      "horizon_deg": -1.00979026,
+      "known": true,
+      "sample_count": 950,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 182.5,
+      "horizon_deg": -0.94610688,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 183.0,
+      "horizon_deg": -0.46938326,
+      "known": true,
+      "sample_count": 1173,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 183.5,
+      "horizon_deg": -0.84922492,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 184.0,
+      "horizon_deg": -0.84815866,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 184.5,
+      "horizon_deg": -0.77340715,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 185.0,
+      "horizon_deg": -0.65784995,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 185.5,
+      "horizon_deg": -0.60899663,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 186.0,
+      "horizon_deg": -0.61706859,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 186.5,
+      "horizon_deg": -0.61258697,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 187.0,
+      "horizon_deg": -0.57189779,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 187.5,
+      "horizon_deg": -0.55435787,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 188.0,
+      "horizon_deg": -0.5561103,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 188.5,
+      "horizon_deg": -0.56599692,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 189.0,
+      "horizon_deg": -0.61180212,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 189.5,
+      "horizon_deg": -0.66853016,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 190.0,
+      "horizon_deg": -0.58203123,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 190.5,
+      "horizon_deg": -0.81054287,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 191.0,
+      "horizon_deg": -0.76771743,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 191.5,
+      "horizon_deg": -0.68527694,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 192.0,
+      "horizon_deg": -0.61783898,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 192.5,
+      "horizon_deg": -0.5593338,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 193.0,
+      "horizon_deg": -0.53447634,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 193.5,
+      "horizon_deg": -0.57411587,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 194.0,
+      "horizon_deg": -0.66870209,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 194.5,
+      "horizon_deg": -0.82162256,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 195.0,
+      "horizon_deg": -0.92459452,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 195.5,
+      "horizon_deg": -0.94774181,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 196.0,
+      "horizon_deg": -0.9191213,
+      "known": true,
+      "sample_count": 952,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 196.5,
+      "horizon_deg": -0.89104458,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 197.0,
+      "horizon_deg": -0.88437479,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 197.5,
+      "horizon_deg": -0.89626434,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 198.0,
+      "horizon_deg": -0.91984335,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 198.5,
+      "horizon_deg": -0.95913609,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 199.0,
+      "horizon_deg": -1.02747626,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 199.5,
+      "horizon_deg": -1.13151945,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 200.0,
+      "horizon_deg": -1.33688952,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 200.5,
+      "horizon_deg": -1.52056101,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 201.0,
+      "horizon_deg": -1.58124936,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 201.5,
+      "horizon_deg": -1.5764706,
+      "known": true,
+      "sample_count": 1003,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 202.0,
+      "horizon_deg": -1.55289325,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 202.5,
+      "horizon_deg": -1.49851456,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 203.0,
+      "horizon_deg": -1.45879529,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 203.5,
+      "horizon_deg": -1.4337929,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 204.0,
+      "horizon_deg": -1.4147167,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 204.5,
+      "horizon_deg": -1.43244514,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 205.0,
+      "horizon_deg": -1.44873292,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 205.5,
+      "horizon_deg": -1.46310606,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 206.0,
+      "horizon_deg": -1.47156663,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 206.5,
+      "horizon_deg": -1.54405267,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 207.0,
+      "horizon_deg": -1.61193478,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 207.5,
+      "horizon_deg": -1.5857287,
+      "known": true,
+      "sample_count": 937,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 208.0,
+      "horizon_deg": -1.64094131,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 208.5,
+      "horizon_deg": -1.75973515,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 209.0,
+      "horizon_deg": -1.82754124,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 209.5,
+      "horizon_deg": -1.88739564,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 210.0,
+      "horizon_deg": -1.90779563,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 210.5,
+      "horizon_deg": -1.9889682,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 211.0,
+      "horizon_deg": -2.05736489,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 211.5,
+      "horizon_deg": -2.13992233,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 212.0,
+      "horizon_deg": -2.17814745,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 212.5,
+      "horizon_deg": -2.22070059,
+      "known": true,
+      "sample_count": 959,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 213.0,
+      "horizon_deg": -2.21166652,
+      "known": true,
+      "sample_count": 928,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 213.5,
+      "horizon_deg": -2.20550817,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 214.0,
+      "horizon_deg": -2.19429535,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 214.5,
+      "horizon_deg": -2.17044605,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 215.0,
+      "horizon_deg": -2.14601848,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 215.5,
+      "horizon_deg": -2.15911973,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 216.0,
+      "horizon_deg": -2.20343446,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 216.5,
+      "horizon_deg": -2.22923896,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 217.0,
+      "horizon_deg": -2.2443945,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 217.5,
+      "horizon_deg": -2.24904866,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 218.0,
+      "horizon_deg": -2.23004198,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 218.5,
+      "horizon_deg": -2.23368471,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 219.0,
+      "horizon_deg": -2.2132878,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 219.5,
+      "horizon_deg": -2.24018231,
+      "known": true,
+      "sample_count": 933,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 220.0,
+      "horizon_deg": -2.25495386,
+      "known": true,
+      "sample_count": 952,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 220.5,
+      "horizon_deg": -2.25826936,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 221.0,
+      "horizon_deg": -2.29639899,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 221.5,
+      "horizon_deg": -2.28209572,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 222.0,
+      "horizon_deg": -2.27452508,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 222.5,
+      "horizon_deg": -2.31913664,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 223.0,
+      "horizon_deg": -2.34132283,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 223.5,
+      "horizon_deg": -2.39850246,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 224.0,
+      "horizon_deg": -2.41860476,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 224.5,
+      "horizon_deg": -2.39400591,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 225.0,
+      "horizon_deg": -2.38550218,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 225.5,
+      "horizon_deg": -2.38262038,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 226.0,
+      "horizon_deg": -2.36705757,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 226.5,
+      "horizon_deg": -2.3646421,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 227.0,
+      "horizon_deg": -2.3634156,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 227.5,
+      "horizon_deg": -2.37961069,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 228.0,
+      "horizon_deg": -2.37980742,
+      "known": true,
+      "sample_count": 903,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 228.5,
+      "horizon_deg": -2.38072624,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 229.0,
+      "horizon_deg": -2.39164187,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 229.5,
+      "horizon_deg": -2.40535394,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 230.0,
+      "horizon_deg": -2.39245952,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 230.5,
+      "horizon_deg": -2.35803309,
+      "known": true,
+      "sample_count": 952,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 231.0,
+      "horizon_deg": -2.3575504,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 231.5,
+      "horizon_deg": -2.25939579,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 232.0,
+      "horizon_deg": -2.21873017,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 232.5,
+      "horizon_deg": -2.21165382,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 233.0,
+      "horizon_deg": -2.20661815,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 233.5,
+      "horizon_deg": -2.15911853,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 234.0,
+      "horizon_deg": -2.11070973,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 234.5,
+      "horizon_deg": -2.1168948,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 235.0,
+      "horizon_deg": -2.13611019,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 235.5,
+      "horizon_deg": -2.14999276,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 236.0,
+      "horizon_deg": -2.18079237,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 236.5,
+      "horizon_deg": -2.2132006,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 237.0,
+      "horizon_deg": -2.24551537,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 237.5,
+      "horizon_deg": -2.27318057,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 238.0,
+      "horizon_deg": -2.2814448,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 238.5,
+      "horizon_deg": -2.22885292,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 239.0,
+      "horizon_deg": -2.18303999,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 239.5,
+      "horizon_deg": -2.12432023,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 240.0,
+      "horizon_deg": -2.02525387,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 240.5,
+      "horizon_deg": -1.95514781,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 241.0,
+      "horizon_deg": -1.91766446,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 241.5,
+      "horizon_deg": -1.89692983,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 242.0,
+      "horizon_deg": -1.88261861,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 242.5,
+      "horizon_deg": -1.86059348,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 243.0,
+      "horizon_deg": -1.83656507,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 243.5,
+      "horizon_deg": -1.8386665,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 244.0,
+      "horizon_deg": -1.82589011,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 244.5,
+      "horizon_deg": -1.8618775,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 245.0,
+      "horizon_deg": -1.86121409,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 245.5,
+      "horizon_deg": -1.85790798,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 246.0,
+      "horizon_deg": -1.84475413,
+      "known": true,
+      "sample_count": 916,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 246.5,
+      "horizon_deg": -1.85822193,
+      "known": true,
+      "sample_count": 998,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 247.0,
+      "horizon_deg": -1.8806975,
+      "known": true,
+      "sample_count": 929,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 247.5,
+      "horizon_deg": -1.88503961,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 248.0,
+      "horizon_deg": -1.90479218,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 248.5,
+      "horizon_deg": -1.91287915,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 249.0,
+      "horizon_deg": -1.93045297,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 249.5,
+      "horizon_deg": -1.89660863,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 250.0,
+      "horizon_deg": -1.90922805,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 250.5,
+      "horizon_deg": -1.89149371,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 251.0,
+      "horizon_deg": -1.89583049,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 251.5,
+      "horizon_deg": -1.88786022,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 252.0,
+      "horizon_deg": -1.84794809,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 252.5,
+      "horizon_deg": -1.85941989,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 253.0,
+      "horizon_deg": -1.90161035,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 253.5,
+      "horizon_deg": -1.85605035,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 254.0,
+      "horizon_deg": -1.87038715,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 254.5,
+      "horizon_deg": -1.83720542,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 255.0,
+      "horizon_deg": -1.81124127,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 255.5,
+      "horizon_deg": -1.8262803,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 256.0,
+      "horizon_deg": -1.82247465,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 256.5,
+      "horizon_deg": -1.79964609,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 257.0,
+      "horizon_deg": -1.77400669,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 257.5,
+      "horizon_deg": -1.7426508,
+      "known": true,
+      "sample_count": 954,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 258.0,
+      "horizon_deg": -1.71245809,
+      "known": true,
+      "sample_count": 931,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 258.5,
+      "horizon_deg": -1.69970384,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 259.0,
+      "horizon_deg": -1.69000174,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 259.5,
+      "horizon_deg": -1.67899273,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 260.0,
+      "horizon_deg": -1.64925625,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 260.5,
+      "horizon_deg": -1.62902558,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 261.0,
+      "horizon_deg": -1.59460491,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 261.5,
+      "horizon_deg": -1.60162256,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 262.0,
+      "horizon_deg": -1.52720876,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 262.5,
+      "horizon_deg": -1.58855759,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 263.0,
+      "horizon_deg": -1.57985222,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 263.5,
+      "horizon_deg": -1.48460052,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 264.0,
+      "horizon_deg": -1.41743922,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 264.5,
+      "horizon_deg": -1.35155742,
+      "known": true,
+      "sample_count": 937,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 265.0,
+      "horizon_deg": -1.29900086,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 265.5,
+      "horizon_deg": -1.24044479,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 266.0,
+      "horizon_deg": -1.12843681,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 266.5,
+      "horizon_deg": -1.03013023,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 267.0,
+      "horizon_deg": -0.94687021,
+      "known": true,
+      "sample_count": 924,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 267.5,
+      "horizon_deg": -0.88533958,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 268.0,
+      "horizon_deg": -0.84021834,
+      "known": true,
+      "sample_count": 953,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 268.5,
+      "horizon_deg": -0.80697018,
+      "known": true,
+      "sample_count": 933,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 269.0,
+      "horizon_deg": -0.75781595,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 269.5,
+      "horizon_deg": -0.72990178,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 270.0,
+      "horizon_deg": -0.74451075,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 270.5,
+      "horizon_deg": -0.77023712,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 271.0,
+      "horizon_deg": -0.79410888,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 271.5,
+      "horizon_deg": -0.84172994,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 272.0,
+      "horizon_deg": -0.90967681,
+      "known": true,
+      "sample_count": 950,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 272.5,
+      "horizon_deg": -0.96248613,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 273.0,
+      "horizon_deg": -0.97832867,
+      "known": true,
+      "sample_count": 1173,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 273.5,
+      "horizon_deg": -0.98606981,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 274.0,
+      "horizon_deg": -1.00555975,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 274.5,
+      "horizon_deg": -1.02381492,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 275.0,
+      "horizon_deg": -1.05998674,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 275.5,
+      "horizon_deg": -1.09580678,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 276.0,
+      "horizon_deg": -1.11373063,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 276.5,
+      "horizon_deg": -1.14227865,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 277.0,
+      "horizon_deg": -1.09939891,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 277.5,
+      "horizon_deg": -1.07297167,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 278.0,
+      "horizon_deg": -1.08141755,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 278.5,
+      "horizon_deg": -1.11510079,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 279.0,
+      "horizon_deg": -1.18736566,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 279.5,
+      "horizon_deg": -1.26240403,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 280.0,
+      "horizon_deg": -1.31251529,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 280.5,
+      "horizon_deg": -1.39832812,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 281.0,
+      "horizon_deg": -1.51820988,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 281.5,
+      "horizon_deg": -1.62555888,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 282.0,
+      "horizon_deg": -1.64807778,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 282.5,
+      "horizon_deg": -1.68258718,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 283.0,
+      "horizon_deg": -1.75386622,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 283.5,
+      "horizon_deg": -1.84211075,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 284.0,
+      "horizon_deg": -1.93234933,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 284.5,
+      "horizon_deg": -2.00294048,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 285.0,
+      "horizon_deg": -2.06512496,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 285.5,
+      "horizon_deg": -2.12203367,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 286.0,
+      "horizon_deg": -2.17362682,
+      "known": true,
+      "sample_count": 952,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 286.5,
+      "horizon_deg": -2.23217574,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 287.0,
+      "horizon_deg": -2.25755525,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 287.5,
+      "horizon_deg": -2.24662478,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 288.0,
+      "horizon_deg": -2.27615018,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 288.5,
+      "horizon_deg": -2.27969484,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 289.0,
+      "horizon_deg": -2.25131322,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 289.5,
+      "horizon_deg": -2.19455191,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 290.0,
+      "horizon_deg": -2.16788025,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 290.5,
+      "horizon_deg": -2.11837554,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 291.0,
+      "horizon_deg": -2.05425897,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 291.5,
+      "horizon_deg": -1.98372175,
+      "known": true,
+      "sample_count": 1003,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 292.0,
+      "horizon_deg": -1.98054352,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 292.5,
+      "horizon_deg": -1.97803486,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 293.0,
+      "horizon_deg": -1.98101206,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 293.5,
+      "horizon_deg": -1.98016739,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 294.0,
+      "horizon_deg": -1.97925292,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 294.5,
+      "horizon_deg": -1.96675117,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 295.0,
+      "horizon_deg": -2.00656515,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 295.5,
+      "horizon_deg": -1.99828367,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 296.0,
+      "horizon_deg": -2.00556001,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 296.5,
+      "horizon_deg": -1.94989043,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 297.0,
+      "horizon_deg": -1.90204421,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 297.5,
+      "horizon_deg": -1.86110047,
+      "known": true,
+      "sample_count": 937,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 298.0,
+      "horizon_deg": -1.81544902,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 298.5,
+      "horizon_deg": -1.77175934,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 299.0,
+      "horizon_deg": -1.75506556,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 299.5,
+      "horizon_deg": -1.78420824,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 300.0,
+      "horizon_deg": -1.8081513,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 300.5,
+      "horizon_deg": -1.79527956,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 301.0,
+      "horizon_deg": -1.83546064,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 301.5,
+      "horizon_deg": -1.79745668,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 302.0,
+      "horizon_deg": -1.8076375,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 302.5,
+      "horizon_deg": -1.85792489,
+      "known": true,
+      "sample_count": 959,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 303.0,
+      "horizon_deg": -1.88163419,
+      "known": true,
+      "sample_count": 928,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 303.5,
+      "horizon_deg": -1.90885483,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 304.0,
+      "horizon_deg": -1.95992228,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 304.5,
+      "horizon_deg": -1.99742683,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 305.0,
+      "horizon_deg": -2.03064079,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 305.5,
+      "horizon_deg": -2.0613014,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 306.0,
+      "horizon_deg": -2.10624008,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 306.5,
+      "horizon_deg": -2.16038379,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 307.0,
+      "horizon_deg": -2.23604225,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 307.5,
+      "horizon_deg": -2.27750381,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 308.0,
+      "horizon_deg": -2.30895203,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 308.5,
+      "horizon_deg": -2.33312444,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 309.0,
+      "horizon_deg": -2.37009799,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 309.5,
+      "horizon_deg": -2.41461035,
+      "known": true,
+      "sample_count": 933,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 310.0,
+      "horizon_deg": -2.40983575,
+      "known": true,
+      "sample_count": 952,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 310.5,
+      "horizon_deg": -2.40348149,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 311.0,
+      "horizon_deg": -2.40668015,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 311.5,
+      "horizon_deg": -2.4923327,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 312.0,
+      "horizon_deg": -2.53301918,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 312.5,
+      "horizon_deg": -2.52065364,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 313.0,
+      "horizon_deg": -2.53287501,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 313.5,
+      "horizon_deg": -2.54682471,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 314.0,
+      "horizon_deg": -2.5462359,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 314.5,
+      "horizon_deg": -2.5266623,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 315.0,
+      "horizon_deg": -2.52445008,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 315.5,
+      "horizon_deg": -2.51692618,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 316.0,
+      "horizon_deg": -2.48830282,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 316.5,
+      "horizon_deg": -2.41859024,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 317.0,
+      "horizon_deg": -2.40290369,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 317.5,
+      "horizon_deg": -2.42476794,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 318.0,
+      "horizon_deg": -2.4272211,
+      "known": true,
+      "sample_count": 903,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 318.5,
+      "horizon_deg": -2.47027014,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 319.0,
+      "horizon_deg": -2.52717689,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 319.5,
+      "horizon_deg": -2.41421556,
+      "known": true,
+      "sample_count": 947,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 320.0,
+      "horizon_deg": -2.42700297,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 320.5,
+      "horizon_deg": -2.25556889,
+      "known": true,
+      "sample_count": 952,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 321.0,
+      "horizon_deg": -2.31442076,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 321.5,
+      "horizon_deg": -2.11579735,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 322.0,
+      "horizon_deg": -2.23019731,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 322.5,
+      "horizon_deg": -2.0764649,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 323.0,
+      "horizon_deg": -1.96116509,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 323.5,
+      "horizon_deg": -1.51960695,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 324.0,
+      "horizon_deg": -1.87152932,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 324.5,
+      "horizon_deg": -1.51373985,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 325.0,
+      "horizon_deg": -1.50832879,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 325.5,
+      "horizon_deg": -1.66827022,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 326.0,
+      "horizon_deg": -1.33176368,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 326.5,
+      "horizon_deg": -1.17513001,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 327.0,
+      "horizon_deg": -1.35151521,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 327.5,
+      "horizon_deg": -1.35417509,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 328.0,
+      "horizon_deg": -1.34890995,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 328.5,
+      "horizon_deg": -1.03869119,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 329.0,
+      "horizon_deg": -1.05618584,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 329.5,
+      "horizon_deg": -0.91132218,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 330.0,
+      "horizon_deg": -1.04311888,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 330.5,
+      "horizon_deg": -1.07923432,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 331.0,
+      "horizon_deg": -0.91905811,
+      "known": true,
+      "sample_count": 948,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 331.5,
+      "horizon_deg": -0.52332085,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 332.0,
+      "horizon_deg": -0.80496499,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 332.5,
+      "horizon_deg": -0.79140611,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 333.0,
+      "horizon_deg": -0.65515071,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 333.5,
+      "horizon_deg": -0.76614832,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 334.0,
+      "horizon_deg": -0.79500463,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 334.5,
+      "horizon_deg": -1.08326426,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 335.0,
+      "horizon_deg": -0.88774655,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 335.5,
+      "horizon_deg": -0.76053908,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 336.0,
+      "horizon_deg": -0.62555568,
+      "known": true,
+      "sample_count": 916,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 336.5,
+      "horizon_deg": -0.45347139,
+      "known": true,
+      "sample_count": 998,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 337.0,
+      "horizon_deg": -0.38130896,
+      "known": true,
+      "sample_count": 929,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 337.5,
+      "horizon_deg": -0.30110768,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 338.0,
+      "horizon_deg": -0.19722896,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 338.5,
+      "horizon_deg": -0.18196568,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 339.0,
+      "horizon_deg": -0.19154067,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 339.5,
+      "horizon_deg": -0.18121765,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 340.0,
+      "horizon_deg": -0.17938485,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 340.5,
+      "horizon_deg": -0.19506819,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 341.0,
+      "horizon_deg": -0.24594612,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 341.5,
+      "horizon_deg": -0.29846876,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 342.0,
+      "horizon_deg": -0.36811187,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 342.5,
+      "horizon_deg": -0.40278401,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 343.0,
+      "horizon_deg": -0.49052361,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 343.5,
+      "horizon_deg": -0.53691173,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 344.0,
+      "horizon_deg": -0.63268501,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 344.5,
+      "horizon_deg": -0.69244003,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 345.0,
+      "horizon_deg": -0.84576649,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 345.5,
+      "horizon_deg": -0.8024213,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 346.0,
+      "horizon_deg": -0.3453314,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 346.5,
+      "horizon_deg": -0.7704927,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 347.0,
+      "horizon_deg": -0.73105842,
+      "known": true,
+      "sample_count": 939,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 347.5,
+      "horizon_deg": -0.68580864,
+      "known": true,
+      "sample_count": 954,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 348.0,
+      "horizon_deg": -0.77156458,
+      "known": true,
+      "sample_count": 931,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 348.5,
+      "horizon_deg": -0.73324442,
+      "known": true,
+      "sample_count": 938,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 349.0,
+      "horizon_deg": -0.71419596,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 349.5,
+      "horizon_deg": -0.6816297,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 350.0,
+      "horizon_deg": -0.61680104,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 350.5,
+      "horizon_deg": -0.5521836,
+      "known": true,
+      "sample_count": 936,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 351.0,
+      "horizon_deg": -0.61929359,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 351.5,
+      "horizon_deg": -0.49644806,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 352.0,
+      "horizon_deg": -0.56735987,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 352.5,
+      "horizon_deg": -0.47723276,
+      "known": true,
+      "sample_count": 940,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 353.0,
+      "horizon_deg": -0.51412653,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 353.5,
+      "horizon_deg": -0.49609456,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 354.0,
+      "horizon_deg": -0.18854924,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 354.5,
+      "horizon_deg": -0.50135766,
+      "known": true,
+      "sample_count": 937,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 355.0,
+      "horizon_deg": -0.22234409,
+      "known": true,
+      "sample_count": 946,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 355.5,
+      "horizon_deg": -0.48983108,
+      "known": true,
+      "sample_count": 943,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 356.0,
+      "horizon_deg": -0.23632176,
+      "known": true,
+      "sample_count": 944,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 356.5,
+      "horizon_deg": -0.46774852,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 357.0,
+      "horizon_deg": -0.36948864,
+      "known": true,
+      "sample_count": 924,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 357.5,
+      "horizon_deg": -0.15174284,
+      "known": true,
+      "sample_count": 945,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 358.0,
+      "horizon_deg": -0.19563926,
+      "known": true,
+      "sample_count": 953,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 358.5,
+      "horizon_deg": -0.48179926,
+      "known": true,
+      "sample_count": 933,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 359.0,
+      "horizon_deg": -0.0549266,
+      "known": true,
+      "sample_count": 942,
+      "limiting_range_m": null,
+      "reason": null
+    },
+    {
+      "azimuth_deg": 359.5,
+      "horizon_deg": -0.09255712,
+      "known": true,
+      "sample_count": 941,
+      "limiting_range_m": null,
+      "reason": null
+    }
+  ],
+  "notes": [
+    "Imported diagnostic CSV \u2014 not an M4-reviewed skyline.",
+    "Demo classification remains geometric 0\u00b0."
+  ]
+}
