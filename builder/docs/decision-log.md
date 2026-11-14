@@ -120,6 +120,16 @@ The submission package is prepared around the witnessed replay. Detail: `docs/ev
 | Both endpoints | **Confirmed** | For `[t_i, t_(i+1))`, the left sample’s state counts only when both endpoints have usable angles. A clear Sun sample whose next Sun sample is missing is Unknown for that span. Earth stays on its own endpoint rule, then the Both rule applies. |
 | Practice totals | **Unchanged** | Site A Sun clear 172800 s and Both clear 0 s. Site B Sun, Earth, and Both blocked 172800 s. Unknown 0 s. Run IDs unchanged. |
 
+## Review-candidate NASA chrome (2026-11-14)
+
+- **Decision:** Adapt educational-console visual patterns (NASA banner, brand header, mono kickers, stage pipe, starfield, south-pole context) into `web/review-candidate/` only. Keep `web/replay/` witnessed. Do not pull CDN Google Fonts or Three.js. Full-width layout with sticky action rail for Start/Cancel/status. Context uses local `PIA13523` with approximate pins; labeled not a DEM and not terrain clearance. Scene stage emits `lunar:site-select`, `lunar:scene-scrub`, and `lunar:scene-ready` for stream/3D wiring. Three.js mounts into `#scene-3d` once vendored offline.
+- **Source:** `~/Documents/Learning/lunar-landing-site-navigator` (read-only historical). Fresh CSS/HTML/JS in this repo.
+
+## Two-site live stream (2026-11-14)
+
+- **Decision:** Live comparison uses one `comparison_id` and a run ID per site on a shared UTC grid. Totals for the pair use only the shared resolved sample prefix and stay labeled partial until both sites complete. Pending samples are not scientific Unknown. Complete comparison export only after both succeed. Incompatible grids return an actionable error. Evidence: `docs/evidence/stream_comparison_live.md`.
+- **Unchanged:** Centre-ray 0° practice totals (172800 s vs 0 s Sun clear; both clear 0 s). Terrain Unknown. `web/replay/` witness `1f3fb06`. Eligibility false. Horizons acquisition separate.
+
 ## Workbook vs JSON schedule (2026-11-14)
 
 - **Workbook sheets:** `Timeline`, `Milestone decisions` (high-level M0–M6 phases).

@@ -26,6 +26,8 @@ Persistent record of milestone work. Status: `planned` | `in_progress` | `passed
 | M4.1 | blocked | 2026-11-14 | — | 0° fallback is the demo. Frame, height, coverage, and an independent skyline stay open. |
 | M5.1 | skipped | 2026-11-14 | — | +24-hour comparison deferred. Not in the witnessed build. |
 | M6.1 | in_progress | 2026-11-14 | — | Judging record drafted in `docs/evidence/m6_0deg_submission_package.md`. No tag. Eligibility still false. |
+| Stream | passed | 2026-11-14 | 2026-11-14 | Local `run`/`stream`/`serve` against saved Horizons. Batch-stream parity. Evidence `docs/evidence/stream_local_run.md`. |
+| Stream-comparison | passed | 2026-11-14 | 2026-11-14 | Two-site live pair from saved Horizons. Shared-prefix totals, uneven batches, fail/cancel. Evidence `docs/evidence/stream_comparison_live.md`. |
 
 ## M0.4 runtime pin
 
