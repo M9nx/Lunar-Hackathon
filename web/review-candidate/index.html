@@ -9,7 +9,7 @@
 </head>
 <body data-page="review-candidate">
   <canvas id="starfield" class="starfield" aria-hidden="true"></canvas>
-  <a class="skip" href="#answers">Skip to the comparison</a>
+  <a class="skip" href="#answers">Skip to the result</a>
   <div class="site-banner">Unofficial NASA Space Apps Challenge project · Not an official NASA website · Local offline review</div>
 
   <header class="site-header">
@@ -18,138 +18,272 @@
         <span class="brand-kicker">NASA Space Apps 2026</span>
         <span class="brand-name">Lunar Landing Site Navigator</span>
       </a>
-      <div class="header-actions" aria-label="Package source">
-        <button type="button" id="show-practice" aria-pressed="true">Practice replay</button>
-        <button type="button" id="show-qa" aria-pressed="false">QA fixture</button>
-        <a class="export header-link" href="../replay/">Witnessed 0° replay</a>
-      </div>
       <div class="header-chips" aria-label="Run labels">
         <span class="demo-chip">Practice</span>
         <span class="demo-chip soft">Centre ray</span>
-        <span class="demo-chip soft">Terrain unknown</span>
+        <span class="demo-chip soft">Terrain clearance unknown</span>
         <span id="live-chip" class="demo-chip soft">Replay</span>
+        <a class="header-link" href="../replay/">Witnessed 0° replay</a>
       </div>
     </div>
   </header>
 
-  <div class="action-rail" aria-label="Live calculation actions">
-    <div class="bleed action-rail-inner">
-      <div class="action-primary">
-        <label class="action-field" for="scenario">
-          <span>Scenario</span>
+  <!-- 1. Choose the case -->
+  <section class="control-bar" aria-label="Choose the case">
+    <div class="bleed control-inner">
+      <div class="ctl-group">
+        <span class="ctl-label" id="ctl-data">1 · Case</span>
+        <div class="seg-group" role="group" aria-labelledby="ctl-data">
+          <button type="button" class="seg-btn" id="show-practice" aria-pressed="true">Practice replay</button>
+          <button type="button" class="seg-btn" id="show-qa" aria-pressed="false">QA fixture</button>
+        </div>
+      </div>
+
+      <div class="ctl-group ctl-run">
+        <label class="ctl-label" for="scenario">Or calculate live</label>
+        <div class="ctl-row">
           <select id="scenario">
             <option value="practice-48h">Practice pair, 48 h (Site04 vs Malapert)</option>
             <option value="site04-48h">Site04 practice, 48 h</option>
             <option value="site04-6h">Site04 practice, first 6 h</option>
             <option value="malapert-48h">Malapert practice, 48 h</option>
           </select>
-        </label>
-        <button type="button" id="start-run" class="btn-primary">Start stream</button>
-        <button type="button" id="cancel-run">Cancel</button>
-        <label class="fail-toggle"><input type="checkbox" id="fail-test"> Fail after first batch</label>
+          <button type="button" id="start-run" class="btn-primary"><span class="btn-icon" aria-hidden="true">▶</span><span class="btn-label">Start stream</span></button>
+          <button type="button" id="cancel-run" class="btn-quiet" disabled>Stop</button>
+        </div>
       </div>
-      <div class="action-status">
-        <ol class="pipe" id="calc-pipe" aria-label="Calculation stages">
-          <li data-stage="idle" class="is-focus">1 Idle</li>
-          <li data-stage="loading">2 Load</li>
-          <li data-stage="calculating">3 Classify</li>
-          <li data-stage="shared">4 Shared</li>
-          <li data-stage="complete">5 Complete</li>
-        </ol>
-        <p id="run-status" class="note">Idle. Start uses saved Horizons files and does not contact JPL.</p>
-        <p id="live-export"></p>
-      </div>
-    </div>
-  </div>
 
-  <main class="bleed workspace">
-    <section class="workspace-copy">
-      <p class="kicker">Shared UTC · saved Horizons · polar sky stage</p>
-      <h1>Compare two landing sites</h1>
-      <p class="lede">One playhead drives the lanes, inspector, and sky maps. Stream batches update Sun/Earth markers and the stream strip. Terrain stays Unknown.</p>
-      <p id="mode" class="mode"></p>
-      <p id="banner" class="banner"></p>
+      <details class="run-more" id="run-more">
+        <summary>Run options</summary>
+        <div class="run-more-body">
+          <div class="ctl-group ctl-speed">
+            <label class="ctl-label" for="playback-speed">Playback speed <output id="playback-speed-label" for="playback-speed">Normal</output></label>
+            <input id="playback-speed" type="range" min="0" max="100" value="55" aria-valuetext="Normal" aria-describedby="speed-hint">
+            <span id="speed-hint" class="ctl-hint">Paces streaming and Play. Never changes results.</span>
+          </div>
+          <ol class="pipe" id="calc-pipe" aria-label="Calculation stages">
+            <li data-stage="idle" class="is-focus">1 Idle</li>
+            <li data-stage="loading">2 Load</li>
+            <li data-stage="calculating">3 Classify</li>
+            <li data-stage="shared">4 Shared</li>
+            <li data-stage="complete">5 Complete</li>
+          </ol>
+          <label class="fail-toggle"><input type="checkbox" id="fail-test"> Test: fail after first batch</label>
+        </div>
+      </details>
+    </div>
+    <div class="bleed control-status">
+      <p id="run-status" class="note" role="status">Idle. Start uses saved Horizons files and does not contact JPL.</p>
+      <p id="live-export"></p>
+    </div>
+  </section>
+
+  <main class="bleed workspace" id="main">
+    <!-- Scenario bar: sites, UTC range, step, mode -->
+    <section id="scenario-bar" class="scenario-bar" aria-label="Scenario">
+      <div id="scenario-info" class="sc-row"></div>
+      <p id="banner" class="sc-banner"></p>
     </section>
 
-    <div class="workspace-grid">
-      <div class="workspace-main">
-        <section id="answers" class="panel answers-panel" aria-labelledby="answers-heading"></section>
+    <!-- 2. Read the result -->
+    <section class="panel result" aria-label="Result">
+      <div id="answers" class="answers-host"></div>
+      <div class="stage-live" id="stage-live">
+        <div class="live-top">
+          <p id="results-through" class="results-through" aria-live="polite">Results through —</p>
+          <label class="follow-toggle" for="follow-latest">
+            <input type="checkbox" id="follow-latest" checked> Follow latest
+          </label>
+        </div>
+        <div id="site-progress" class="site-progress"></div>
+      </div>
+      <div id="answers-details"></div>
+    </section>
 
-        <section class="panel" aria-labelledby="time-heading">
-          <div class="panel-head">
-            <h2 id="time-heading">Shared UTC conductor</h2>
-            <p id="utc" class="utc" aria-live="polite">—</p>
+    <!-- 3. Select a window -->
+    <section class="panel explore" id="explore" aria-labelledby="explore-heading">
+      <div class="explore-head">
+        <h2 id="explore-heading">Timeline and windows</h2>
+        <div class="lane-pick" id="lane-tools" role="group" aria-label="Show lane">
+          <span class="tool-label">Show</span>
+          <div class="seg-group">
+            <button type="button" class="seg-btn tool" data-key="lane" data-value="sun" aria-pressed="true" title="Sun-centre clearance">Sun</button>
+            <button type="button" class="seg-btn tool" data-key="lane" data-value="earth" aria-pressed="false" title="Earth-centre clearance">Earth</button>
+            <button type="button" class="seg-btn tool" data-key="lane" data-value="both" aria-pressed="false" title="Both centres clear">Both</button>
           </div>
-          <div class="conductor">
-            <button type="button" id="prev">Previous</button>
-            <input id="playhead" type="range" min="0" max="0" value="0" aria-label="Shared UTC playhead">
-            <button type="button" id="next">Next</button>
-          </div>
-          <p id="zero-note" class="note"></p>
-          <div id="chart" class="chart-host"></div>
-          <div id="legend" class="legend"></div>
-          <div id="lanes"></div>
-        </section>
-
-        <section class="panel" aria-labelledby="why-heading">
-          <h2 id="why-heading">Why did the engine report that state?</h2>
-          <div id="why"></div>
-        </section>
+        </div>
       </div>
 
-      <aside class="workspace-scene" aria-label="Sky stage">
-        <section class="panel scene-panel">
-          <div class="panel-head scene-toolbar">
-            <div>
-              <h2 id="scene-heading">Sky stage</h2>
-              <p class="note scene-hint">Zenith-centred polar maps · geometric 0° · centre-ray only.</p>
+      <div id="readout" class="readout" aria-live="polite"></div>
+
+      <div class="explore-grid">
+        <div class="explore-main" id="explore-main">
+          <div id="chart" class="chart-host"></div>
+          <div id="legend" class="legend"></div>
+          <div id="margins"></div>
+          <div id="lanes"></div>
+        </div>
+
+        <aside class="windows-rail" aria-label="Windows and locations">
+          <div class="tabs" role="tablist" aria-label="Side views">
+            <button type="button" role="tab" id="tab-windows" aria-selected="true" aria-controls="panel-windows" class="tab">Windows</button>
+            <button type="button" role="tab" id="tab-locations" aria-selected="false" aria-controls="panel-locations" class="tab" tabindex="-1">Locations</button>
+          </div>
+
+          <div role="tabpanel" id="panel-windows" aria-labelledby="tab-windows" class="tab-panel">
+            <div class="min-filter">
+              <label for="min-duration">Minimum clear window</label>
+              <select id="min-duration">
+                <option value="0" selected>Any length</option>
+                <option value="0.25">15 min or longer</option>
+                <option value="1">1 h or longer</option>
+                <option value="2">2 h or longer</option>
+                <option value="4">4 h or longer</option>
+                <option value="8">8 h or longer</option>
+              </select>
             </div>
+            <div id="windows"></div>
           </div>
 
-          <ul class="sky-gloss" aria-label="Map layers">
-            <li><span class="swatch swatch-geo"></span> Geometric 0° · smooth sphere, no craters</li>
-            <li><span class="swatch swatch-terr"></span> Terrain ring · display only · not reviewed</li>
-            <li><span class="swatch swatch-sun"></span> Centre-ray · one line of sight, not the full disc</li>
-            <li><span class="swatch swatch-unk"></span> Unknown · missing terrain · never counted as clear</li>
-          </ul>
-
-          <div id="stream-sky-info" class="stream-sky-info" aria-live="polite" data-state="idle">
-            <strong>Idle</strong>
-            <span>Start a stream to watch markers and sun waves update live.</span>
+          <div role="tabpanel" id="panel-locations" aria-labelledby="tab-locations" class="tab-panel" hidden>
+            <figure class="map-figure">
+              <div
+                class="context-map context-map-live"
+                id="context-map"
+                title="Click a pin to select a site. Drag to change UTC."
+              >
+                <img id="context-map-img" src="media/pia13523_clear.jpg" alt="Lunar south pole mosaic (PIA13523, local clear derivative)." width="1521" height="1521">
+                <svg id="context-pins" viewBox="0 0 100 100" aria-hidden="true"></svg>
+              </div>
+              <figcaption id="context-caption" class="map-cap">Pins use the map's polar stereographic scale. The 85°S ring matches to 1 px. Orientation was checked on one landmark (Amundsen). No coordinate picking or distances yet.</figcaption>
+            </figure>
+            <ul id="pin-key" class="pin-key"></ul>
+            <p class="credit-line">Map: NASA / GSFC / ASU · PIA13523. DEM profiles: local LDEM 240 m, not M4-reviewed.</p>
           </div>
+        </aside>
+      </div>
 
-          <div
-            id="scene-stage"
-            class="scene-stage sky-stage"
-            data-stream-target="scene"
-            data-interaction="site-select"
-            tabindex="0"
-            role="application"
-            aria-labelledby="scene-heading"
-            aria-describedby="context-caption"
-          >
-            <div id="sky-stage" class="sky-stage-plots"></div>
+      <!-- Shared time controls. Sticky at the bottom on narrow screens. -->
+      <div class="time-dock" id="time-dock" role="group" aria-label="Shared time controls">
+        <p id="dock-readout" class="dock-readout" aria-live="off"></p>
+        <div class="conductor">
+          <button type="button" id="prev" aria-label="Previous sample" title="Previous sample (←)"><span aria-hidden="true">◀</span></button>
+          <button type="button" id="play-toggle" class="btn-play" aria-pressed="false" title="Play or pause (Space)"><span class="btn-icon" aria-hidden="true">▶</span><span class="btn-label">Play</span></button>
+          <button type="button" id="next" aria-label="Next sample" title="Next sample (→)"><span aria-hidden="true">▶</span></button>
+          <input id="playhead" type="range" min="0" max="0" value="0" aria-label="Shared UTC playhead">
+        </div>
+        <div class="time-tools" id="time-tools" aria-label="Time navigation">
+          <div class="tool-group">
+            <button type="button" class="tool-btn" id="jump-start" title="Jump to the first sample"><span aria-hidden="true">⏮</span> <span class="btn-label">Start</span></button>
+            <button type="button" class="tool-btn" id="jump-prev-change" title="Previous change of the shown lane at the selected site"><span aria-hidden="true">◀</span> Change</button>
+            <button type="button" class="tool-btn" id="jump-next-change" title="Next change of the shown lane at the selected site">Change <span aria-hidden="true">▶</span></button>
+            <button type="button" class="tool-btn" id="jump-end" title="Jump to the last shared sample"><span class="btn-label">End</span> <span aria-hidden="true">⏭</span></button>
           </div>
+          <label class="tool-group tool-select" for="step-size"><span class="tool-label">Step</span>
+            <select id="step-size">
+              <option value="0">1 sample</option>
+              <option value="3600">1 hour</option>
+              <option value="21600">6 hours</option>
+              <option value="86400">1 day</option>
+            </select>
+          </label>
+        </div>
+        <p class="key-hint"><kbd>←</kbd> <kbd>→</kbd> step · <kbd>Space</kbd> play · <kbd>Esc</kbd> close card</p>
+      </div>
+    </section>
 
-          <details class="map-drawer">
-            <summary>South-pole context map (PIA13523)</summary>
-            <div
-              class="context-map context-map-compact"
-              id="context-map"
-              data-interaction="site-select"
-            >
-              <img src="media/PIA13523-south-pole.jpg" alt="Lunar south pole context mosaic from NASA Photojournal PIA13523." width="800" height="800">
-              <svg id="context-pins" viewBox="0 0 100 100" aria-hidden="true"></svg>
-            </div>
-          </details>
+    <!-- 4. Inspect why -->
+    <section class="panel stage" id="inspect" aria-labelledby="inspect-heading">
+      <div class="inspect-head">
+        <h2 id="inspect-heading">Why this state?</h2>
+        <button type="button" class="tool-btn" id="inspect-evidence" data-evidence title="Horizons row, observer, run ID and JSON export for the selected sample">View evidence</button>
+      </div>
 
-          <figcaption id="context-caption" class="context-caption">Polar sky · geometric 0° · terrain Unknown · not SPICE</figcaption>
-          <p class="credit-line">Map credit: NASA / GSFC / ASU · PIA13523. Polar stage adapted from the educational console. Classification stays centre-ray vs geometric 0°.</p>
-          <p id="scene-stream-note" class="note">Sky maps track the shared UTC playhead. Sun waves pulse while streaming or when the Sun centre is clear.</p>
-        </section>
-      </aside>
-    </div>
+      <div id="verdict" class="verdict" aria-live="polite"></div>
+
+      <div class="sky-legend" aria-label="Sky plot legend">
+        <span class="lg"><i class="lg-sun"></i> Sun centre</span>
+        <span class="lg"><i class="lg-earth"></i> Earth centre</span>
+        <span class="lg"><i class="lg-zero"></i> 0° horizon (classifies)</span>
+        <span class="lg lg-terrain-only"><i class="lg-terr"></i> DEM skyline below 0° (diagnostic)</span>
+        <span class="lg lg-terrain-only"><i class="lg-terr lg-terr-hi"></i> DEM skyline above 0°</span>
+        <span class="lg lg-terrain-only"><i class="lg-gap"></i> No DEM data</span>
+        <label class="terrain-toggle" for="terrain-toggle">
+          <input type="checkbox" id="terrain-toggle"> Show terrain diagnostic
+        </label>
+      </div>
+
+      <div class="sky-tools" id="sky-tools" role="toolbar" aria-label="Sky plot view controls">
+        <div class="tool-group" role="group" aria-label="Elevation scale">
+          <span class="tool-label">Scale</span>
+          <div class="seg-group">
+            <button type="button" class="seg-btn tool" data-key="range" data-value="5" aria-pressed="false">±5°</button>
+            <button type="button" class="seg-btn tool" data-key="range" data-value="15" aria-pressed="true">±15°</button>
+            <button type="button" class="seg-btn tool" data-key="range" data-value="30" aria-pressed="false">±30°</button>
+            <button type="button" class="seg-btn tool" data-key="range" data-value="full" aria-pressed="false">Full sky</button>
+          </div>
+        </div>
+        <div class="tool-group" role="group" aria-label="Path across the window">
+          <span class="tool-label">Path</span>
+          <div class="seg-group">
+            <button type="button" class="seg-btn tool" data-key="trail" data-value="off" aria-pressed="true">Off</button>
+            <button type="button" class="seg-btn tool" data-key="trail" data-value="window" aria-pressed="false">±6 h</button>
+            <button type="button" class="seg-btn tool" data-key="trail" data-value="full" aria-pressed="false">Full window</button>
+          </div>
+        </div>
+        <div class="tool-group" role="group" aria-label="Layers">
+          <span class="tool-label">Layers</span>
+          <div class="seg-group">
+            <button type="button" class="seg-btn tool" data-toggle="grid" aria-pressed="true">Grid</button>
+            <button type="button" class="seg-btn tool" data-toggle="shade" aria-pressed="true">Shading</button>
+            <button type="button" class="seg-btn tool" data-toggle="labels" aria-pressed="true">Labels</button>
+          </div>
+        </div>
+        <div class="tool-group terrain-only" role="group" aria-label="Terrain diagnostic style">
+          <span class="tool-label">Terrain</span>
+          <div class="seg-group">
+            <button type="button" class="seg-btn tool" data-key="terrain" data-value="fill" aria-pressed="true" title="Filled skyline with a smooth outline">Silhouette</button>
+            <button type="button" class="seg-btn tool" data-key="terrain" data-value="line" aria-pressed="false" title="Smooth outline only">Outline</button>
+            <button type="button" class="seg-btn tool" data-key="terrain" data-value="bins" aria-pressed="false" title="Saved DEM bins joined by straight lines, one dot per bin">Raw bins</button>
+            <button type="button" class="seg-btn tool" data-toggle="peaks" aria-pressed="true" title="Mark the highest and lowest skyline points and draw Sun and Earth leaders to the skyline">Peaks &amp; leaders</button>
+          </div>
+        </div>
+        <div class="tool-group" role="group" aria-label="Sites shown">
+          <span class="tool-label">Sites</span>
+          <div class="seg-group">
+            <button type="button" class="seg-btn tool" data-key="layout" data-value="both" aria-pressed="true">Both</button>
+            <button type="button" class="seg-btn tool" data-key="layout" data-value="single" aria-pressed="false">Selected</button>
+          </div>
+        </div>
+        <div class="tool-group" role="group" aria-label="Decimals shown">
+          <span class="tool-label">Decimals</span>
+          <div class="seg-group">
+            <button type="button" class="seg-btn tool" data-key="decimals" data-value="2" aria-pressed="false">2</button>
+            <button type="button" class="seg-btn tool" data-key="decimals" data-value="3" aria-pressed="false">3</button>
+            <button type="button" class="seg-btn tool" data-key="decimals" data-value="6" aria-pressed="true">6</button>
+          </div>
+        </div>
+        <button type="button" class="tool-btn" id="view-reset" title="Restore the default view">Reset view</button>
+      </div>
+
+      <div
+        id="scene-stage"
+        class="scene-stage sky-stage"
+        data-stream-target="scene"
+        tabindex="0"
+        role="group"
+        aria-label="Sky plots for both sites. Drag to change UTC. Mouse wheel steps one sample."
+      >
+        <div id="pointer-readout" class="pointer-readout" hidden aria-live="polite"></div>
+        <div id="sky-stage" class="sky-stage-plots"></div>
+      </div>
+      <p id="scale-note" class="scale-note">Both plots use the same angular scale. The dashed ring is 0°. The outer edge is −15°. The centre is +15°, not zenith.</p>
+
+      <div id="why"></div>
+    </section>
   </main>
+
+  <aside id="preview" class="preview" role="dialog" aria-label="Preview" hidden></aside>
 
   <footer class="bleed shell-foot">
     <p id="limits"></p>

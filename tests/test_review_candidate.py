@@ -47,9 +47,23 @@ def test_candidate_page_does_not_fetch_a_cdn():
     assert "plotly" not in script
     assert "http://" not in script
     assert "https://" not in script and "https://" not in markup
-    assert 'id="sky-stage"' in (CANDIDATE / "index.html").read_text()
+    html = (CANDIDATE / "index.html").read_text()
+    assert 'id="sky-stage"' in html
+    assert 'id="playback-speed"' in html
+    assert "Playback speed" in html
+    assert 'id="follow-latest"' in html
+    assert 'id="terrain-toggle"' in html
+    assert 'id="windows"' in html
+    assert 'role="tablist"' in html
     assert "sun-wave" in script
-    assert "pia13523-south-pole.jpg" in script
-    assert (CANDIDATE / "media" / "PIA13523-south-pole.jpg").is_file()
+    assert "playbackpace" in script
+    assert "streampace" not in script
+    assert "pia13523_clear.jpg" in html.lower()
+    # Playback speed is client-only: the request body uses fixed server constants.
+    assert "live_server.batch_size" in script
+    assert (CANDIDATE / "media" / "pia13523_clear.jpg").is_file()
+    assert (CANDIDATE / "terrain" / "site04-p02-practice-dem240-horizon-diagnostic.json").is_file()
+    assert (CANDIDATE / "terrain" / "malapert-practice-dem240-horizon-diagnostic.json").is_file()
+    assert "loadterrainprofiles" in script
     # No Three.js module on the demo path (polar sky stage only).
     assert "scene.js" not in markup
