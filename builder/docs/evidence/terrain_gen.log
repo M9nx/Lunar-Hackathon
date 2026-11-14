@@ -1,0 +1,9 @@
+edu_ok 720
+dem_start site04-p02-practice
+dem_ok site04-p02-practice bins 72 known 72 min -4.519519526036457 max 0.9530555957470032
+dem_start malapert-practice
+dem_ok malapert-practice bins 72 known 72 min -10.626213121801031 max 4.6667599541048395
+DONE
+malapert-practice-dem240-horizon-diagnostic.json 13779
+site04-p02-horizon-diagnostic.json 126906
+site04-p02-practice-dem240-horizon-diagnostic.json 13846
