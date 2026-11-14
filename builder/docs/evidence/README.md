@@ -20,5 +20,6 @@ Fresh acceptance logs for this repository (not historical edu outputs).
 | `m0_1_lead_handoff.md` | M0.1 | Lead handoff: practice-case eligibility and required deliverables |
 | `m0_1_project_tab_draft.md` | M0.1 | Project tab text approved for now. Eligibility stays false |
 | `m6_0deg_submission_package.md` | M6.1 | Witnessed `1f3fb06` build, walkthrough, credits, and disclosure starter |
+| `stream_local_run.md` | Engine/stream | Local on-demand run, NDJSON stream, cancel/fail checks |
 
 **Backup:** `/home/m9nx/Lunar-Hackathon-data-backup`.
