@@ -39,7 +39,7 @@ builder/scripts/install_git_hooks.sh   # once per clone
 
 | Area | State |
 |------|--------|
-| **Active task** | **M2.5** terrain audit — not started. 0° replay stays the demo |
+| **Active task** | **M0.1 Lead, still open.** Project tab draft approved for now. Practice runs stay ineligible until Lead records that decision. Demo `1f3fb06` |
 | **M0** | M0.5 **passed** (Wi-Fi off 2026-11-14T09:54:24Z, backup `/home/m9nx/Lunar-Hackathon-data-backup`). M0.1 eligibility open. Reported deadline Sunday, November 15, 2026, 11:59 p.m. local event time |
 | **M1–M3** | Practice 0° package at commit `1f3fb06`. M3.2 clean-profile pass 2026-11-14T10:35:24Z. M3.3 pitch drafted. M3.4 handed off with terrain still open. Runs `site04-p02-practice-q4-centre-0deg-a24325ba50c4` and `malapert-practice-q4-centre-0deg-88b9b3cfef57` |
 | **Product** | `src/lunar_navigator/` centre-ray engine; `web/replay/` offline shell |
@@ -60,9 +60,9 @@ builder/scripts/install_git_hooks.sh   # once per clone
 
 ### Next (in order)
 
-1. M2.5 stays blocked until Science reviews frame, height, coverage, and one skyline. Keep the 0° replay.
-2. Lead: confirm Resources, deliverables, and whether the practice pair may be a submission claim. Deadline reported as Sunday, November 15, 2026, 11:59 p.m. local event time.
-3. Replay: `python3 -m http.server 8765 --directory web/replay`.
+1. Lead confirms eligibility and the required deliverables before any 0° submission claim. Demo build stays `1f3fb06`. New Horizons runs use the hardened engine.
+2. Science reviews terrain in parallel. Show terrain as Unknown until that review passes. Malapert 4.86425 km is a sensitivity input.
+3. Keep both raw-response digest sets. Matching angle CSVs support the totals. Raw-file identity stays open.
 
 ---
 
@@ -78,7 +78,7 @@ You are the **lunar builder agent** (worker in `builder/`, not the product). Rea
 **Master Reference:** revision **0.5** at `Master-Reference/MASTER_REFERENCE.json`.  
 **Fresh repo only** — `~/Documents/Learning/lunar-landing-site-navigator` is read-only history.
 
-**Active work:** M0.5 passed. Practice 0° replay is in `web/replay/` at engine commit `1f3fb06`. Run IDs `site04-p02-practice-q4-centre-0deg-a24325ba50c4` and `malapert-practice-q4-centre-0deg-88b9b3cfef57`. M3.2 clean-profile offline pass is recorded. Next open task is **M2.5** terrain, which stays gated. Submission eligibility and the Appendix B raw-response hash stay open.
+**Active work:** Handoff is **M0.1, owner Lead.** Confirm whether the Horizons practice case is eligible for submission and which deliverables the event requires. Use `1f3fb06` for the witnessed 0° demo. If Lead approves a replacement case, run it through the hardened engine and save it as a separate candidate. Science reviews terrain in parallel. Show terrain as Unknown. Malapert 4.86425 km is a sensitivity input. Keep both raw-response digest sets. The challenge page returned HTTP 500 on 2026-11-14, so this handoff does not decide eligibility.
 
 **Repo:** `Lunar-Hackathon` on GitHub (private). Product: `src/lunar_navigator/`, `tests/`, `web/`. Worker: `builder/` (scripts, handoff, skills, evidence). Local `data/` is gitignored.
 
@@ -86,7 +86,7 @@ You are the **lunar builder agent** (worker in `builder/`, not the product). Rea
 
 **Result definition (2026-11-14):** Keep the centre-ray calculation. Label **Sun-centre clearance**, **Earth-centre clearance**, and **Both centres clear**. The practice 48-hour 0° totals stay valid under that policy. Product 69 is a long-term any-portion-of-disc fraction, not a timestamped or like-for-like check of those windows. Any-disc comparison is a later metric and must match period, cadence, location, height, terrain, and visibility definition first. Leave the Product 69 simulation bounds and the Appendix B raw-response hash mismatch unresolved. Submission eligibility stays pending.
 
-**Open decisions:** Resources and required deliverables unverified; submission eligibility open; reported deadline Sunday, November 15, 2026, 11:59 p.m. local event time; Malapert reference altitude 0 km; Appendix B raw-response hash open; M2.5 terrain not reviewed. Practice pair is the replay, not a submission claim.
+**Open decisions:** Lead confirms eligibility and required deliverables. Reported deadline Sunday, November 15, 2026, 11:59 p.m. local event time. Science reviews the terrain frame tie, height reference, coverage, and one skyline in parallel. Malapert 4.86425 km is a sensitivity input. Both raw-response digest sets stay, and raw-file identity stays open. Practice pair is the replay, not a submission claim.
 
 **Your first commands:**
 
@@ -97,7 +97,7 @@ python3 scripts/validate_handoff.py
 python3 scripts/next_task.py
 ```
 
-Then continue M0.5 closure or route per `lunar-milestone-router` after reading handoff blockers.
+Then read `builder/docs/evidence/m0_1_lead_handoff.md`. The active handoff is M0.1 for Lead. Do not replace demo commit `1f3fb06`.
 ```
 
 ---

@@ -16,5 +16,8 @@ Fresh acceptance logs for this repository (not historical edu outputs).
 | `m3_clean_browser.log` | M3.2 | Radio, playhead, and export log for that pass |
 | `m3_clean_00.png`, `m3_clean_15.png` | M3.3 | Playhead screenshots at 00:00 and 00:15 |
 | `m3_3_pitch.md` | M3.3 | Practice pitch draft |
+| `m2_5_preflight.md` | M2.5 | Diagnostic DEM, altitude, and skyline notes. Terrain stays Unknown |
+| `m0_1_lead_handoff.md` | M0.1 | Lead handoff: practice-case eligibility and required deliverables |
+| `m0_1_project_tab_draft.md` | M0.1 | Project tab text approved for now. Eligibility stays false |
 
 **Backup:** `/home/m9nx/Lunar-Hackathon-data-backup`.

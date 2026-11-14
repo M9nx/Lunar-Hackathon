@@ -32,12 +32,13 @@ Run: `cd builder && python3 scripts/check_m0_closure.py`
 
 | Decision | Status | Owner | Notes / evidence |
 |----------|--------|-------|------------------|
-| Submission format and required outputs | **Open** | Lead | 2026-11-14 later fetch returned a page titled Lunar Landing Site Navigator and no requirements body. The Resources tab URL still returned HTTP 500. Eligibility stays open. The replay is labeled practice. |
-| Actual submission cutoff | **Reported** | Lead | The 2026 listing gives Sunday, November 15 at 11:59 p.m. local event time. Resources and required deliverables were not verified from the challenge page. |
-| Eligible NASA data sources | **Proposed** | Data | Global Awards: ≥1 NASA data source from challenge Resources list (Master Reference §2). Enumerate chosen sources when case is selected. |
-| Permitted tools / AI use | **Proposed** | Lead | Follow [organizer guidance](https://github.com/nasa/spaceapps/discussions/1827) and [AI disclosure](https://github.com/nasa/spaceapps/discussions/1849); document tools in freeze package (M6). |
+| Submission channel | **Recorded** | Lead | The 2026 listing confirms submission through the team’s Project tab. Exact required fields and demo limits remain unverified because the Resources guide page returned an error. |
+| Project tab text | **Approved for now** | Lead | Draft in `docs/evidence/m0_1_project_tab_draft.md`. Demo recording uses `1f3fb06`. This approval is the text, not eligibility. |
+| Actual submission cutoff | **Recorded** | Lead | Sunday, November 15, 2026, at 11:59 p.m. local event time. |
+| Eligible NASA data sources | **Source listed; case still open** | Lead | The captured Resources tab lists JPL Horizons. Lead uses that screenshot for the source check. Whether the saved January 2025 practice runs can support the submission is a separate decision. |
+| Permitted tools / AI use | **Required, unfinished** | Lead | Disclose how AI was used before submission. [Organizer discussion](https://github.com/nasa/spaceapps/discussions/1849). A starter sentence is in the Project tab draft. |
 | Result format (UTC, Unknown states) | **Confirmed (design)** | Lead + QA | Versioned run JSON per §5; states `clear` / `blocked` / `unknown`; ISO 8601 UTC with `Z`. |
-| Practice Horizons for demo claim | **Confirmed (practice only)** | Data | Site04-P02 and Malapert case-fit passed 2026-11-14 with `eligible_for_submission_claim=false`. Eligibility and demo-claim acceptance remain open (§12). |
+| Practice Horizons for demo claim | **Open** | Lead | Keep `eligible_for_submission_claim=false` until Lead records whether the January 2025 practice runs can support the submission. Use demo commit `1f3fb06`. A replacement case, if approved, is a separate hardened-engine candidate. |
 
 ### M0.2 — Observer selection (in progress)
 
@@ -48,9 +49,9 @@ Run: `cd builder && python3 scripts/check_m0_closure.py`
 | Working Site A | **Selected for practice replay** | `site04-p02-practice`: east lon −156.4386°, lat −89.7812°, Horizons reference altitude 1.738902 km. Sun `10`, Earth `399`, `coord@301`, Q4 airless. `practice=true`. Not a submission claim. |
 | Working Site B | **Selected for practice replay** | `malapert-practice`: east lon −2.93°, lat −85.99°, reference altitude **0 km** (not a reviewed surface height). Same query shape and window. |
 | UTC window & cadence | **Selected for practice replay** | `2025-01-01T00:00:00Z` through `2025-01-03T00:00:00Z`, step 900 s (193 samples, 192 intervals, 172800 s). |
-| Observer height reference | **Open for any height-dependent claim** | Site A uses the Horizons `SITE_COORD` kilometres. Site B uses 0 km. Terrain height review stays at M4. |
+| Observer height reference | **Open for any height-dependent claim** | Site A uses the Horizons `SITE_COORD` kilometres. Site B’s practice altitude is 0 km. Malapert **4.86425 km** is a sensitivity input, not the practice or submission height. A reported quantity-4 rerun at that altitude changed no 0° sample state. |
 | Why this pair | Recommendation | Only Sun+Earth pair staged under `data/horizons/`. Case-fit passed for both practice scenarios with `eligible_for_submission_claim=false`. Recomputed 0° totals: Site A Sun clear 172800 s, Earth and Both blocked 172800 s; Site B all three lanes blocked 172800 s; Unknown 0 s. Visible difference is Sun-centre clearance. Joint Both clearance ties. |
-| Appendix B raw SHA-256 | **Unresolved** | On-disk `angles.csv` matches Appendix B and `provenance.json`. On-disk `response.json` matches provenance `raw_sha256` and does not match Appendix B raw-response digests. Matching angle rows do not close raw-file identity. Reference text was not edited. |
+| Appendix B raw SHA-256 | **Unresolved** | Keep both raw-response digest sets. On this laptop, `response.json` matches the PR run-input digests and does not match Appendix B. A separate rerun reported the reverse file identity. The matching angle CSVs support the replay totals. Raw-file identity stays open. Reference text was not edited. |
 
 ## Centre-ray versus Product 69 (2026-11-14)
 
@@ -83,6 +84,22 @@ Staged tree under `data/` (~5.5 GB inventory). Core + Horizons practice checks: 
 | Submission coordinates & height refs | Not set | Data + Science |
 | Terrain DEM for M4 | Product 90 vs 78 — defer to M4 | Science |
 | Python pin | Match demo laptop to wheel tag `cpython-314-linux-x86_64` | Engine |
+
+## M2.5 preflight (2026-11-14)
+
+Diagnostic only. M2.5 stays blocked. Detail: `docs/evidence/m2_5_preflight.md`.
+
+| Item | Status | Owner |
+| --- | --- | --- |
+| Product 90 file identity, 240 m grid, area registration, NaN NoData | **Recorded** | Data |
+| Frame tie: IAU 30135 / 1,737,400 m sphere versus PGDA MOON_ME/DE421 versus Horizons MEAN_ME and DE441 | **Open** | Science |
+| DEM height reference and a reviewed observer height | **Open** | Science |
+| Radial coverage and one independently traversed skyline | **Open** | Science |
+| Header frame and airless angle convention bound to the scenario | **Confirmed for the next production run** | Engine |
+
+The witnessed 0° demo build stays commit `1f3fb06`. Do not regenerate that package. New Horizons runs use the hardened engine, which binds the raw header’s frame and airless angle convention to the scenario (19 tests passing in the working tree).
+
+The next decision for a 0° submission is Lead’s confirmation of eligibility and the required deliverables. Science reviews terrain in parallel. Until that review passes, the replay shows terrain as Unknown. Malapert 4.86425 km stays labeled as a sensitivity input.
 
 ## Engine corrections (2026-11-14, commit `1f3fb06`)
 

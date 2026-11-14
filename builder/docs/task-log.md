@@ -4,7 +4,7 @@ Persistent record of milestone work. Status: `planned` | `in_progress` | `passed
 
 | Task ID | Status | Started (UTC) | Passed (UTC) | Evidence |
 |---------|--------|---------------|--------------|----------|
-| M0.1 | passed_with_open_decisions | 2026-11-14 | 2026-11-14 | `docs/decision-log.md` (live brief **open** — Lead) |
+| M0.1 | passed_with_open_decisions | 2026-11-14 | 2026-11-14 | Reopened as the active handoff. Challenge page HTTP 500. `docs/evidence/m0_1_lead_handoff.md`. |
 | M0.2 | passed_with_open_decisions | 2026-11-14 | 2026-11-14 | Practice pair used for the replay. Eligibility, Malapert 0 km height, and Appendix B raw hash stay open. |
 | M0.3 | passed | 2026-11-14 | 2026-11-14 | `docs/evidence/m0_offline_smoke.log`; local `data/` bundle. Covers the four practice CSVs by presence and row count, not eligibility. |
 | M0.4 | passed | 2026-11-14 | 2026-11-14 | `docs/evidence/m0_4_wheels.log`, `docs/evidence/m0_4_open_dem.log` |
@@ -18,7 +18,7 @@ Persistent record of milestone work. Status: `planned` | `in_progress` | `passed
 | M2.2 | passed | 2026-11-14 | 2026-11-14 | Shared playhead in `web/replay/app.js`. |
 | M2.3 | passed | 2026-11-14 | 2026-11-14 | Browser load and export URL are the same run files. |
 | M2.4 | passed | 2026-11-14 | 2026-11-14 | Sun-centre clear differs by 172800 s. Both-centres clear ties at 0. Unknown 0 s. |
-| M2.5 | blocked | — | — | Terrain gate. No M4 science review. 0° package stays the demo. |
+| M2.5 | blocked | 2026-11-14 | — | Preflight recorded in `docs/evidence/m2_5_preflight.md`. Frame tie, height reference, coverage, and an independent skyline stay open. 0° package stays the demo. |
 | M3.1 | passed | 2026-11-14 | 2026-11-14 | `web/replay/` plus `web/replay/README.md` |
 | M3.2 | passed | 2026-11-14 | 2026-11-14T10:35:24Z | Clean Chromium profile, Wi-Fi off, playhead and both exports. `docs/evidence/m3_clean_browser.md`. Commit `1f3fb06`. |
 | M3.3 | passed | 2026-11-14 | 2026-11-14 | Pitch draft `docs/evidence/m3_3_pitch.md`. Practice label kept. |
@@ -53,8 +53,9 @@ scripts/verify_offline_wheels.sh
 
 ## Next
 
-- **M2.5:** Do not present terrain until Science records frame, height, radial coverage, and one checked skyline. The 0° replay stays available.
-- **Lead:** Resources tab and submission eligibility stay open. Reported deadline is Sunday, November 15, 2026, 11:59 p.m. local event time.
+- **0° submission:** Lead confirms eligibility and the required deliverables. The witnessed demo stays commit `1f3fb06`. New Horizons runs use the hardened engine.
+- **M2.5:** Science reviews terrain in parallel. Until that review passes, show terrain as Unknown. Malapert 4.86425 km is a sensitivity input.
+- **Digests:** Keep both raw-response digest sets. Matching angle CSVs support the replay totals. Raw-file identity stays open.
 - **Replay:** `python3 -m http.server 8765 --directory web/replay` then `http://127.0.0.1:8765/`.
 
 ## M0.5 gate (session operator, 2026-11-14T09:54:24Z)
