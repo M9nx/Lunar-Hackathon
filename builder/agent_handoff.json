@@ -1,0 +1,76 @@
+{
+  "handoff_version": "1",
+  "reference_revision": "0.5",
+  "task_id": "M0.5",
+  "owner_role": "QA",
+  "depends_on": ["M0.3", "M0.4"],
+  "schedule_source": "Master-Reference/MASTER_REFERENCE.json schedule.tasks (workbook has Timeline phases only; no Tasks tab)",
+  "objective": "Test the offline setup: Wi-Fi off, local DEM/sky files, smoke test; distinguish core vs optional gaps",
+  "scenario_ref": null,
+  "data_root": "data",
+  "inputs": {
+    "master_reference": "Master-Reference/MASTER_REFERENCE.json",
+    "data_bundle_path": "data",
+    "wheel_tag": "cpython-314-linux-x86_64",
+    "venv_path": ".venv"
+  },
+  "checks": {
+    "wifi_disabled_on_demo_laptop": "pending",
+    "core_pack_smoke": "pass",
+    "horizons_practice_integrity": "pass",
+    "dem_window_smoke": "pass",
+    "offline_venv_imports": "pass",
+    "backup_copy_noted": "pending"
+  },
+  "outputs": {
+    "evidence_dir": "docs/evidence/"
+  },
+  "report": {
+    "status": "pending",
+    "files_changed": [
+      "AGENTS.md",
+      "agent_handoff.json",
+      "docs/decision-log.md",
+      "docs/task-log.md",
+      "Master-Reference/MASTER_REFERENCE.md",
+      "Master-Reference/MASTER_REFERENCE.html",
+      "Master-Reference/MASTER_REFERENCE.json",
+      ".cursor/skills/",
+      "scripts/"
+    ],
+    "commands_run": [
+      "python3 scripts/validate_handoff.py",
+      "python3 scripts/next_task.py",
+      "python3 scripts/case_fit_horizons.py --scenario tests/fixtures/site04_p02_practice_scenario.json",
+      "python3 scripts/run_acceptance.py --offline --gate M0",
+      "scripts/sync_master_reference.py",
+      "scripts/compare_workbook_schedule.py",
+      "scripts/run_m0_offline_smoke.sh",
+      "scripts/verify_offline_wheels.sh"
+    ],
+    "evidence_refs": [
+      "docs/evidence/m0_offline_smoke.log",
+      "docs/evidence/m0_4_wheels.log",
+      "docs/evidence/m0_4_open_dem.log",
+      "docs/decision-log.md#workbook-vs-json-schedule-2026-11-14"
+    ],
+    "blockers": [
+      "M0.1: live challenge brief not verified (HTTP 500 on 2026-11-14) — owner Lead",
+      "M0.5: Wi-Fi-off witness not recorded on demo laptop — owner QA",
+      "M0.2: submission observers/coordinates/dates not selected — owner Data+Science"
+    ]
+  },
+  "parallel_completed": ["M0.3", "M0.4"],
+  "prior_tasks": {
+    "M0.1": {
+      "status": "passed_with_open_decisions",
+      "evidence_refs": ["docs/decision-log.md"]
+    },
+    "M0.2": { "status": "in_progress", "note": "Practice sites recorded; submission A/B open" },
+    "M0.3": { "status": "passed", "evidence_refs": ["docs/evidence/m0_offline_smoke.log"] },
+    "M0.4": {
+      "status": "passed",
+      "evidence_refs": ["docs/evidence/m0_4_wheels.log", "docs/evidence/m0_4_open_dem.log"]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+ OK  LOLA_20mpp/LDEM_60S_240MPP_ADJ.TIF
+ OK  offline/assets/PIA13523-south-pole.jpg
+ OK  offline/vendor/plotly-3.0.1.min.js
+ OK  offline/vendor/plotly-LICENSE.txt
+ OK  offline/reference/pgda-product-90.html
+ OK  offline/reference/horizons-api.html
+ OK  offline/reference/horizons-manual.html
+ OK    193 rows  /home/m9nx/Lunar-Hackathon/data/horizons/malapert-practice/earth-062e67d0fdf0/angles.csv
+ OK    193 rows  /home/m9nx/Lunar-Hackathon/data/horizons/malapert-practice/sun-d10bfb555ec3/angles.csv
+ OK    193 rows  /home/m9nx/Lunar-Hackathon/data/horizons/site04-p02-practice/earth-167962cea6a2/angles.csv
+ OK    193 rows  /home/m9nx/Lunar-Hackathon/data/horizons/site04-p02-practice/sun-8a039d445c7f/angles.csv
+Note: run 'check core terrain --open-dem' after rasterio install (M0.4).

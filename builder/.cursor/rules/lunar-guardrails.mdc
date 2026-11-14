@@ -1,0 +1,30 @@
+---
+description: Non-negotiable lunar-builder guardrails (centre-ray, offline, fresh repo)
+alwaysApply: true
+---
+
+# Lunar builder guardrails
+
+- **Fresh repo only** for submission code; `~/Documents/Learning/lunar-landing-site-navigator` is read-only *historical* context.
+- **Never** claim power or radio-link availability from centre-ray clearance alone.
+- **Unknown** applies to the affected body or interval. Do not invent angles or skyline values.
+- **Both lane:** Blocked if either body is Blocked; Unknown if neither is Blocked and either is Unknown; Clear only if both are Clear.
+- **Body IDs:** Sun `10`, Earth `399`, Moon observer `301`; reject Earth–Moon barycentre `3` for centre-ray.
+- **Contact:** margin `≤ 0` → `blocked` (including exact contact).
+- **Offline replay:** allow localhost, saved inputs, and vendored assets. Keep online acquisition in a separate step so a failed download cannot break replay. No CDN on the demo path.
+- **No silent swap** of DEM, frame, height reference, or ephemeris — record provenance.
+- **Schema changes** need reference revision + reader decision.
+- **Science** owns scientific acceptance; **QA/Lead** own freeze.
+- **Milestone gates.** Route work from the task log and dependency graph. M1 requires an evidence-backed M0.5 pass. `HANDOFF OK` validates the handoff record. QA evidence establishes whether the offline check passed.
+- **Authority and live state.** Keep the Master Reference bundle versioned. Update `builder/agent_handoff.json` and the task log as work progresses. The embedded reference handoff is an example.
+- **Input acceptance.** Check file integrity, event eligibility, and scenario fit separately. Verify target, lunar observer coordinates and height reference, frame, angle convention, UTC window, and cadence against the saved response. Label practice and synthetic inputs through export.
+- **Invalid versus missing data.** Reject malformed records, conflicting duplicate timestamps, and incompatible metadata with an actionable error. For a valid scenario with missing coverage, preserve the requested grid and emit `unknown` with a reason. Represent unavailable numbers as `null`. Keep `0` as a valid angle.
+- **Calculation precision.** Classify using the unrounded margin. Round only for display. Use half-open intervals and give the terminal sample zero duration. Clear + Blocked + Unknown must equal the requested duration for each lane.
+- **Terrain coverage.** Require reviewed frame, vertical reference, and radial coverage for the direction and range used. A populated azimuth bin alone cannot establish continuity. Leave unsupported terrain Unknown. Keep the 0° baseline explicitly labeled and selectable.
+- **One result across views.** The timeline, inspector, totals, and export read the same versioned engine result. The UI formats states and displays reasons. The engine owns classification.
+- **Comparable claims.** Show a site-to-site overlap delta only when duration, cadence, horizon mode, and interval policy match. Show each case's Unknown duration beside its known overlap. Label geometric-versus-terrain comparisons as model comparisons.
+- **Evidence before pass.** Record the command actually run, outcome, input or run ID, and evidence path. Keep skipped checks pending and failed checks failed. Retain the last verified replay if a new build or export fails.
+- **Harness:** use `builder/scripts/*`; do not improvise pack checks.
+- **Loop:** implement → `builder/scripts/run_acceptance.py` → update handoff → `next_task.py`.
+
+Scoped skills carry wheel commands, DEM tolerances, fixture details, and browser walkthrough. This rule carries the decisions every lane must honor.

@@ -1,0 +1,22 @@
+{
+  "schema_version": "scenario-v1",
+  "status": "practice",
+  "site_id": "site04-p02-practice",
+  "observer": {
+    "longitude_east_deg": -156.4386,
+    "latitude_deg": -89.7812,
+    "reference_altitude_km": 1.738902,
+    "center_body_id": 301,
+    "coord_type": "GEODETIC"
+  },
+  "start_utc": "2025-01-01T00:00:00Z",
+  "end_utc": "2025-01-03T00:00:00Z",
+  "step_seconds": 900,
+  "horizon_mode": "geometric_0deg",
+  "horizons_paths": {
+    "sun": "horizons/site04-p02-practice/sun-8a039d445c7f",
+    "earth": "horizons/site04-p02-practice/earth-167962cea6a2"
+  },
+  "expected_row_count": 193,
+  "eligible_for_submission_claim": false
+}

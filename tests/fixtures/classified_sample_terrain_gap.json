@@ -1,0 +1,12 @@
+{
+  "timestamp_utc": "2025-01-01T00:00:00Z",
+  "body": "sun",
+  "azimuth_deg": 90.0,
+  "elevation_deg": 0.8,
+  "horizon_mode": "terrain",
+  "horizon_deg": null,
+  "margin_deg": null,
+  "state": "unknown",
+  "reason": "terrain_gap",
+  "source_ref": "synthetic-sun-row-1"
+}

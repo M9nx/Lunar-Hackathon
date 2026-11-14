@@ -1,0 +1,25 @@
+# Local data and artifacts (staged outside Git per Master Reference §4)
+/data/
+/runs/
+/.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.env
+.env.*
+!.env.example
+*.pem
+credentials.json
+
+# IDE / agent local state
+.cursor/debug-*.log
+agent_handoff.local.json
+
+# Test cache
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db

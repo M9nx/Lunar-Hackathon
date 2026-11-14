@@ -1,0 +1,12 @@
+---
+description: Agent worker lives in builder/ — do not treat agent harness as product code
+alwaysApply: true
+---
+
+# Agent worker boundary
+
+- **Product code:** `src/lunar_navigator/`, `web/`, root `tests/` — submission build.
+- **Agent worker:** `builder/` — handoff, harness scripts, skills, task/decision logs, evidence.
+- Read **`builder/AGENTS.md`** before routing tasks. Edit handoff at **`builder/agent_handoff.json`** only.
+- Run harness via **`builder/scripts/`** (paths are repo-aware). Master Reference stays at **`Master-Reference/`**.
+- Skills canonical under **`builder/.cursor/skills/`** (root `.cursor/skills/*` symlinks for discovery).

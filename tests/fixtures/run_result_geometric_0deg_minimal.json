@@ -1,0 +1,32 @@
+{
+  "schema_version": "run-result-1",
+  "run_id": "example-practice-synthetic",
+  "code_revision": null,
+  "scenario": {
+    "site_id": "synthetic-hour",
+    "horizon_mode": "geometric_0deg",
+    "start_utc": "2025-01-01T00:00:00Z",
+    "end_utc": "2025-01-01T01:00:00Z",
+    "step_seconds": 900
+  },
+  "interval_policy": {
+    "id": "left_sample_both_endpoints",
+    "boundary_type": "start_inclusive_end_exclusive"
+  },
+  "samples": [],
+  "intervals": [
+    {
+      "start_utc": "2025-01-01T00:00:00Z",
+      "end_utc": "2025-01-01T00:15:00Z",
+      "lane": "both",
+      "state": "clear"
+    }
+  ],
+  "elapsed_seconds": {
+    "sun": { "clear": 0, "blocked": 0, "unknown": 0 },
+    "earth": { "clear": 0, "blocked": 0, "unknown": 0 },
+    "both": { "clear": 900, "blocked": 0, "unknown": 0 }
+  },
+  "limitations": ["Fixture skeleton for contract validation only — not a computed run"
+  ]
+}
