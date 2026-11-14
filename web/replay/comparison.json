@@ -1,0 +1,54 @@
+{
+  "schema_version": "replay-package-1",
+  "practice": true,
+  "eligible_for_submission_claim": false,
+  "code_revision": "4ddc29b-dirty",
+  "definition": "horizons_q4_apparent_airless_target_centre",
+  "labels": {
+    "sun": "Sun-centre clearance",
+    "earth": "Earth-centre clearance",
+    "both": "Both centres clear"
+  },
+  "comparable": true,
+  "runs": [
+    {
+      "role": "Site A",
+      "file": "runs/site04-p02-practice.json",
+      "run_id": "site04-p02-practice-q4-centre-0deg-a24325ba50c4"
+    },
+    {
+      "role": "Site B",
+      "file": "runs/malapert-practice.json",
+      "run_id": "malapert-practice-q4-centre-0deg-88b9b3cfef57"
+    }
+  ],
+  "overlap": {
+    "sun_centre_clear_seconds": {
+      "site_a": 172800,
+      "site_b": 0,
+      "delta_b_minus_a": -172800
+    },
+    "both_centres_clear_seconds": {
+      "site_a": 0,
+      "site_b": 0,
+      "delta_b_minus_a": 0
+    },
+    "unknown_seconds": {
+      "site_a": {
+        "sun": 0,
+        "earth": 0,
+        "both": 0
+      },
+      "site_b": {
+        "sun": 0,
+        "earth": 0,
+        "both": 0
+      }
+    }
+  },
+  "limitations": [
+    "Practice pair. Submission eligibility is pending.",
+    "Comparison uses centre-ray 0\u00b0 totals only.",
+    "Product 69 is long-term context and is not a check of these windows."
+  ]
+}

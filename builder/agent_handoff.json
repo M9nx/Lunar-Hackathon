@@ -1,86 +1,112 @@
 {
   "handoff_version": "1",
   "reference_revision": "0.5",
-  "task_id": "M0.5",
-  "owner_role": "QA",
-  "depends_on": ["M0.3", "M0.4"],
+  "task_id": "M2.5",
+  "owner_role": "Data",
+  "depends_on": ["M1.5"],
   "schedule_source": "Master-Reference/MASTER_REFERENCE.json schedule.tasks (workbook has Timeline phases only; no Tasks tab)",
-  "objective": "Test the offline setup: Wi-Fi off, local DEM/sky files, smoke test; distinguish core vs optional gaps",
-  "scenario_ref": null,
+  "objective": "Audit one terrain source. Do not present terrain-mode results until the M4 review. The verified 0° replay remains the demo.",
+  "scenario_ref": "web/replay/comparison.json",
   "data_root": "data",
   "inputs": {
     "master_reference": "Master-Reference/MASTER_REFERENCE.json",
     "data_bundle_path": "data",
+    "backup_copy_path": "/home/m9nx/Lunar-Hackathon-data-backup",
     "wheel_tag": "cpython-314-linux-x86_64",
-    "venv_path": ".venv"
+    "venv_path": ".venv",
+    "replay_package": "web/replay"
   },
   "checks": {
-    "wifi_disabled_on_demo_laptop": "pending",
-    "core_pack_smoke": "pass",
-    "horizons_practice_integrity": "pass",
-    "dem_window_smoke": "pass",
-    "offline_venv_imports": "pass",
-    "backup_copy_noted": "pending"
+    "terrain_frame_reviewed": "pending",
+    "vertical_reference_reviewed": "pending",
+    "radial_coverage_reviewed": "pending",
+    "independent_skyline_direction": "pending"
   },
   "outputs": {
-    "evidence_dir": "docs/evidence/"
+    "evidence_dir": "docs/evidence/",
+    "replay_dir": "web/replay/",
+    "run_ids": [
+      "site04-p02-practice-q4-centre-0deg-a24325ba50c4",
+      "malapert-practice-q4-centre-0deg-88b9b3cfef57"
+    ]
   },
   "report": {
     "status": "pending",
     "files_changed": [
-      "AGENTS.md",
-      "agent_handoff.json",
-      "docs/decision-log.md",
+      "src/lunar_navigator/engine.py",
+      "src/lunar_navigator/horizons_table.py",
+      "src/lunar_navigator/cli.py",
+      "tests/test_engine.py",
+      "web/replay/",
       "docs/task-log.md",
-      "Master-Reference/MASTER_REFERENCE.md",
-      "Master-Reference/MASTER_REFERENCE.html",
-      "Master-Reference/MASTER_REFERENCE.json",
-      ".cursor/skills/",
-      "scripts/",
-      "docs/evidence/m0_5_observed_2026-11-14.md",
-      "tests/fixtures/malapert_practice_scenario.json"
+      "docs/decision-log.md",
+      "docs/evidence/m0_5_wifi_off.log",
+      "docs/evidence/m0_5_backup_checksums.log",
+      "docs/evidence/wifi_off_attestation.txt",
+      "docs/evidence/m3_review.md"
     ],
     "commands_run": [
-      "python3 scripts/validate_handoff.py",
-      "python3 scripts/next_task.py",
-      "python3 scripts/case_fit_horizons.py --scenario tests/fixtures/site04_p02_practice_scenario.json",
-      "python3 scripts/run_acceptance.py --offline --gate M0",
-      "scripts/sync_master_reference.py",
-      "scripts/compare_workbook_schedule.py",
-      "scripts/run_m0_offline_smoke.sh",
-      "scripts/verify_offline_wheels.sh",
-      "cd builder && ./scripts/run_harness_cycle.sh --lane qa",
-      "builder/scripts/wifi_off_smoke.sh",
-      "python3 builder/scripts/case_fit_horizons.py --scenario tests/fixtures/site04_p02_practice_scenario.json --json",
-      "python3 builder/scripts/case_fit_horizons.py --scenario tests/fixtures/malapert_practice_scenario.json --json"
+      "rsync -a data/ /home/m9nx/Lunar-Hackathon-data-backup/",
+      "python3 lunar_offline_pack.py --root data check core",
+      "python3 lunar_offline_pack.py --root /home/m9nx/Lunar-Hackathon-data-backup check core",
+      "python3 lunar_offline_pack.py --root data check-horizons",
+      "python3 lunar_offline_pack.py --root /home/m9nx/Lunar-Hackathon-data-backup check-horizons",
+      "unset WIFI_OFF_CONFIRMED; ./scripts/wifi_off_smoke.sh",
+      "PYTHONPATH=src python3 -m lunar_navigator.cli package --out web/replay",
+      "python3 builder/scripts/verify_result_contract.py web/replay/runs/site04-p02-practice.json",
+      "python3 builder/scripts/verify_result_contract.py web/replay/runs/malapert-practice.json",
+      ".venv/bin/python -m pytest tests -q",
+      "python3 builder/scripts/run_acceptance.py --gate M1"
     ],
     "evidence_refs": [
-      "docs/evidence/m0_offline_smoke.log",
-      "docs/evidence/m0_4_wheels.log",
-      "docs/evidence/m0_4_open_dem.log",
-      "docs/evidence/m0_5_observed_2026-11-14.md",
-      "docs/decision-log.md#workbook-vs-json-schedule-2026-11-14"
+      "docs/evidence/wifi_off_attestation.txt",
+      "docs/evidence/m0_5_wifi_off.log",
+      "docs/evidence/m0_5_backup_checksums.log",
+      "docs/evidence/m3_review.md",
+      "web/replay/comparison.json"
     ],
     "blockers": [
-      "M0.1: live challenge brief not verified (HTTP 500 rechecked 2026-11-14) — owner Lead",
-      "M0.5: Wi-Fi still on at 2026-11-14T09:32:41Z on m9nx-83dg (wlan0 connected); attestation missing; backup of data/ not found — owner QA",
-      "M0.2: practice pair proposed, not accepted (site04-p02-practice + malapert-practice, 48 h @ 15 min). Malapert reference altitude is 0 km. Appendix B raw SHA-256 does not match on-disk response.json — owner Data+Science"
+      "M0.1: Resources tab still HTTP 500. Title page loaded without a requirements body. Submission eligibility stays open — owner Lead",
+      "M0.2: practice replay selected. Malapert reference altitude is 0 km. Appendix B raw-response hash mismatch stays open — owner Data+Science",
+      "M2.5: terrain audit not started. 0° replay is the verified package — owner Science"
     ]
   },
-  "parallel_completed": ["M0.3", "M0.4"],
+  "parallel_completed": ["M0.3", "M0.4", "M1.2", "M1.3"],
   "prior_tasks": {
     "M0.1": {
       "status": "passed_with_open_decisions",
       "evidence_refs": ["docs/decision-log.md"]
     },
     "M0.2": {
-      "status": "in_progress",
-      "note": "Practice pair proposed, not accepted: site04-p02-practice and malapert-practice, 2025-01-01T00:00:00Z to 2025-01-03T00:00:00Z, step 900s. Case-fit pass, eligible_for_submission_claim false."
+      "status": "passed_with_open_decisions",
+      "note": "Practice pair selected for the replay. Eligibility, 0 km height, and Appendix B raw hash remain open."
     },
     "M0.3": { "status": "passed", "evidence_refs": ["docs/evidence/m0_offline_smoke.log"] },
     "M0.4": {
       "status": "passed",
       "evidence_refs": ["docs/evidence/m0_4_wheels.log", "docs/evidence/m0_4_open_dem.log"]
+    },
+    "M0.5": {
+      "status": "passed",
+      "evidence_refs": [
+        "docs/evidence/wifi_off_attestation.txt",
+        "docs/evidence/m0_5_wifi_off.log",
+        "docs/evidence/m0_5_backup_checksums.log"
+      ]
+    },
+    "M1.1": { "status": "passed" },
+    "M1.2": { "status": "passed" },
+    "M1.3": { "status": "passed" },
+    "M1.4": { "status": "passed", "run_id": "site04-p02-practice-q4-centre-0deg-a24325ba50c4" },
+    "M1.5": { "status": "passed", "evidence_refs": ["docs/evidence/m3_review.md"] },
+    "M2.1": { "status": "passed", "run_id": "malapert-practice-q4-centre-0deg-88b9b3cfef57" },
+    "M2.2": { "status": "passed" },
+    "M2.3": { "status": "passed" },
+    "M2.4": { "status": "passed" },
+    "M3.1": { "status": "passed", "evidence_refs": ["web/replay/README.md"] },
+    "M3.2": {
+      "status": "passed_with_open_decisions",
+      "note": "Offline localhost replay in the Cursor browser at 2026-11-14T10:11:45Z. Not a second clean-profile witness."
     }
   }
 }

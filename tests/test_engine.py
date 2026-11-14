@@ -1,0 +1,125 @@
+"""Centre-ray engine: synthetic hour, saved practice rows, and replay package."""
+
+from __future__ import annotations
+
+import json
+import sys
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from lunar_navigator.engine import (  # noqa: E402
+    geometric_run_from_rows,
+    run_from_scenario,
+)
+from lunar_navigator.horizons_table import parse_response_line  # noqa: E402
+
+DATA = ROOT / "data"
+SITE_A = DATA / "horizons" / "site04-p02-practice"
+PACKAGE = ROOT / "web" / "replay"
+
+
+def _row(utc, sun_el, earth_el, sun_az=90.0, earth_az=150.0):
+    return {
+        "timestamp_utc": utc,
+        "sun_azimuth_deg": sun_az,
+        "sun_elevation_deg": sun_el,
+        "earth_azimuth_deg": earth_az,
+        "earth_elevation_deg": earth_el,
+        "sun_source_ref": f"synthetic# {utc}",
+        "earth_source_ref": f"synthetic# {utc}",
+        "sun_response_line": None,
+        "earth_response_line": None,
+    }
+
+
+class SyntheticHour(unittest.TestCase):
+    def test_geometric_totals_and_terminal_sample(self) -> None:
+        rows = [
+            _row("2025-01-01T00:00:00Z", 0.8, 0.4),
+            _row("2025-01-01T00:15:00Z", 0.9, 0.3),
+            _row("2025-01-01T00:30:00Z", 0.7, -0.2),
+            _row("2025-01-01T00:45:00Z", 0.6, 0.4),
+            _row("2025-01-01T01:00:00Z", 0.7, 0.5),
+        ]
+        result = geometric_run_from_rows(
+            site_id="synthetic-hour",
+            observer={"longitude_east_deg": 0, "latitude_deg": 0, "reference_altitude_km": 0},
+            start_utc=rows[0]["timestamp_utc"],
+            end_utc=rows[-1]["timestamp_utc"],
+            step_seconds=900,
+            rows=rows,
+            run_id="synthetic-hour",
+            code_revision="test",
+            practice=True,
+            eligible_for_submission_claim=False,
+            inputs={},
+            limitations=["synthetic"],
+        )
+        both = result["elapsed_seconds"]["both"]
+        self.assertEqual(both, {"clear": 2700, "blocked": 900, "unknown": 0})
+        self.assertEqual(result["samples"][-1]["duration_seconds"], 0)
+        self.assertEqual(sum(sample["duration_seconds"] for sample in result["samples"]), 3600)
+        self.assertEqual(result["labels"]["both"], "Both centres clear")
+
+
+class ResponseLine(unittest.TestCase):
+    def test_horizons_stamp(self) -> None:
+        parsed = parse_response_line(" 2025-Jan-01 00:00,*, , 318.623526,     1.683925,")
+        self.assertIsNotNone(parsed)
+        utc, azimuth, elevation = parsed
+        self.assertEqual(utc, "2025-01-01T00:00:00Z")
+        self.assertAlmostEqual(azimuth, 318.623526)
+        self.assertAlmostEqual(elevation, 1.683925)
+
+
+@unittest.skipUnless(SITE_A.is_dir(), "local Horizons practice bundle")
+class PracticeSiteA(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        scenario = json.loads((ROOT / "tests/fixtures/site04_p02_practice_scenario.json").read_text())
+        cls.result = run_from_scenario(scenario, DATA, "test")
+
+    def test_traced_rows_match_saved_angles(self) -> None:
+        sun, earth = self.result["traces"]
+        self.assertEqual(sun["timestamp_utc"], "2025-01-01T00:00:00Z")
+        self.assertAlmostEqual(sun["elevation_deg"], 1.683925)
+        self.assertEqual(sun["state"], "clear")
+        self.assertIn("318.623526", sun["response_line"])
+        self.assertAlmostEqual(earth["elevation_deg"], -6.503228)
+        self.assertEqual(earth["state"], "blocked")
+        self.assertIn("-6.503228", earth["response_line"].replace(" ", ""))
+        self.assertEqual(self.result["samples"][0]["both"]["state"], "blocked")
+
+    def test_duration_identity(self) -> None:
+        for lane, totals in self.result["elapsed_seconds"].items():
+            self.assertEqual(sum(totals.values()), 172800, lane)
+        self.assertEqual(self.result["elapsed_seconds"]["sun"]["clear"], 172800)
+        self.assertEqual(self.result["elapsed_seconds"]["earth"]["blocked"], 172800)
+        self.assertEqual(self.result["elapsed_seconds"]["both"]["unknown"], 0)
+        self.assertFalse(self.result["eligible_for_submission_claim"])
+        self.assertEqual(self.result["inputs"]["appendix_b_raw_sha256"], "open_mismatch_preserved")
+
+
+@unittest.skipUnless((PACKAGE / "comparison.json").is_file(), "replay package not built")
+class ReplayPackage(unittest.TestCase):
+    def test_package_files_and_offline_shell(self) -> None:
+        comparison = json.loads((PACKAGE / "comparison.json").read_text())
+        self.assertTrue(comparison["comparable"])
+        self.assertFalse(comparison["eligible_for_submission_claim"])
+        self.assertEqual(comparison["overlap"]["sun_centre_clear_seconds"]["delta_b_minus_a"], -172800)
+        html = (PACKAGE / "index.html").read_text(encoding="utf-8")
+        script = (PACKAGE / "app.js").read_text(encoding="utf-8")
+        self.assertNotIn("cdn.", html.lower() + script.lower())
+        self.assertIn("Sun-centre clearance", html)
+        for run in comparison["runs"]:
+            path = PACKAGE / run["file"]
+            payload = json.loads(path.read_text())
+            self.assertEqual(payload["run_id"], run["run_id"])
+            self.assertEqual(payload["schema_version"], "run-result-1")
+
+
+if __name__ == "__main__":
+    unittest.main()

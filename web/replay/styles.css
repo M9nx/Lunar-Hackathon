@@ -1,0 +1,70 @@
+:root {
+  --bg: #0b0d17;
+  --panel: #1a2332;
+  --line: #2d3a4f;
+  --text: #f0f4f8;
+  --muted: #8b9cb3;
+  --accent: #1c71d8;
+  --clear: #3ddc97;
+  --blocked: #e6a23c;
+  --unknown: #c4b5fd;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.45 "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+header, main, footer { max-width: 1100px; margin: 0 auto; padding: 1rem 1.25rem; }
+
+h1 { font-size: 1.6rem; margin: 0.2rem 0 0.6rem; }
+h2 { font-size: 1.05rem; margin: 0 0 0.6rem; }
+h3 { margin: 0; font-size: 1rem; }
+
+.kicker, .mode, footer { color: var(--muted); }
+.banner, .unknown {
+  background: repeating-linear-gradient(-45deg, #241c33, #241c33 8px, #2c2440 8px, #2c2440 16px);
+  color: var(--unknown);
+  padding: 0.45rem 0.7rem;
+  border: 1px solid #6d5b96;
+}
+.panel, .site {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1rem;
+}
+.conductor { display: flex; gap: 0.75rem; align-items: center; }
+#playhead { flex: 1; min-height: 2rem; }
+button, a.export {
+  background: #122033;
+  color: var(--text);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 0.45rem 0.8rem;
+  font: inherit;
+  text-decoration: none;
+}
+button:focus, #playhead:focus, a.export:focus { outline: 2px solid #9ec5ff; outline-offset: 2px; }
+.utc { font-variant-numeric: tabular-nums; font-size: 1.15rem; }
+.sites { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+.site { min-width: 0; }
+.lane { display: grid; grid-template-columns: 11rem 1fr auto; gap: 0.5rem; align-items: center; margin: 0.35rem 0; }
+.bar { height: 0.7rem; background: #101722; border: 1px solid var(--line); }
+.bar i { display: block; height: 100%; }
+.state { font-weight: 700; }
+.state.clear { color: var(--clear); }
+.state.blocked { color: var(--blocked); }
+.state.unknown { color: var(--unknown); }
+.fill.clear { background: var(--clear); }
+.fill.blocked { background: var(--blocked); }
+.fill.unknown { background: repeating-linear-gradient(45deg, var(--unknown), var(--unknown) 4px, transparent 4px, transparent 8px); }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 0.25rem 0.4rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.trace { font-family: ui-monospace, monospace; font-size: 0.82rem; white-space: pre-wrap; color: var(--muted); }
+.exports a { margin-right: 0.6rem; }

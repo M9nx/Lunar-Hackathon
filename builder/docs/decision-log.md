@@ -11,10 +11,10 @@ Record amendments with date, owner, previous/new decision, evidence, and milesto
 
 | Item | Owner | Status |
 |------|-------|--------|
-| **Selected case** (Site A observers, UTC window, or approved one-site/two-window fallback) | Data + Science | **Proposed, not accepted** (2026-11-14 session). Practice pair below. |
-| **Kickoff disposition** (brief, eligibility, submission format, AI disclosure) | Lead | **Open** — challenge page HTTP 500 again 2026-11-14 |
-| **Wi-Fi-off witness** | QA | **Pending** — `wlan0` was connected at 2026-11-14T09:32:41Z on `m9nx-83dg`; attestation file absent |
-| **Backup data copy** on demo laptop | QA / Data | **Pending** — no second copy found; `data/` is 5.2G |
+| **Selected case** (Site A observers, UTC window, or approved one-site/two-window fallback) | Data + Science | **Practice replay selected.** Submission eligibility and Malapert 0 km height stay open. |
+| **Kickoff disposition** (brief, eligibility, submission format, AI disclosure) | Lead | **Open** — title page loaded; Resources tab still HTTP 500 |
+| **Wi-Fi-off witness** | QA | **Passed** — `wlan0` down and soft-blocked at 2026-11-14T09:54:24Z on `m9nx-83dg`. Attestation written. Smoke exit 0. Radio restored afterward. |
+| **Backup data copy** on demo laptop | QA / Data | **Passed** — `/home/m9nx/Lunar-Hackathon-data-backup`. Core and four practice Horizons checks exit 0 on both copies. |
 | M0.3 vs M0.2 alignment | Lead if bundle precedes final case | Staged bundle includes both practice exports. Submission claim **not** accepted |
 
 Run: `cd builder && python3 scripts/check_m0_closure.py`
@@ -32,7 +32,7 @@ Run: `cd builder && python3 scripts/check_m0_closure.py`
 
 | Decision | Status | Owner | Notes / evidence |
 |----------|--------|-------|------------------|
-| Submission format and required outputs | **Open** | Lead | Challenge page fetch returned HTTP 500 (2026-11-14, rechecked this session). Working design (UTC `Z`, Unknown states, centre-ray only) stays. Do not promote practice exports to an eligible demo claim until Lead confirms the Resources list and submission format. |
+| Submission format and required outputs | **Open** | Lead | 2026-11-14 later fetch returned a page titled Lunar Landing Site Navigator and no requirements body. The Resources tab URL still returned HTTP 500. Eligibility stays open. The replay is labeled practice. |
 | Actual submission cutoff | **Open** | Lead | Use workbook submit H34 until organizers state otherwise. |
 | Eligible NASA data sources | **Proposed** | Data | Global Awards: ≥1 NASA data source from challenge Resources list (Master Reference §2). Enumerate chosen sources when case is selected. |
 | Permitted tools / AI use | **Proposed** | Lead | Follow [organizer guidance](https://github.com/nasa/spaceapps/discussions/1827) and [AI disclosure](https://github.com/nasa/spaceapps/discussions/1849); document tools in freeze package (M6). |
@@ -45,9 +45,9 @@ Run: `cd builder && python3 scripts/check_m0_closure.py`
 |------|--------|--------|
 | Practice Site04-P02 | Recorded | `data/horizons/site04-p02-practice/` — 193-row Sun/Earth CSVs; **practice only** |
 | Practice Malapert | Recorded | `data/horizons/malapert-practice/` — **practice only** |
-| Submission Site A | **Proposed, not accepted** | `site04-p02-practice`: east lon −156.4386°, lat −89.7812°, Horizons reference altitude 1.738902 km. Sun `10`, Earth `399`, `coord@301`, Q4 airless, MEAN_ME, DE441. `practice=true`. |
-| Submission Site B | **Proposed, not accepted** | `malapert-practice`: east lon −2.93°, lat −85.99°, reference altitude **0 km** (not a reviewed surface height). Same bodies and query shape. If Science rejects 0 km, the on-disk fallback is Site A alone: no second window is saved. |
-| UTC window & cadence | **Proposed, not accepted** | `2025-01-01T00:00:00Z` through `2025-01-03T00:00:00Z`, step 900 s (193 samples, 192 intervals, 172800 s). Only shared window on disk. |
+| Working Site A | **Selected for practice replay** | `site04-p02-practice`: east lon −156.4386°, lat −89.7812°, Horizons reference altitude 1.738902 km. Sun `10`, Earth `399`, `coord@301`, Q4 airless. `practice=true`. Not a submission claim. |
+| Working Site B | **Selected for practice replay** | `malapert-practice`: east lon −2.93°, lat −85.99°, reference altitude **0 km** (not a reviewed surface height). Same query shape and window. |
+| UTC window & cadence | **Selected for practice replay** | `2025-01-01T00:00:00Z` through `2025-01-03T00:00:00Z`, step 900 s (193 samples, 192 intervals, 172800 s). |
 | Observer height reference | **Open for any height-dependent claim** | Site A uses the Horizons `SITE_COORD` kilometres. Site B uses 0 km. Terrain height review stays at M4. |
 | Why this pair | Recommendation | Only Sun+Earth pair staged under `data/horizons/`. Case-fit passed for both practice scenarios with `eligible_for_submission_claim=false`. Recomputed 0° totals: Site A Sun clear 172800 s, Earth and Both blocked 172800 s; Site B all three lanes blocked 172800 s; Unknown 0 s. Visible difference is Sun-centre clearance. Joint Both clearance ties. |
 | Appendix B raw SHA-256 | **Unresolved** | On-disk `angles.csv` matches Appendix B and `provenance.json`. On-disk `response.json` matches provenance `raw_sha256` and does not match Appendix B raw-response digests. Matching angle rows do not close raw-file identity. Reference text was not edited. |
