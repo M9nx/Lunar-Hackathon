@@ -103,8 +103,8 @@ def make_server(repo: Path, data_root: Path, revision: str, port: int) -> Thread
             if not 1 <= batch_size <= 500:
                 self._json(400, {"error": "batch_size must be from 1 to 500"})
                 return
-            if not 0 <= pause_seconds <= 2:
-                self._json(400, {"error": "pause_seconds must be from 0 to 2"})
+            if not 0 <= pause_seconds <= 5:
+                self._json(400, {"error": "pause_seconds must be from 0 to 5"})
                 return
             live = LiveRun()
             run_id = uuid.uuid4().hex[:12]
@@ -157,8 +157,8 @@ def make_server(repo: Path, data_root: Path, revision: str, port: int) -> Thread
             if not 1 <= batch_size_a <= 500 or not 1 <= batch_size_b <= 500:
                 self._json(400, {"error": "batch_size must be from 1 to 500"})
                 return
-            if not 0 <= pause_seconds <= 2:
-                self._json(400, {"error": "pause_seconds must be from 0 to 2"})
+            if not 0 <= pause_seconds <= 5:
+                self._json(400, {"error": "pause_seconds must be from 0 to 5"})
                 return
             live = LiveRun()
             comparison_id = uuid.uuid4().hex[:12]
