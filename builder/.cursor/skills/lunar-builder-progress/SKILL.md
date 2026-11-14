@@ -39,10 +39,10 @@ builder/scripts/install_git_hooks.sh   # once per clone
 
 | Area | State |
 |------|--------|
-| **Active task** | **M0.5** (QA) — Wi-Fi was **on** at 2026-11-14T09:32:41Z (`m9nx-83dg`); witness + backup **pending** |
-| **M0** | M0.3/M0.4 **passed**; M0.1 brief still HTTP 500; M0.2 practice pair **proposed, not accepted** |
-| **M1+** | **Blocked** until evidence-backed M0.5 pass |
-| **Product** | `src/lunar_navigator/visibility.py` seed; `web/` placeholder; §9 tests green |
+| **Active task** | **M0.1 Lead, still open.** 0° judging package drafted. Practice runs stay ineligible until Lead records that decision. Demo `1f3fb06` |
+| **M0** | M0.5 **passed** (Wi-Fi off 2026-11-14T09:54:24Z, backup `/home/m9nx/Lunar-Hackathon-data-backup`). M0.1 eligibility open. Reported deadline Sunday, November 15, 2026, 11:59 p.m. local event time |
+| **M1–M3** | Practice 0° package at commit `1f3fb06`. M3.2 clean-profile pass 2026-11-14T10:35:24Z. M3.3 pitch drafted. M3.4 handed off with terrain still open. Runs `site04-p02-practice-q4-centre-0deg-a24325ba50c4` and `malapert-practice-q4-centre-0deg-88b9b3cfef57` |
+| **Product** | `src/lunar_navigator/` centre-ray engine; `web/replay/` offline shell |
 | **Agent worker** | `builder/` handoff, 16 skills, harness scripts, guardrails in `lunar-guardrails.mdc` |
 | **Data** | Local `data/` ~5.5 GB **gitignored**; practice Horizons under `data/horizons/*-practice/` |
 | **Git** | `https://github.com/M9nx/Lunar-Hackathon` (private); human-only commits; no Cursor `Co-authored-by` |
@@ -60,9 +60,9 @@ builder/scripts/install_git_hooks.sh   # once per clone
 
 ### Next (in order)
 
-1. M0.5: human QA writes `wifi_off_attestation.txt`, runs `wifi_off_smoke.sh`, notes a backup of `data/`. See `builder/docs/evidence/m0_5_observed_2026-11-14.md`.
-2. M0.2 / M0.1: Data+Science accept or replace the proposed practice pair; Lead confirms the live brief.
-3. M1: only after an evidence-backed M0.5 pass. Not started while the witness is pending.
+1. Lead confirms eligibility, a reachable demo link, and the AI disclosure before any 0° submission claim. The judging record is `builder/docs/evidence/m6_0deg_submission_package.md`. Demo build stays `1f3fb06`.
+2. Science reviews terrain in parallel. Show terrain as Unknown until that review passes. Malapert 4.86425 km is a sensitivity input. The +24-hour comparison stays out of this build.
+3. Keep both raw-response digest sets. Matching angle CSVs support the totals. Raw-file identity stays open.
 
 ---
 
@@ -78,7 +78,7 @@ You are the **lunar builder agent** (worker in `builder/`, not the product). Rea
 **Master Reference:** revision **0.5** at `Master-Reference/MASTER_REFERENCE.json`.  
 **Fresh repo only** — `~/Documents/Learning/lunar-landing-site-navigator` is read-only history.
 
-**Active work:** task **M0.5** (QA). Offline pack and wheel smoke passed. On 2026-11-14T09:32:41Z `wlan0` was still connected on `m9nx-83dg`; attestation and backup copy are **pending**. Do **not** start M1 until M0.5 is an evidence-backed pass. M0.2 practice pair is proposed, not accepted (`docs/decision-log.md`).
+**Active work:** Handoff is **M0.1, owner Lead.** The 0° judging package is drafted in `builder/docs/evidence/m6_0deg_submission_package.md`. Confirm whether the Horizons practice case is eligible, which deliverables the event requires, and a demo link judges can open. Finish the AI disclosure. Use `1f3fb06` for the witnessed 0° demo. If Lead approves a replacement case, run it through the hardened engine and save it as a separate candidate. Science reviews terrain in parallel. Show terrain as Unknown. The +24-hour comparison is not in this build. Malapert 4.86425 km is a sensitivity input. Keep both raw-response digest sets. The challenge page returned HTTP 500 on 2026-11-14, so this handoff does not decide eligibility.
 
 **Repo:** `Lunar-Hackathon` on GitHub (private). Product: `src/lunar_navigator/`, `tests/`, `web/`. Worker: `builder/` (scripts, handoff, skills, evidence). Local `data/` is gitignored.
 
@@ -86,7 +86,7 @@ You are the **lunar builder agent** (worker in `builder/`, not the product). Rea
 
 **Result definition (2026-11-14):** Keep the centre-ray calculation. Label **Sun-centre clearance**, **Earth-centre clearance**, and **Both centres clear**. The practice 48-hour 0° totals stay valid under that policy. Product 69 is a long-term any-portion-of-disc fraction, not a timestamped or like-for-like check of those windows. Any-disc comparison is a later metric and must match period, cadence, location, height, terrain, and visibility definition first. Leave the Product 69 simulation bounds and the Appendix B raw-response hash mismatch unresolved. Submission eligibility stays pending.
 
-**Open decisions:** M0.1 live brief unverified; M0.2 practice pair proposed, not accepted (Site A `site04-p02-practice`, Site B `malapert-practice`, 2025-01-01 to 2025-01-03 at 15 min). Malapert reference altitude is 0 km.
+**Open decisions:** Lead confirms eligibility and required deliverables. Reported deadline Sunday, November 15, 2026, 11:59 p.m. local event time. Science reviews the terrain frame tie, height reference, coverage, and one skyline in parallel. Malapert 4.86425 km is a sensitivity input. Both raw-response digest sets stay, and raw-file identity stays open. Practice pair is the replay, not a submission claim.
 
 **Your first commands:**
 
@@ -97,7 +97,7 @@ python3 scripts/validate_handoff.py
 python3 scripts/next_task.py
 ```
 
-Then continue M0.5 closure or route per `lunar-milestone-router` after reading handoff blockers.
+Then read `builder/docs/evidence/m0_1_lead_handoff.md`. The active handoff is M0.1 for Lead. Do not replace demo commit `1f3fb06`.
 ```
 
 ---

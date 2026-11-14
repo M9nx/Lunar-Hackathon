@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lunar Landing Site Navigator — centre-ray replay</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="shell">
+    <p class="kicker">Practice replay · geometric 0° · centre ray</p>
+    <h1>Sun-centre clearance and Earth-centre clearance</h1>
+    <p id="practice-banner" class="banner">Practice evidence. Not an eligible submission claim.</p>
+  </header>
+
+  <main>
+    <section class="panel" aria-labelledby="conductor-heading">
+      <h2 id="conductor-heading">Shared time</h2>
+      <div class="conductor">
+        <button type="button" id="prev">Previous</button>
+        <input id="playhead" type="range" min="0" max="0" value="0" aria-valuetext="">
+        <button type="button" id="next">Next</button>
+      </div>
+      <p id="utc" class="utc">—</p>
+      <p class="mode">Horizon mode: <strong>geometric 0°</strong>. Terrain: <strong>Unknown</strong> — M4 review has not passed. Reason: <span class="unknown">terrain_not_reviewed</span>.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="compare-heading">
+      <h2 id="compare-heading">Comparison</h2>
+      <div id="comparison"></div>
+    </section>
+
+    <section class="sites" id="sites"></section>
+
+    <section class="panel" aria-labelledby="export-heading">
+      <h2 id="export-heading">Export</h2>
+      <p>Each link is the result file this page loaded.</p>
+      <p id="exports"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>JPL Horizons quantity 4, apparent airless target centre. Sun 10, Earth 399, Moon observer 301. Product 69 is long-term context and is not a check of this window.</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

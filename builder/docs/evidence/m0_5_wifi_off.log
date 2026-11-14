@@ -1,0 +1,60 @@
+=== before 2026-11-14T09:54:22Z ===
+wlan0:wifi:connected:Mounir's Galaxy M52 5G
+default via 192.168.3.79 dev wlan0 proto dhcp src 192.168.3.99 metric 600 
+=== disable ===
+=== after 2026-11-14T09:54:24Z ===
+wlan0            DOWN           96:29:2c:47:96:cc <BROADCAST,MULTICAST> 
+1: ideapad_wlan: Wireless LAN
+	Soft blocked: yes
+	Hard blocked: no
+3: phy0: Wireless LAN
+	Soft blocked: yes
+	Hard blocked: no
+wlan0:wifi:unavailable:
+--- default route ---
+--- lo ---
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+WROTE /home/m9nx/Lunar-Hackathon/builder/docs/evidence/wifi_off_attestation.txt
+witness=m9nx utc=2026-11-14T09:54:24Z laptop=m9nx-83dg wifi=off
+wifi_off_attestation=OK path=/home/m9nx/Lunar-Hackathon/builder/docs/evidence/wifi_off_attestation.txt
+ OK  LOLA_20mpp/LDEM_60S_240MPP_ADJ.TIF
+ OK  offline/assets/PIA13523-south-pole.jpg
+ OK  offline/vendor/plotly-3.0.1.min.js
+ OK  offline/vendor/plotly-LICENSE.txt
+ OK  offline/reference/pgda-product-90.html
+ OK  offline/reference/horizons-api.html
+ OK  offline/reference/horizons-manual.html
+ OK    193 rows  /home/m9nx/Lunar-Hackathon/data/horizons/malapert-practice/earth-062e67d0fdf0/angles.csv
+ OK    193 rows  /home/m9nx/Lunar-Hackathon/data/horizons/malapert-practice/sun-d10bfb555ec3/angles.csv
+ OK    193 rows  /home/m9nx/Lunar-Hackathon/data/horizons/site04-p02-practice/earth-167962cea6a2/angles.csv
+ OK    193 rows  /home/m9nx/Lunar-Hackathon/data/horizons/site04-p02-practice/sun-8a039d445c7f/angles.csv
+     7760 × 7760, float32, NoData=nan
+ OK  LOLA_20mpp/LDEM_60S_240MPP_ADJ.TIF
+ OK  offline/assets/PIA13523-south-pole.jpg
+ OK  offline/vendor/plotly-3.0.1.min.js
+ OK  offline/vendor/plotly-LICENSE.txt
+ OK  offline/reference/pgda-product-90.html
+ OK  offline/reference/horizons-api.html
+ OK  offline/reference/horizons-manual.html
+     7600 × 7600, float32, NoData=nan
+ OK  LOLA_20mpp/LDEM_80S_80MPP_ADJ.TIF
+     3200 × 3200, float32, NoData=nan
+ OK  LOLA_5mpp/Site04/Site04_final_adj_5mpp_surf.tif
+     3200 × 3200, float32, NoData=nan
+ OK  LOLA_5mpp/Site04/Site04_final_adj_5mpp_ldec.tif
+     3200 × 3200, float32, NoData=nan
+ OK  LOLA_5mpp/Site04/Site04_final_adj_5mpp_toterr.tif
+     4200 × 4200, float32, NoData=nan
+ OK  LOLA_5mpp/Site23/Site23_final_adj_5mpp_surf.tif
+     4200 × 4200, float32, NoData=nan
+ OK  LOLA_5mpp/Site23/Site23_final_adj_5mpp_ldec.tif
+     4200 × 4200, float32, NoData=nan
+ OK  LOLA_5mpp/Site23/Site23_final_adj_5mpp_toterr.tif
+ OK  LOLA_5mpp/Site04/Site04_ROIs.tgz
+ OK  offline/reference/pgda-product-78.html
+ OK  offline/reference/pgda-product-78-readme
+wifi_off_smoke=OK
+WIFI_SMOKE_EXIT:0
+=== restored 2026-11-14T09:54:38Z ===
+rfkill wifi soft-blocked no; wlan0 connected again; default route via wlan0 restored after the smoke.
+The attestation line records the off state during the check, not a claim that the radio stayed down.

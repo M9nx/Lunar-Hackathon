@@ -1,0 +1,98 @@
+hostname=m9nx-83dg
+=== before ===
+wlan0:wifi:connected:Mounir's Galaxy M52 5G
+br-426079315a2a:bridge:connected (externally):br-426079315a2a
+br-887d2fca1b2c:bridge:connected (externally):br-887d2fca1b2c
+br-a2cd6ee44235:bridge:connected (externally):br-a2cd6ee44235
+br-bd59f2703f4e:bridge:connected (externally):br-bd59f2703f4e
+br-dcec9adad695:bridge:connected (externally):br-dcec9adad695
+lo:loopback:connected (externally):lo
+br-4b277cbea08b:bridge:connected (externally):br-4b277cbea08b
+br-68ac8db52e1c:bridge:connected (externally):br-68ac8db52e1c
+br-713d9d23dd6e:bridge:connected (externally):br-713d9d23dd6e
+br-7a92525224ea:bridge:connected (externally):br-7a92525224ea
+br-9f26e3979a19:bridge:connected (externally):br-9f26e3979a19
+br-aa48b1e79da2:bridge:connected (externally):br-aa48b1e79da2
+br-d9dbbc945ef9:bridge:connected (externally):br-d9dbbc945ef9
+br-ef43921eb8d9:bridge:connected (externally):br-ef43921eb8d9
+docker0:bridge:connected (externally):docker0
+p2p-dev-wlan0:wifi-p2p:disconnected:
+enp7s0:ethernet:unavailable:
+veth1544a39:ethernet:unmanaged:
+veth1b28b12:ethernet:unmanaged:
+veth20d3dac:ethernet:unmanaged:
+veth763038f:ethernet:unmanaged:
+vethb465116:ethernet:unmanaged:
+vethb92d561:ethernet:unmanaged:
+vethc6021de:ethernet:unmanaged:
+vethd5168aa:ethernet:unmanaged:
+vmnet1:ethernet:unmanaged:
+vmnet8:ethernet:unmanaged:
+default via 192.168.3.79 dev wlan0 proto dhcp src 192.168.3.99 metric 600
+1: ideapad_wlan: Wireless LAN
+	Soft blocked: no
+	Hard blocked: no
+3: phy0: Wireless LAN
+	Soft blocked: no
+	Hard blocked: no
+=== disable 2026-11-14T10:35:23Z ===
+
+RTNETLINK answers: Operation not permitted
+=== after 2026-11-14T10:35:24Z ===
+wlan0            DOWN           76:e2:77:59:6a:92 <BROADCAST,MULTICAST>
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP>
+1: ideapad_wlan: Wireless LAN
+	Soft blocked: yes
+	Hard blocked: no
+3: phy0: Wireless LAN
+	Soft blocked: yes
+	Hard blocked: no
+--- default route ---
+(none)
+session=d1b0bf820e5a0207dc43d4dce5e41e1a
+browser=chromium headless new profile extensions disabled
+user_data_dir=/tmp/lunar-m3-clean-profile-offline
+opened_utc=2026-11-14T10:35:24Z
+page_utc=2025-01-01T00:00:00Z
+resources=["http://127.0.0.1:8765/styles.css", "http://127.0.0.1:8765/app.js", "http://127.0.0.1:8765/comparison.json", "http://127.0.0.1:8765/favicon.ico", "http://127.0.0.1:8765/runs/site04-p02-practice.json", "http://127.0.0.1:8765/runs/malapert-practice.json"]
+exports=["runs/site04-p02-practice.json", "runs/malapert-practice.json"]
+after_next_utc=2025-01-01T00:15:00Z
+sites=Site A: site04-p02-practice |  | Run site04-p02-practice-q4-centre-0deg-a24325ba50c4. Observer -156.4386° E, -89.7812° N, 1.738902 km. |  | Sun-centre clearance | clear | Earth-centre clearance | blocked | Both centres clear | blocked |  | Totals (s): Sun clear 172800, Earth blocked 172800, Both clear 0, Both unknown 0. |  | Lane	Azimuth °	Elevation °	Horizon °	Margin °	State	Reason | Sun-centre clearance	318.49656	1.683516	0	1.683516	clear	— | Earth-centre clearance	151.802892	-6.497028	0	-6.49
+opened runs/site04-p02-practice.json
+{   "schema_version": "run-result-1",   "run_id": "site04-p02-practice-q4-centre-0deg-a24325ba50c4",   "code_revision": "1f3fb06",   "practice": true,   "eligible_for_submission_claim": false,   "definition": "horizons_q4_apparent_airless_t
+opened runs/malapert-practice.json
+{   "schema_version": "run-result-1",   "run_id": "malapert-practice-q4-centre-0deg-88b9b3cfef57",   "code_revision": "1f3fb06",   "practice": true,   "eligible_for_submission_claim": false,   "definition": "horizons_q4_apparent_airless_tar
+CLEAN_BROWSER_OFFLINE_OK
+=== restore ===
+
+
+Error: Connection activation failed: The Wi-Fi network could not be found.
+default via 192.168.3.79 dev wlan0 proto dhcp src 192.168.3.99 metric 20600
+wlan0:wifi:connected:Mounir's Galaxy M52 5G
+br-426079315a2a:bridge:connected (externally):br-426079315a2a
+br-887d2fca1b2c:bridge:connected (externally):br-887d2fca1b2c
+br-a2cd6ee44235:bridge:connected (externally):br-a2cd6ee44235
+br-bd59f2703f4e:bridge:connected (externally):br-bd59f2703f4e
+br-dcec9adad695:bridge:connected (externally):br-dcec9adad695
+lo:loopback:connected (externally):lo
+br-4b277cbea08b:bridge:connected (externally):br-4b277cbea08b
+br-68ac8db52e1c:bridge:connected (externally):br-68ac8db52e1c
+br-713d9d23dd6e:bridge:connected (externally):br-713d9d23dd6e
+br-7a92525224ea:bridge:connected (externally):br-7a92525224ea
+br-9f26e3979a19:bridge:connected (externally):br-9f26e3979a19
+br-aa48b1e79da2:bridge:connected (externally):br-aa48b1e79da2
+br-d9dbbc945ef9:bridge:connected (externally):br-d9dbbc945ef9
+br-ef43921eb8d9:bridge:connected (externally):br-ef43921eb8d9
+docker0:bridge:connected (externally):docker0
+p2p-dev-wlan0:wifi-p2p:disconnected:
+enp7s0:ethernet:unavailable:
+veth1544a39:ethernet:unmanaged:
+veth1b28b12:ethernet:unmanaged:
+veth20d3dac:ethernet:unmanaged:
+veth763038f:ethernet:unmanaged:
+vethb465116:ethernet:unmanaged:
+vethb92d561:ethernet:unmanaged:
+vethc6021de:ethernet:unmanaged:
+vethd5168aa:ethernet:unmanaged:
+vmnet1:ethernet:unmanaged:
+vmnet8:ethernet:unmanaged:
