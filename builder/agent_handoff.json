@@ -5,7 +5,7 @@
   "owner_role": "Lead",
   "depends_on": ["Kickoff"],
   "schedule_source": "Master-Reference/MASTER_REFERENCE.json schedule.tasks (workbook has Timeline phases only; no Tasks tab)",
-  "objective": "M0.1 stays open. The Project tab draft is approved for now. Lead still decides whether the January 2025 practice runs can support the submission and finishes the AI disclosure. Keep eligible_for_submission_claim false. Use 1f3fb06 for the demo recording. A replacement case, if approved, is a separate hardened-engine candidate. Science reviews terrain in parallel.",
+  "objective": "M0.1 stays open. The 0° judging package is drafted around witnessed build 1f3fb06. Lead still decides whether the January 2025 practice runs can support the submission, confirms a reachable demo link, and finishes the AI disclosure. Keep eligible_for_submission_claim false. Do not regenerate web/replay. A replacement case, if approved, is a separate hardened-engine candidate. Science reviews terrain in parallel. The +24-hour comparison stays out of this build.",
   "scenario_ref": "web/replay/comparison.json",
   "data_root": "data",
   "inputs": {
@@ -69,6 +69,7 @@
       "docs/evidence/m2_5_preflight.md",
       "docs/evidence/m0_1_lead_handoff.md",
       "docs/evidence/m0_1_project_tab_draft.md",
+      "docs/evidence/m6_0deg_submission_package.md",
       "web/replay/comparison.json"
     ],
     "blockers": [

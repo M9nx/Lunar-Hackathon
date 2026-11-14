@@ -101,6 +101,17 @@ The witnessed 0° demo build stays commit `1f3fb06`. Do not regenerate that pack
 
 The next decision for a 0° submission is Lead’s confirmation of eligibility and the required deliverables. Science reviews terrain in parallel. Until that review passes, the replay shows terrain as Unknown. Malapert 4.86425 km stays labeled as a sensitivity input.
 
+## 0° judging package (2026-11-14)
+
+The submission package is prepared around the witnessed replay. Detail: `docs/evidence/m6_0deg_submission_package.md`.
+
+| Decision | Status | Notes |
+| --- | --- | --- |
+| Demo build | **Recorded** | Commit `1f3fb06`. `web/replay/` stays as witnessed. |
+| M5 +24-hour comparison | **Deferred** | Not in this build. Mention it only after a later verified package includes it. |
+| M4 terrain in the demo | **0° fallback** | Science review stays open. The page keeps terrain Unknown. |
+| M6 freeze and submit | **Not closed** | No release tag. Eligibility stays false. The local URL is not a public demo link. The walkthrough, credits, and disclosure starter are in the package note. |
+
 ## Engine corrections (2026-11-14, commit `1f3fb06`)
 
 | Decision | Status | Notes |

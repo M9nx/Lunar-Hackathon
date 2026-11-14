@@ -23,6 +23,9 @@ Persistent record of milestone work. Status: `planned` | `in_progress` | `passed
 | M3.2 | passed | 2026-11-14 | 2026-11-14T10:35:24Z | Clean Chromium profile, Wi-Fi off, playhead and both exports. `docs/evidence/m3_clean_browser.md`. Commit `1f3fb06`. |
 | M3.3 | passed | 2026-11-14 | 2026-11-14 | Pitch draft `docs/evidence/m3_3_pitch.md`. Practice label kept. |
 | M3.4 | passed_with_open_decisions | 2026-11-14 | 2026-11-14 | Run IDs and 0° package handed off. M2.5 terrain questions stay open. |
+| M4.1 | blocked | 2026-11-14 | — | 0° fallback is the demo. Frame, height, coverage, and an independent skyline stay open. |
+| M5.1 | skipped | 2026-11-14 | — | +24-hour comparison deferred. Not in the witnessed build. |
+| M6.1 | in_progress | 2026-11-14 | — | Judging record drafted in `docs/evidence/m6_0deg_submission_package.md`. No tag. Eligibility still false. |
 
 ## M0.4 runtime pin
 

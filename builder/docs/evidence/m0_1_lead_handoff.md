@@ -25,3 +25,5 @@ If Lead approves a replacement case, run that case through the hardened engine a
 Until Science finishes the terrain review, show terrain as Unknown. Malapert 4.86425 km is a sensitivity input. Keep both raw-response digest sets. The matching angle CSVs support the replay totals. Raw-file identity stays open.
 
 Keep the practice label and `eligible_for_submission_claim=false`.
+
+The 0° judging record is `m6_0deg_submission_package.md`. It has the launch command, the five-part walkthrough, the Horizons credit, and the disclosure starter. The local page is `http://127.0.0.1:8765/`. Judges cannot open that address from their own machines, so the reachable demo link is still part of this handoff.
