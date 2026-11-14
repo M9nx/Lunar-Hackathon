@@ -13,7 +13,14 @@ import subprocess
 import sys
 from pathlib import Path
 
-from lunar_navigator.engine import comparison_document, run_from_scenario, write_json
+from lunar_navigator.engine import (
+    comparison_document,
+    run_from_scenario,
+    stream_comparison,
+    stream_scenario,
+    write_json,
+)
+from lunar_navigator.live_server import serve
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -73,12 +80,64 @@ def main(argv: list[str] | None = None) -> int:
     packed = sub.add_parser("package", help="Write Site A, Site B, and comparison.json")
     packed.add_argument("--out", type=Path, default=REPO_ROOT / "web" / "replay")
 
+    streamed = sub.add_parser("stream", help="Print NDJSON events for one local scenario")
+    streamed.add_argument("--scenario", type=Path, required=True)
+    streamed.add_argument("--batch-size", type=int, default=4)
+    streamed.add_argument("--fail-after-batches", type=int, default=None)
+
+    compared = sub.add_parser("stream-comparison", help="Print NDJSON events for a two-site live pair")
+    compared.add_argument("--scenario-a", type=Path, required=True)
+    compared.add_argument("--scenario-b", type=Path, required=True)
+    compared.add_argument("--batch-size-a", type=int, default=4)
+    compared.add_argument("--batch-size-b", type=int, default=4)
+    compared.add_argument("--fail-after-batches-a", type=int, default=None)
+    compared.add_argument("--fail-after-batches-b", type=int, default=None)
+
+    served = sub.add_parser("serve", help="Serve the review UI and local run API on loopback")
+    served.add_argument("--port", type=int, default=8766)
+
     args = parser.parse_args(argv)
     revision = code_revision(args.revision)
     if args.command == "run":
         result = run_from_scenario(load_scenario(args.scenario), args.data_root, revision)
         write_json(args.out, result)
         print(result["run_id"])
+        return 0
+    if args.command == "stream":
+        status = 0
+        for event in stream_scenario(
+            load_scenario(args.scenario),
+            args.data_root,
+            revision,
+            batch_size=args.batch_size,
+            fail_after_batches=args.fail_after_batches,
+        ):
+            print(json.dumps(event), flush=True)
+            if event["event"] == "error":
+                status = 1
+            elif event["event"] == "cancelled":
+                status = 2
+        return status
+    if args.command == "stream-comparison":
+        status = 0
+        for event in stream_comparison(
+            load_scenario(args.scenario_a),
+            load_scenario(args.scenario_b),
+            args.data_root,
+            revision,
+            batch_size_a=args.batch_size_a,
+            batch_size_b=args.batch_size_b,
+            fail_after_batches_a=args.fail_after_batches_a,
+            fail_after_batches_b=args.fail_after_batches_b,
+        ):
+            print(json.dumps(event), flush=True)
+            if event["event"] == "error":
+                status = 1
+            elif event["event"] == "cancelled":
+                status = 2
+        return status
+    if args.command == "serve":
+        serve(REPO_ROOT, args.data_root, revision, args.port)
         return 0
     package(args.out, args.data_root, revision)
     return 0
