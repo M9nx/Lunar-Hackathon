@@ -1,0 +1,328 @@
+{
+  "schema_version": "run-result-1",
+  "run_id": "qa-north-synthetic-transitions",
+  "code_revision": "qa-fixture",
+  "practice": false,
+  "eligible_for_submission_claim": false,
+  "definition": "synthetic_qa_fixture",
+  "labels": {
+    "sun": "Sun-centre clearance",
+    "earth": "Earth-centre clearance",
+    "both": "Both centres clear"
+  },
+  "scenario": {
+    "site_id": "qa-north",
+    "horizon_mode": "geometric_0deg",
+    "start_utc": "2024-06-01T00:00:00Z",
+    "end_utc": "2024-06-01T01:00:00Z",
+    "step_seconds": 900,
+    "observer": {
+      "longitude_east_deg": 0.0,
+      "latitude_deg": -89.0,
+      "reference_altitude_km": 0.0,
+      "center_body_id": 301
+    }
+  },
+  "interval_policy": {
+    "id": "left_sample_both_endpoints",
+    "boundary_type": "start_inclusive_end_exclusive",
+    "terminal_sample_adds_seconds": 0
+  },
+  "inputs": {
+    "sun_csv_sha256": "synthetic-qa-fixture",
+    "earth_csv_sha256": "synthetic-qa-fixture",
+    "sun_response_sha256": "synthetic-qa-fixture",
+    "earth_response_sha256": "synthetic-qa-fixture",
+    "sun_response_matches_provenance": false,
+    "earth_response_matches_provenance": false,
+    "appendix_b_raw_sha256": "not_applicable"
+  },
+  "samples": [
+    {
+      "timestamp_utc": "2024-06-01T00:00:00Z",
+      "duration_seconds": 900,
+      "sun": {
+        "azimuth_deg": 10.0,
+        "elevation_deg": 2.0,
+        "horizon_deg": 0.0,
+        "margin_deg": 2.0,
+        "state": "clear",
+        "reason": null,
+        "label": "Sun-centre clearance",
+        "source_ref": "qa-fixture/qa-north/sun#sample=1",
+        "response_line": "QA-SYNTHETIC 2024-06-01T00:00:00Z sun az 10.0 el 2.0"
+      },
+      "earth": {
+        "azimuth_deg": 200.0,
+        "elevation_deg": 1.0,
+        "horizon_deg": 0.0,
+        "margin_deg": 1.0,
+        "state": "clear",
+        "reason": null,
+        "label": "Earth-centre clearance",
+        "source_ref": "qa-fixture/qa-north/earth#sample=1",
+        "response_line": "QA-SYNTHETIC 2024-06-01T00:00:00Z earth az 200.0 el 1.0"
+      },
+      "both": {
+        "state": "clear",
+        "reason": null,
+        "label": "Both centres clear"
+      }
+    },
+    {
+      "timestamp_utc": "2024-06-01T00:15:00Z",
+      "duration_seconds": 900,
+      "sun": {
+        "azimuth_deg": 20.0,
+        "elevation_deg": 0.4,
+        "horizon_deg": 0.0,
+        "margin_deg": 0.4,
+        "state": "unknown",
+        "reason": "missing_right_endpoint",
+        "label": "Sun-centre clearance",
+        "source_ref": "qa-fixture/qa-north/sun#sample=2",
+        "response_line": "QA-SYNTHETIC 2024-06-01T00:15:00Z sun az 20.0 el 0.4"
+      },
+      "earth": {
+        "azimuth_deg": 210.0,
+        "elevation_deg": -0.25,
+        "horizon_deg": 0.0,
+        "margin_deg": -0.25,
+        "state": "blocked",
+        "reason": null,
+        "label": "Earth-centre clearance",
+        "source_ref": "qa-fixture/qa-north/earth#sample=2",
+        "response_line": "QA-SYNTHETIC 2024-06-01T00:15:00Z earth az 210.0 el -0.25"
+      },
+      "both": {
+        "state": "blocked",
+        "reason": "centre_below_or_on_horizon:earth",
+        "label": "Both centres clear"
+      }
+    },
+    {
+      "timestamp_utc": "2024-06-01T00:30:00Z",
+      "duration_seconds": 900,
+      "sun": {
+        "azimuth_deg": null,
+        "elevation_deg": null,
+        "horizon_deg": 0.0,
+        "margin_deg": null,
+        "state": "unknown",
+        "reason": "missing_ephemeris",
+        "label": "Sun-centre clearance",
+        "source_ref": "qa-fixture/qa-north/sun#sample=3",
+        "response_line": "QA-SYNTHETIC 2024-06-01T00:30:00Z sun az None el None"
+      },
+      "earth": {
+        "azimuth_deg": 220.0,
+        "elevation_deg": 0.6,
+        "horizon_deg": 0.0,
+        "margin_deg": 0.6,
+        "state": "unknown",
+        "reason": "missing_right_endpoint",
+        "label": "Earth-centre clearance",
+        "source_ref": "qa-fixture/qa-north/earth#sample=3",
+        "response_line": "QA-SYNTHETIC 2024-06-01T00:30:00Z earth az 220.0 el 0.6"
+      },
+      "both": {
+        "state": "unknown",
+        "reason": "missing_ephemeris",
+        "label": "Both centres clear"
+      }
+    },
+    {
+      "timestamp_utc": "2024-06-01T00:45:00Z",
+      "duration_seconds": 900,
+      "sun": {
+        "azimuth_deg": 40.0,
+        "elevation_deg": -1.25,
+        "horizon_deg": 0.0,
+        "margin_deg": -1.25,
+        "state": "blocked",
+        "reason": null,
+        "label": "Sun-centre clearance",
+        "source_ref": "qa-fixture/qa-north/sun#sample=4",
+        "response_line": "QA-SYNTHETIC 2024-06-01T00:45:00Z sun az 40.0 el -1.25"
+      },
+      "earth": {
+        "azimuth_deg": null,
+        "elevation_deg": null,
+        "horizon_deg": 0.0,
+        "margin_deg": null,
+        "state": "unknown",
+        "reason": "missing_ephemeris",
+        "label": "Earth-centre clearance",
+        "source_ref": "qa-fixture/qa-north/earth#sample=4",
+        "response_line": "QA-SYNTHETIC 2024-06-01T00:45:00Z earth az None el None"
+      },
+      "both": {
+        "state": "blocked",
+        "reason": "centre_below_or_on_horizon:sun",
+        "label": "Both centres clear"
+      }
+    },
+    {
+      "timestamp_utc": "2024-06-01T01:00:00Z",
+      "duration_seconds": 0,
+      "sun": {
+        "azimuth_deg": 45.0,
+        "elevation_deg": 0.0,
+        "horizon_deg": 0.0,
+        "margin_deg": 0.0,
+        "state": "blocked",
+        "reason": null,
+        "label": "Sun-centre clearance",
+        "source_ref": "qa-fixture/qa-north/sun#sample=5",
+        "response_line": "QA-SYNTHETIC 2024-06-01T01:00:00Z sun az 45.0 el 0.0"
+      },
+      "earth": {
+        "azimuth_deg": 230.0,
+        "elevation_deg": 0.8,
+        "horizon_deg": 0.0,
+        "margin_deg": 0.8,
+        "state": "clear",
+        "reason": null,
+        "label": "Earth-centre clearance",
+        "source_ref": "qa-fixture/qa-north/earth#sample=5",
+        "response_line": "QA-SYNTHETIC 2024-06-01T01:00:00Z earth az 230.0 el 0.8"
+      },
+      "both": {
+        "state": "blocked",
+        "reason": "centre_below_or_on_horizon:sun",
+        "label": "Both centres clear"
+      }
+    }
+  ],
+  "intervals": [
+    {
+      "start_utc": "2024-06-01T00:00:00Z",
+      "end_utc": "2024-06-01T00:15:00Z",
+      "lane": "sun",
+      "state": "clear"
+    },
+    {
+      "start_utc": "2024-06-01T00:15:00Z",
+      "end_utc": "2024-06-01T00:30:00Z",
+      "lane": "sun",
+      "state": "unknown",
+      "reason": "missing_right_endpoint"
+    },
+    {
+      "start_utc": "2024-06-01T00:30:00Z",
+      "end_utc": "2024-06-01T00:45:00Z",
+      "lane": "sun",
+      "state": "unknown",
+      "reason": "missing_ephemeris"
+    },
+    {
+      "start_utc": "2024-06-01T00:45:00Z",
+      "end_utc": "2024-06-01T01:00:00Z",
+      "lane": "sun",
+      "state": "blocked"
+    },
+    {
+      "start_utc": "2024-06-01T00:00:00Z",
+      "end_utc": "2024-06-01T00:15:00Z",
+      "lane": "earth",
+      "state": "clear"
+    },
+    {
+      "start_utc": "2024-06-01T00:15:00Z",
+      "end_utc": "2024-06-01T00:30:00Z",
+      "lane": "earth",
+      "state": "blocked"
+    },
+    {
+      "start_utc": "2024-06-01T00:30:00Z",
+      "end_utc": "2024-06-01T00:45:00Z",
+      "lane": "earth",
+      "state": "unknown",
+      "reason": "missing_right_endpoint"
+    },
+    {
+      "start_utc": "2024-06-01T00:45:00Z",
+      "end_utc": "2024-06-01T01:00:00Z",
+      "lane": "earth",
+      "state": "unknown",
+      "reason": "missing_ephemeris"
+    },
+    {
+      "start_utc": "2024-06-01T00:00:00Z",
+      "end_utc": "2024-06-01T00:15:00Z",
+      "lane": "both",
+      "state": "clear"
+    },
+    {
+      "start_utc": "2024-06-01T00:15:00Z",
+      "end_utc": "2024-06-01T00:30:00Z",
+      "lane": "both",
+      "state": "blocked",
+      "reason": "centre_below_or_on_horizon:earth"
+    },
+    {
+      "start_utc": "2024-06-01T00:30:00Z",
+      "end_utc": "2024-06-01T00:45:00Z",
+      "lane": "both",
+      "state": "unknown",
+      "reason": "missing_ephemeris"
+    },
+    {
+      "start_utc": "2024-06-01T00:45:00Z",
+      "end_utc": "2024-06-01T01:00:00Z",
+      "lane": "both",
+      "state": "blocked",
+      "reason": "centre_below_or_on_horizon:sun"
+    }
+  ],
+  "elapsed_seconds": {
+    "sun": {
+      "clear": 900,
+      "blocked": 900,
+      "unknown": 1800
+    },
+    "earth": {
+      "clear": 900,
+      "blocked": 900,
+      "unknown": 1800
+    },
+    "both": {
+      "clear": 900,
+      "blocked": 1800,
+      "unknown": 900
+    }
+  },
+  "traces": [
+    {
+      "body": "sun",
+      "label": "Sun-centre clearance",
+      "timestamp_utc": "2024-06-01T00:00:00Z",
+      "azimuth_deg": 10.0,
+      "elevation_deg": 2.0,
+      "horizon_deg": 0.0,
+      "margin_deg": 2.0,
+      "state": "clear",
+      "source_ref": "qa-fixture/qa-north/sun#sample=1",
+      "response_line": "QA-SYNTHETIC 2024-06-01T00:00:00Z sun az 10.0 el 2.0"
+    },
+    {
+      "body": "earth",
+      "label": "Earth-centre clearance",
+      "timestamp_utc": "2024-06-01T00:00:00Z",
+      "azimuth_deg": 200.0,
+      "elevation_deg": 1.0,
+      "horizon_deg": 0.0,
+      "margin_deg": 1.0,
+      "state": "clear",
+      "source_ref": "qa-fixture/qa-north/earth#sample=1",
+      "response_line": "QA-SYNTHETIC 2024-06-01T00:00:00Z earth az 200.0 el 1.0"
+    }
+  ],
+  "limitations": [
+    "QA fixture. Synthetic angles, not a Horizons table and not a landing-site result.",
+    "Exercises clear, blocked, and unknown, including a missing right endpoint.",
+    "The last sample adds zero elapsed seconds.",
+    "No reviewed skyline. Terrain is not classified.",
+    "This is not disc visibility, received power, or ground-station contact."
+  ]
+}

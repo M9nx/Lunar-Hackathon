@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Local centre-ray comparison of two lunar landing sites from saved Horizons inputs.">
+  <title>Compare sites · Lunar Landing Site Navigator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="review-candidate">
+  <canvas id="starfield" class="starfield" aria-hidden="true"></canvas>
+  <a class="skip" href="#answers">Skip to the comparison</a>
+  <div class="site-banner">Unofficial NASA Space Apps Challenge project · Not an official NASA website · Local offline review</div>
+
+  <header class="site-header">
+    <div class="bleed header-inner">
+      <a class="brand" href="./">
+        <span class="brand-kicker">NASA Space Apps 2026</span>
+        <span class="brand-name">Lunar Landing Site Navigator</span>
+      </a>
+      <div class="header-actions" aria-label="Package source">
+        <button type="button" id="show-practice" aria-pressed="true">Practice replay</button>
+        <button type="button" id="show-qa" aria-pressed="false">QA fixture</button>
+        <a class="export header-link" href="../replay/">Witnessed 0° replay</a>
+      </div>
+      <div class="header-chips" aria-label="Run labels">
+        <span class="demo-chip">Practice</span>
+        <span class="demo-chip soft">Centre ray</span>
+        <span class="demo-chip soft">Terrain unknown</span>
+        <span class="demo-chip soft">3D stage ready</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="action-rail" aria-label="Live calculation actions">
+    <div class="bleed action-rail-inner">
+      <div class="action-primary">
+        <label class="action-field" for="scenario">
+          <span>Scenario</span>
+          <select id="scenario">
+            <option value="practice-48h">Practice pair, 48 h (Site04 vs Malapert)</option>
+            <option value="site04-48h">Site04 practice, 48 h</option>
+            <option value="site04-6h">Site04 practice, first 6 h</option>
+            <option value="malapert-48h">Malapert practice, 48 h</option>
+          </select>
+        </label>
+        <button type="button" id="start-run" class="btn-primary">Start stream</button>
+        <button type="button" id="cancel-run">Cancel</button>
+        <label class="fail-toggle"><input type="checkbox" id="fail-test"> Fail after first batch</label>
+      </div>
+      <div class="action-status">
+        <ol class="pipe" id="calc-pipe" aria-label="Calculation stages">
+          <li data-stage="idle" class="is-focus">1 Idle</li>
+          <li data-stage="loading">2 Load</li>
+          <li data-stage="calculating">3 Classify</li>
+          <li data-stage="shared">4 Shared</li>
+          <li data-stage="complete">5 Complete</li>
+        </ol>
+        <p id="run-status" class="note">Idle. Start uses saved Horizons files and does not contact JPL.</p>
+        <p id="live-export"></p>
+      </div>
+    </div>
+  </div>
+
+  <main class="bleed workspace">
+    <section class="workspace-copy">
+      <p class="kicker">Surface sky · shared UTC · saved Horizons · stream + 3D stage</p>
+      <h1>Compare two landing sites</h1>
+      <p class="lede">Full-width console. Stream fills the timeline; the scene stage is the interaction surface for site picks now and for 3D orbit/scrub when Three.js is vendored offline.</p>
+      <p id="mode" class="mode"></p>
+      <p id="banner" class="banner"></p>
+    </section>
+
+    <div class="workspace-grid">
+      <div class="workspace-main">
+        <section id="answers" class="panel answers-panel" aria-labelledby="answers-heading"></section>
+
+        <section class="panel" aria-labelledby="time-heading">
+          <div class="panel-head">
+            <h2 id="time-heading">Shared UTC conductor</h2>
+            <p id="utc" class="utc" aria-live="polite">—</p>
+          </div>
+          <div class="conductor">
+            <button type="button" id="prev">Previous</button>
+            <input id="playhead" type="range" min="0" max="0" value="0" aria-label="Shared UTC playhead">
+            <button type="button" id="next">Next</button>
+          </div>
+          <p id="zero-note" class="note"></p>
+          <div id="chart" class="chart-host"></div>
+          <div id="legend" class="legend"></div>
+          <div id="lanes"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="why-heading">
+          <h2 id="why-heading">Why did the engine report that state?</h2>
+          <div id="why"></div>
+        </section>
+      </div>
+
+      <aside class="workspace-scene" aria-label="Scene stage">
+        <section class="panel scene-panel">
+          <div class="panel-head">
+            <h2 id="scene-heading">Scene stage</h2>
+            <p class="note scene-hint">Click a pin to select a site. Future 3D orbit and stream scrub attach here.</p>
+          </div>
+          <div
+            id="scene-stage"
+            class="scene-stage"
+            data-stream-target="scene"
+            data-interaction="site-select"
+            tabindex="0"
+            role="application"
+            aria-labelledby="scene-heading"
+            aria-describedby="context-caption"
+          >
+            <div id="scene-host" class="scene-host">
+              <div class="context-map" id="context-map">
+                <img src="media/PIA13523-south-pole.jpg" alt="Lunar south pole context mosaic from NASA Photojournal PIA13523." width="800" height="800">
+                <svg id="context-pins" viewBox="0 0 100 100" aria-hidden="true"></svg>
+              </div>
+              <div id="scene-3d" class="scene-3d" hidden aria-hidden="true"></div>
+            </div>
+          </div>
+          <figcaption id="context-caption" class="context-caption">South-pole context · approximate site pins · not a map product</figcaption>
+          <ul class="context-legend" aria-label="Context symbols">
+            <li><span class="pin-swatch pin-a"></span> Site A</li>
+            <li><span class="pin-swatch pin-b"></span> Site B</li>
+          </ul>
+          <p class="credit-line">Image credit: NASA / GSFC / Arizona State University · PIA13523</p>
+          <p id="scene-stream-note" class="note">Stream events can drive this stage. 3D host is reserved at <code>#scene-3d</code>.</p>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="bleed shell-foot">
+    <p id="limits"></p>
+    <p class="credit-line">NASA chrome and starfield adapted from the educational console. Three.js globe mounts into <code>#scene-3d</code> once vendored offline.</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

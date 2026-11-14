@@ -1,0 +1,57 @@
+{
+  "schema_version": "replay-package-1",
+  "practice": false,
+  "qa_fixture": true,
+  "eligible_for_submission_claim": false,
+  "code_revision": "qa-fixture",
+  "definition": "synthetic_qa_fixture",
+  "labels": {
+    "sun": "Sun-centre clearance",
+    "earth": "Earth-centre clearance",
+    "both": "Both centres clear"
+  },
+  "comparable": true,
+  "runs": [
+    {
+      "role": "Site A",
+      "file": "qa-north.json",
+      "run_id": "qa-north-synthetic-transitions"
+    },
+    {
+      "role": "Site B",
+      "file": "qa-south.json",
+      "run_id": "qa-south-synthetic-transitions"
+    }
+  ],
+  "overlap": {
+    "sun_centre_clear_seconds": {
+      "site_a": 900,
+      "site_b": 900,
+      "delta_b_minus_a": 0
+    },
+    "both_centres_clear_seconds": {
+      "site_a": 900,
+      "site_b": 900,
+      "delta_b_minus_a": 0
+    },
+    "unknown_seconds": {
+      "site_a": {
+        "sun": 1800,
+        "earth": 1800,
+        "both": 900
+      },
+      "site_b": {
+        "sun": 1800,
+        "earth": 0,
+        "both": 900
+      }
+    }
+  },
+  "limitations": [
+    "QA fixture. Synthetic angles, not a Horizons table and not a landing-site result.",
+    "Exercises clear, blocked, and unknown, including a missing right endpoint.",
+    "The last sample adds zero elapsed seconds.",
+    "No reviewed skyline. Terrain is not classified.",
+    "This is not disc visibility, received power, or ground-station contact."
+  ]
+}
