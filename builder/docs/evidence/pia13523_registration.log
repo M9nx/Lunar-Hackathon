@@ -1,0 +1,16 @@
+/home/m9nx/Lunar-Hackathon/.venv/lib/python3.14/site-packages/rasterio/__init__.py:367: NotGeoreferencedWarning: Dataset has no geotransform, gcps, or rpcs. The identity matrix will be returned.
+  dataset = DatasetReader(path, driver=driver, sharing=sharing, thread_safe=thread_safe, **kwargs)
+size 1521 1521
+az 30 bright thin-line radii px [379, 380]
+az 60 bright thin-line radii px [379, 598, 672, 688]
+az 120 bright thin-line radii px [379, 441, 559, 652]
+az 150 bright thin-line radii px [327, 328, 329, 379]
+az 210 bright thin-line radii px [298, 299, 379, 413]
+az 240 bright thin-line radii px [249, 250, 379, 380, 600, 697]
+az 300 bright thin-line radii px [379, 380, 674, 675, 676]
+az 330 bright thin-line radii px [379, 380, 479, 480, 481, 482]
+predicted ring radius px: 85S 379.3 88S 151.6 80S 760.0
+Amundsen (1174.0, 707.7)
+Cabeus (535.3, 445.0)
+Malapert (744.5, 456.3)
+Site04 (753.4, 775.2)
