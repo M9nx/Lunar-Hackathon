@@ -8,6 +8,8 @@ disable-model-invocation: true
 
 # Result contract (§5 Run result)
 
+Time fields: see **Time and angles** in `lunar-guardrails.mdc`.
+
 ## Ownership
 
 Single source of truth for how **engine**, **browser replay**, and **export** interpret the same artifact. Master Reference **§5** + `core_model` in `MASTER_REFERENCE.json`.

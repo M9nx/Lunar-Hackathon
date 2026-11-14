@@ -7,6 +7,8 @@ description: >-
 
 # Frames, geometry, terrain science
 
+Always honor **Terrain gate** in `lunar-guardrails.mdc` for UI and exports.
+
 ## Centre-ray vs terrain (Master Reference §6)
 
 - Horizons gives **apparent centre** az/el above local horizontal.
