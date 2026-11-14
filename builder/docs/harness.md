@@ -20,6 +20,8 @@ All paths relative to **`builder/`** (run from this directory).
 | `scripts/run_harness_cycle.sh` | **Preferred:** full cycle (flags below) |
 | `scripts/harness_cycle.py` | validate → separation → M0 review → context → next_task [+ gates] |
 | `scripts/check_handoff_separation.py` | Live handoff ≠ Master Reference example |
+| `scripts/check_commit_coauthors.py` | No Cursor/AI `Co-authored-by` in git history |
+| `scripts/install_git_hooks.sh` | Install `prepare-commit-msg` + `commit-msg` (strip/block AI co-authors) |
 | `scripts/check_m0_closure.py` | M0.2/M0.3/M0.5 warnings |
 | `scripts/verify_result_contract.py` | Run-result JSON shape (M1+) |
 

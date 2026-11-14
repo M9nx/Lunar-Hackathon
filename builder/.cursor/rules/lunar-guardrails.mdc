@@ -26,6 +26,7 @@ alwaysApply: true
 - **One result across views.** The timeline, inspector, totals, and export read the same versioned engine result. The UI formats states and displays reasons. The engine owns classification.
 - **Comparable claims.** Show a site-to-site overlap delta only when duration, cadence, horizon mode, and interval policy match. Show each case's Unknown duration beside its known overlap. Label geometric-versus-terrain comparisons as model comparisons.
 - **Evidence before pass.** Record the command actually run, outcome, input or run ID, and evidence path. Keep skipped checks pending and failed checks failed. Retain the last verified replay if a new build or export fails.
+- **Git attribution.** Human team members only on commits. Do not add `Co-authored-by` trailers for Cursor, IDE agents, or other AI tools. After clone run `builder/scripts/install_git_hooks.sh` (`prepare-commit-msg` strips injected AI trailers; `commit-msg` rejects any that remain). `builder/scripts/check_commit_coauthors.py` must pass before claiming a git milestone pass.
 - **Harness:** use `builder/scripts/*`; do not improvise pack checks.
 - **Loop:** implement → `builder/scripts/run_acceptance.py` → update handoff → `next_task.py`.
 

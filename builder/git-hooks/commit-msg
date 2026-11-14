@@ -1,0 +1,9 @@
+#!/bin/sh
+# Reject Cursor / AI co-author trailers (see lunar-guardrails.mdc).
+msg_file="${1:?missing commit message file}"
+if grep -qiE '^Co-authored-by:.*(cursor|cursoragent@cursor\.com)' "$msg_file"; then
+  echo "commit-msg: rejected Co-authored-by for Cursor/AI. Use human authorship only." >&2
+  echo "See builder/.cursor/rules/lunar-guardrails.mdc (Git attribution)." >&2
+  exit 1
+fi
+exit 0

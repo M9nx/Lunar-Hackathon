@@ -1,0 +1,8 @@
+#!/bin/sh
+# Strip Cursor/AI Co-authored-by lines the IDE may inject (see lunar-guardrails.mdc).
+msg_file="${1:?missing commit message file}"
+tmp="${msg_file}.strip"
+sed -e '/^Co-authored-by: Cursor <cursoragent@cursor.com>$/d' \
+    -e '/^Co-authored-by:.*cursoragent@cursor.com/d' \
+    -e '/^Co-authored-by:.*[Cc]ursor/d' "$msg_file" > "$tmp" && mv "$tmp" "$msg_file"
+exit 0

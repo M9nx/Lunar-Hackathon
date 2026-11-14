@@ -33,6 +33,7 @@ def main() -> int:
     steps: list[tuple[str, list[str], bool]] = [
         ("validate_handoff", [py, str(SCRIPTS / "validate_handoff.py")], True),
         ("check_handoff_separation", [py, str(SCRIPTS / "check_handoff_separation.py")], True),
+        ("check_commit_coauthors", [py, str(SCRIPTS / "check_commit_coauthors.py")], True),
         ("check_m0_closure", [py, str(SCRIPTS / "check_m0_closure.py")], False),
         ("agent_context", [py, str(SCRIPTS / "agent_context.py"), "--md", "--lane", args.lane], False),
         ("next_task", [py, str(SCRIPTS / "next_task.py")], False),
