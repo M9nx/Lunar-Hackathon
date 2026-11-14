@@ -166,6 +166,9 @@ def _write_export(folder: Path, *, target_name: str, target_id: int, azimuth: fl
         f"Target body name: {target_name} ({target_id}) {{source: DE441}}\n"
         "Center body name: Moon (301) {source: DE441}\n"
         "Center geodetic : 203.5614, -89.7812, 1.7389 {E-lon(deg),Lat(deg),Alt(km)}\n"
+        "Center pole/equ : MEAN_ME (high precision) {East-longitude positive}\n"
+        "Atmos refraction: NO (AIRLESS)\n"
+        " Date__(UT)__HR:MN, , ,Azi_(a-app), Elev_(a-app),\n"
         "$$SOE\n"
         + "\n".join(data_lines)
         + "\n$$EOE\n"
@@ -197,6 +200,8 @@ def _two_sample_scenario(sun_rel: str, earth_rel: str) -> dict:
         "start_utc": "2025-01-01T00:00:00Z",
         "end_utc": "2025-01-01T00:15:00Z",
         "step_seconds": 900,
+        "observer_frame": "MEAN_ME",
+        "angle_convention": "airless_apparent",
         "horizons_paths": {"sun": sun_rel, "earth": earth_rel},
         "eligible_for_submission_claim": False,
     }
@@ -243,6 +248,33 @@ class ResponseCaseIdentity(unittest.TestCase):
         message = str(caught.exception)
         self.assertIn("sun", message)
         self.assertIn("399", message)
+
+    def _replace_sun_header(self, old: str, new: str) -> None:
+        folder = self.root / self.sun_rel
+        path = folder / "response.json"
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        payload["result"] = payload["result"].replace(old, new)
+        path.write_text(json.dumps(payload), encoding="utf-8")
+        provenance_path = folder / "provenance.json"
+        provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+        provenance["raw_sha256"] = hashlib.sha256(path.read_bytes()).hexdigest()
+        provenance_path.write_text(json.dumps(provenance), encoding="utf-8")
+
+    def test_observer_frame_mismatch_is_rejected(self) -> None:
+        self._replace_sun_header("MEAN_ME", "MOON_PA")
+        with self.assertRaises(ValueError) as caught:
+            run_from_scenario(self.scenario, self.root, "test")
+        message = str(caught.exception)
+        self.assertIn("MOON_PA", message)
+        self.assertIn("frame", message)
+
+    def test_refracted_angle_convention_is_rejected(self) -> None:
+        self._replace_sun_header("NO (AIRLESS)", "YES")
+        self._replace_sun_header("Azi_(a-app)", "Azi_(a-appr)")
+        self._replace_sun_header("Elev_(a-app)", "Elev_(a-appr)")
+        with self.assertRaises(ValueError) as caught:
+            run_from_scenario(self.scenario, self.root, "test")
+        self.assertIn("angle convention", str(caught.exception))
 
     def test_observer_longitude_must_match_header(self) -> None:
         shifted = json.loads(json.dumps(self.scenario))

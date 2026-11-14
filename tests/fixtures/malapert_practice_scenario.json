@@ -13,6 +13,8 @@
   "end_utc": "2025-01-03T00:00:00Z",
   "step_seconds": 900,
   "horizon_mode": "geometric_0deg",
+  "observer_frame": "MEAN_ME",
+  "angle_convention": "airless_apparent",
   "horizons_paths": {
     "sun": "horizons/malapert-practice/sun-d10bfb555ec3",
     "earth": "horizons/malapert-practice/earth-062e67d0fdf0"

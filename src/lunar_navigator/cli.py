@@ -1,7 +1,8 @@
 """Write practice centre-ray runs and the offline replay manifest.
 
 Each command checks response SHA-256 against provenance, then checks the raw
-Horizons header so the target id and observer match the scenario.
+Horizons header so the target, observer, frame, and airless angle convention
+match the scenario.
 """
 
 from __future__ import annotations

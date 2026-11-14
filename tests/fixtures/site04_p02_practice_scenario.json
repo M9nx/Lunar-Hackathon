@@ -13,6 +13,8 @@
   "end_utc": "2025-01-03T00:00:00Z",
   "step_seconds": 900,
   "horizon_mode": "geometric_0deg",
+  "observer_frame": "MEAN_ME",
+  "angle_convention": "airless_apparent",
   "horizons_paths": {
     "sun": "horizons/site04-p02-practice/sun-8a039d445c7f",
     "earth": "horizons/site04-p02-practice/earth-167962cea6a2"

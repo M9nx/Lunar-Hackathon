@@ -93,6 +93,14 @@ def parse_response_header(result: str) -> dict:
         r"Center geodetic\s*:\s*([+-]?\d+(?:\.\d+)?)\s*,\s*([+-]?\d+(?:\.\d+)?)\s*,\s*([+-]?\d+(?:\.\d+)?)",
         header,
     )
+    frame = re.search(r"Center pole/equ\s*:\s*([A-Za-z0-9_]+)", header)
+    airless_line = re.search(r"Atmos refraction:\s*NO\s*\(AIRLESS\)", header) is not None
+    column_line = next((line for line in header.splitlines() if "Azi_" in line and "Elev_" in line), "")
+    airless_columns = (
+        "Azi_(a-app)" in column_line
+        and "Elev_(a-app)" in column_line
+        and "a-appr" not in column_line
+    )
     if target is None or center is None or geodetic is None:
         raise ValueError("Horizons response header is missing target id or observer geodetic metadata")
     return {
@@ -101,6 +109,8 @@ def parse_response_header(result: str) -> dict:
         "longitude_east_deg": float(geodetic.group(1)),
         "latitude_deg": float(geodetic.group(2)),
         "reference_altitude_km": float(geodetic.group(3)),
+        "observer_frame": frame.group(1) if frame else None,
+        "airless_apparent": airless_line and airless_columns,
     }
 
 

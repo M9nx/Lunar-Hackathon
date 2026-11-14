@@ -265,11 +265,19 @@ def _east_longitude_delta_deg(left: float, right: float) -> float:
     return abs((left - right + 180.0) % 360.0 - 180.0)
 
 
-def verify_response_belongs_to_case(result: str, *, body: str, observer: dict) -> None:
-    """Reject a response whose target or observer is not the scenario's case.
+def verify_response_belongs_to_case(
+    result: str,
+    *,
+    body: str,
+    observer: dict,
+    observer_frame: str,
+    angle_convention: str,
+) -> None:
+    """Reject a response whose target, observer, frame, or angles are not the scenario's case.
 
     SHA-256 checks that the bytes match provenance. This check reads the raw
-    header so a swapped Sun and Earth export cannot pass on checksums alone.
+    header so a swapped Sun and Earth export, or a reframed or refracted table,
+    cannot pass on checksums alone.
     """
     meta = parse_response_header(result)
     if not validate_body_id(body, meta["target_id"]):
@@ -285,6 +293,12 @@ def verify_response_belongs_to_case(result: str, *, body: str, observer: dict) -
         raise ValueError(f"{body} response latitude does not match the scenario observer")
     if abs(meta["reference_altitude_km"] - float(observer["reference_altitude_km"])) > HEADER_ALTITUDE_TOL_KM:
         raise ValueError(f"{body} response altitude does not match the scenario observer")
+    if not observer_frame or meta["observer_frame"] != observer_frame:
+        raise ValueError(
+            f"{body} response observer frame {meta['observer_frame']} does not match the scenario"
+        )
+    if angle_convention != "airless_apparent" or not meta["airless_apparent"]:
+        raise ValueError(f"{body} response angle convention does not match the scenario")
 
 
 def _match_response(utc: str, csv_azimuth: float | None, csv_elevation: float | None, line: str) -> None:
@@ -319,8 +333,20 @@ def run_from_scenario(scenario: dict, data_root: Path, code_revision: str | None
         raise ValueError("angle CSV SHA-256 does not match provenance")
     if sun_raw_sha != sun_prov.get("raw_sha256") or earth_raw_sha != earth_prov.get("raw_sha256"):
         raise ValueError("response.json SHA-256 does not match provenance")
-    verify_response_belongs_to_case(sun_text, body="sun", observer=observer)
-    verify_response_belongs_to_case(earth_text, body="earth", observer=observer)
+    verify_response_belongs_to_case(
+        sun_text,
+        body="sun",
+        observer=observer,
+        observer_frame=scenario.get("observer_frame", ""),
+        angle_convention=scenario.get("angle_convention", ""),
+    )
+    verify_response_belongs_to_case(
+        earth_text,
+        body="earth",
+        observer=observer,
+        observer_frame=scenario.get("observer_frame", ""),
+        angle_convention=scenario.get("angle_convention", ""),
+    )
     sun_lines = index_result_text(sun_text, sun_response)
     earth_lines = index_result_text(earth_text, earth_response)
 
