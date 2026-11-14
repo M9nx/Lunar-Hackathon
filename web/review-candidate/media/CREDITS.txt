@@ -1,0 +1,32 @@
+Offline Moon textures for the review-candidate sky stage and context map
+
+PIA13523-south-pole.jpg
+  Credit: NASA / GSFC / Arizona State University
+  Use: south-pole context map
+
+pia13523_clear.jpg
+  Derived locally from PIA13523 (autocontrast + mild sharpen)
+  Use: clearer interactive context map for streaming
+
+trek_wac_south_band.jpg
+  Source: NASA Moon Trek tile service (acquisition step only)
+  Layer: LRO_WAC_Mosaic_Global_303ppd_v02 (EQ zoom 3, southern rows)
+  Credit: NASA / GSFC / ASU LROC via Moon Trek
+  Use: optional clearer south-band backdrop — no Trek calls at runtime
+
+lroc_color_2k.jpg
+  Source: NASA SVS CGI Moon Kit (entry 4720)
+  Credit: NASA / GSFC / ASU LROC
+  Use: polar terrain-ring albedo (display only)
+
+lroc_south_band.jpg
+  Derived locally from lroc_color_2k.jpg (southern equirectangular band)
+  Use: terrain-ring alternate / map strip
+
+ldem_4ppd_preview.jpg
+  Source: NASA SVS CGI Moon Kit displacement preview
+  Credit: NASA / GSFC / LOLA
+  Use: bump/relief cue only — not a reviewed DEM
+
+Runtime demo path stays offline. Classification is centre-ray vs geometric 0°.
+Terrain stays Unknown until M4 review.
