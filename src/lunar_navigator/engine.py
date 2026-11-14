@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
+import time
+import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -155,6 +158,41 @@ def apply_both_endpoints(classified: dict, nxt: dict | None) -> None:
     )
 
 
+def classify_sample(row: dict, nxt: dict | None, *, step_seconds: int) -> dict:
+    """Classify one sample. The next row is required for every span except the terminal sample."""
+    if nxt is None:
+        duration = 0
+    else:
+        delta = int((parse_utc(nxt["timestamp_utc"]) - parse_utc(row["timestamp_utc"])).total_seconds())
+        if delta != step_seconds:
+            raise ValueError(f"step at {row['timestamp_utc']} is {delta}s, expected {step_seconds}")
+        duration = step_seconds
+    classified = classify_bodies(
+        row["sun_elevation_deg"],
+        row["sun_azimuth_deg"],
+        row["earth_elevation_deg"],
+        row["earth_azimuth_deg"],
+        row["sun_source_ref"],
+        row["earth_source_ref"],
+        row.get("sun_response_line"),
+        row.get("earth_response_line"),
+    )
+    apply_both_endpoints(classified, nxt)
+    return {"timestamp_utc": row["timestamp_utc"], "duration_seconds": duration, **classified}
+
+
+def elapsed_from_samples(samples: list[dict]) -> dict[str, dict[str, int]]:
+    elapsed = empty_elapsed()
+    for sample in samples:
+        for lane in ("sun", "earth", "both"):
+            add_duration(elapsed, lane, sample[lane]["state"], sample["duration_seconds"])
+    return elapsed
+
+
+def intervals_from_samples(samples: list[dict]) -> list[dict]:
+    return [interval for lane in ("sun", "earth", "both") for interval in build_intervals(samples, lane)]
+
+
 def geometric_run_from_rows(
     *,
     site_id: str,
@@ -178,34 +216,11 @@ def geometric_run_from_rows(
     if rows[-1]["timestamp_utc"] != end_utc:
         raise ValueError(f"last timestamp {rows[-1]['timestamp_utc']} != {end_utc}")
 
-    samples: list[dict] = []
-    elapsed = empty_elapsed()
-    for index, row in enumerate(rows):
-        terminal = index == len(rows) - 1
-        if not terminal:
-            nxt = parse_utc(rows[index + 1]["timestamp_utc"])
-            current = parse_utc(row["timestamp_utc"])
-            delta = int((nxt - current).total_seconds())
-            if delta != step_seconds:
-                raise ValueError(f"step at {row['timestamp_utc']} is {delta}s, expected {step_seconds}")
-            duration = step_seconds
-        else:
-            duration = 0
-        classified = classify_bodies(
-            row["sun_elevation_deg"],
-            row["sun_azimuth_deg"],
-            row["earth_elevation_deg"],
-            row["earth_azimuth_deg"],
-            row["sun_source_ref"],
-            row["earth_source_ref"],
-            row.get("sun_response_line"),
-            row.get("earth_response_line"),
-        )
-        apply_both_endpoints(classified, None if terminal else rows[index + 1])
-        for lane in ("sun", "earth", "both"):
-            add_duration(elapsed, lane, classified[lane]["state"], duration)
-        samples.append({"timestamp_utc": row["timestamp_utc"], "duration_seconds": duration, **classified})
-
+    samples = [
+        classify_sample(row, None if index == len(rows) - 1 else rows[index + 1], step_seconds=step_seconds)
+        for index, row in enumerate(rows)
+    ]
+    elapsed = elapsed_from_samples(samples)
     requested = int((parse_utc(end_utc) - parse_utc(start_utc)).total_seconds())
     for lane, totals in elapsed.items():
         if sum(totals.values()) != requested:
@@ -309,7 +324,36 @@ def _match_response(utc: str, csv_azimuth: float | None, csv_elevation: float | 
         raise ValueError(f"{utc} CSV angles do not match the raw Horizons response line")
 
 
-def run_from_scenario(scenario: dict, data_root: Path, code_revision: str | None) -> dict:
+def select_time_window(rows: list[dict], start_utc: str, end_utc: str, step_seconds: int) -> list[dict]:
+    """Keep the saved rows that fall on the scenario's inclusive UTC window."""
+    stamps = [row["timestamp_utc"] for row in rows]
+    if start_utc not in stamps:
+        raise ValueError(f"saved Horizons grid does not include scenario start {start_utc}")
+    if end_utc not in stamps:
+        raise ValueError(f"saved Horizons grid does not include scenario end {end_utc}")
+    start_index = stamps.index(start_utc)
+    end_index = stamps.index(end_utc)
+    if end_index <= start_index:
+        raise ValueError(f"scenario end {end_utc} is not after start {start_utc} on the saved grid")
+    selected = rows[start_index : end_index + 1]
+    for left, right in zip(selected, selected[1:]):
+        delta = int((parse_utc(right["timestamp_utc"]) - parse_utc(left["timestamp_utc"])).total_seconds())
+        if delta != int(step_seconds):
+            raise ValueError(f"time grid step at {left['timestamp_utc']} is {delta}s, expected {step_seconds}s")
+    return selected
+
+
+def content_run_id(site_id: str, sun_csv_sha: str, *, full_grid: bool, start_utc: str, end_utc: str) -> str:
+    base = f"{site_id}-q4-centre-0deg-{sun_csv_sha[:12]}"
+    if full_grid:
+        return base
+    start = start_utc.replace("-", "").replace(":", "")
+    end = end_utc.replace("-", "").replace(":", "")
+    return f"{base}-{start}-{end}"
+
+
+def load_scenario_inputs(scenario: dict, data_root: Path, code_revision: str | None) -> dict:
+    """Read and check saved Horizons inputs. This does not classify samples."""
     observer = scenario["observer"]
     sun_dir = data_root / scenario["horizons_paths"]["sun"]
     earth_dir = data_root / scenario["horizons_paths"]["earth"]
@@ -372,6 +416,10 @@ def run_from_scenario(scenario: dict, data_root: Path, code_revision: str | None
                 "earth_response_line": earth_line,
             }
         )
+    full_grid = True
+    if joined[0]["timestamp_utc"] != scenario["start_utc"] or joined[-1]["timestamp_utc"] != scenario["end_utc"]:
+        joined = select_time_window(joined, scenario["start_utc"], scenario["end_utc"], scenario["step_seconds"])
+        full_grid = False
 
     practice = scenario.get("status") == "practice" or scenario.get("eligible_for_submission_claim") is False
     eligible = bool(scenario.get("eligible_for_submission_claim", False))
@@ -384,23 +432,29 @@ def run_from_scenario(scenario: dict, data_root: Path, code_revision: str | None
     if practice or not eligible:
         limitations.insert(0, "Practice evidence. Not an eligible submission claim.")
 
-    return geometric_run_from_rows(
-        site_id=scenario["site_id"],
-        observer={
+    return {
+        "site_id": scenario["site_id"],
+        "observer": {
             "longitude_east_deg": observer["longitude_east_deg"],
             "latitude_deg": observer["latitude_deg"],
             "reference_altitude_km": observer["reference_altitude_km"],
             "center_body_id": observer.get("center_body_id", 301),
         },
-        start_utc=scenario["start_utc"],
-        end_utc=scenario["end_utc"],
-        step_seconds=scenario["step_seconds"],
-        rows=joined,
-        run_id=f"{scenario['site_id']}-q4-centre-0deg-{sun_csv_sha[:12]}",
-        code_revision=code_revision,
-        practice=practice,
-        eligible_for_submission_claim=eligible,
-        inputs={
+        "start_utc": scenario["start_utc"],
+        "end_utc": scenario["end_utc"],
+        "step_seconds": scenario["step_seconds"],
+        "rows": joined,
+        "run_id": content_run_id(
+            scenario["site_id"],
+            sun_csv_sha,
+            full_grid=full_grid,
+            start_utc=scenario["start_utc"],
+            end_utc=scenario["end_utc"],
+        ),
+        "code_revision": code_revision,
+        "practice": practice,
+        "eligible_for_submission_claim": eligible,
+        "inputs": {
             "sun_csv_sha256": sun_csv_sha,
             "earth_csv_sha256": earth_csv_sha,
             "sun_response_sha256": sun_raw_sha,
@@ -409,9 +463,56 @@ def run_from_scenario(scenario: dict, data_root: Path, code_revision: str | None
             "earth_response_matches_provenance": True,
             "appendix_b_raw_sha256": "open_mismatch_preserved",
         },
-        limitations=limitations,
-        trace_utc=scenario["start_utc"],
+        "limitations": limitations,
+        "trace_utc": scenario["start_utc"],
+    }
+
+
+def run_from_scenario(scenario: dict, data_root: Path, code_revision: str | None) -> dict:
+    """Classify one scenario from matching saved Horizons inputs."""
+    prepared = load_scenario_inputs(scenario, data_root, code_revision)
+    rows = prepared.pop("rows")
+    return geometric_run_from_rows(rows=rows, **prepared)
+
+
+def assert_comparable_grids(left: dict, right: dict) -> None:
+    """Reject two scenarios that do not share a UTC grid and horizon mode."""
+    checks = (
+        ("start_utc", left.get("start_utc"), right.get("start_utc")),
+        ("end_utc", left.get("end_utc"), right.get("end_utc")),
+        ("step_seconds", left.get("step_seconds"), right.get("step_seconds")),
+        ("horizon_mode", left.get("horizon_mode", "geometric_0deg"), right.get("horizon_mode", "geometric_0deg")),
     )
+    for name, left_value, right_value in checks:
+        if left_value != right_value:
+            raise ValueError(f"incompatible time grids: {name} {left_value} != {right_value}")
+
+
+def overlap_from_elapsed(elapsed_a: dict, elapsed_b: dict) -> dict:
+    sun_a = elapsed_a["sun"]["clear"]
+    sun_b = elapsed_b["sun"]["clear"]
+    both_a = elapsed_a["both"]["clear"]
+    both_b = elapsed_b["both"]["clear"]
+    return {
+        "sun_centre_clear_seconds": {"site_a": sun_a, "site_b": sun_b, "delta_b_minus_a": sun_b - sun_a},
+        "both_centres_clear_seconds": {"site_a": both_a, "site_b": both_b, "delta_b_minus_a": both_b - both_a},
+        "unknown_seconds": {
+            "site_a": {lane: elapsed_a[lane]["unknown"] for lane in ("sun", "earth", "both")},
+            "site_b": {lane: elapsed_b[lane]["unknown"] for lane in ("sun", "earth", "both")},
+        },
+    }
+
+
+def shared_elapsed(emitted_a: list[dict], emitted_b: list[dict]) -> tuple[int, dict, dict]:
+    """Totals only over the UTC prefix both sites have resolved."""
+    shared = min(len(emitted_a), len(emitted_b))
+    for index in range(shared):
+        if emitted_a[index]["timestamp_utc"] != emitted_b[index]["timestamp_utc"]:
+            raise ValueError(
+                "incompatible time grids: shared sample "
+                f"{emitted_a[index]['timestamp_utc']} != {emitted_b[index]['timestamp_utc']}"
+            )
+    return shared, elapsed_from_samples(emitted_a[:shared]), elapsed_from_samples(emitted_b[:shared])
 
 
 def comparison_document(site_a: dict, site_b: dict, code_revision: str | None) -> dict:
@@ -430,13 +531,9 @@ def comparison_document(site_a: dict, site_b: dict, code_revision: str | None) -
         and same(("scenario", "horizon_mode"))
         and same(("interval_policy", "id"))
     )
-    sun_a = site_a["elapsed_seconds"]["sun"]["clear"]
-    sun_b = site_b["elapsed_seconds"]["sun"]["clear"]
-    both_a = site_a["elapsed_seconds"]["both"]["clear"]
-    both_b = site_b["elapsed_seconds"]["both"]["clear"]
     return {
         "schema_version": "replay-package-1",
-        "practice": True,
+        "practice": bool(site_a.get("practice") or site_b.get("practice")),
         "eligible_for_submission_claim": False,
         "code_revision": code_revision,
         "definition": site_a["definition"],
@@ -446,14 +543,7 @@ def comparison_document(site_a: dict, site_b: dict, code_revision: str | None) -
             {"role": "Site A", "file": f"runs/{site_a['scenario']['site_id']}.json", "run_id": site_a["run_id"]},
             {"role": "Site B", "file": f"runs/{site_b['scenario']['site_id']}.json", "run_id": site_b["run_id"]},
         ],
-        "overlap": {
-            "sun_centre_clear_seconds": {"site_a": sun_a, "site_b": sun_b, "delta_b_minus_a": sun_b - sun_a},
-            "both_centres_clear_seconds": {"site_a": both_a, "site_b": both_b, "delta_b_minus_a": both_b - both_a},
-            "unknown_seconds": {
-                "site_a": {lane: site_a["elapsed_seconds"][lane]["unknown"] for lane in ("sun", "earth", "both")},
-                "site_b": {lane: site_b["elapsed_seconds"][lane]["unknown"] for lane in ("sun", "earth", "both")},
-            },
-        },
+        "overlap": overlap_from_elapsed(site_a["elapsed_seconds"], site_b["elapsed_seconds"]),
         "limitations": [
             "Practice pair. Submission eligibility is pending.",
             "Comparison uses centre-ray 0° totals only.",
@@ -465,3 +555,491 @@ def comparison_document(site_a: dict, site_b: dict, code_revision: str | None) -
 def write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+def _batch_event(run_id: str, result_run_id: str, batch_index: int, batch: list[dict], emitted: list[dict]) -> dict:
+    return {
+        "event": "batch",
+        "run_id": run_id,
+        "result_run_id": result_run_id,
+        "batch_index": batch_index,
+        "stage": "calculating",
+        "complete": False,
+        "partial": True,
+        "samples": batch,
+        "samples_emitted": len(emitted),
+        "elapsed_seconds": copy.deepcopy(elapsed_from_samples(emitted)),
+        "intervals": intervals_from_samples(emitted),
+    }
+
+
+def stream_scenario(
+    scenario: dict,
+    data_root: Path,
+    code_revision: str | None,
+    *,
+    batch_size: int = 4,
+    cancel=None,
+    fail_after_batches: int | None = None,
+    pause_seconds: float = 0,
+    run_id: str | None = None,
+):
+    """Yield loading, metadata, ordered batches, then complete, cancelled, or error.
+
+    A sample is emitted only after the next timestamp has been seen, except the
+    terminal sample. ``cancel`` is a threading.Event. ``pause_seconds`` waits
+    between batches so a caller can cancel before the next batch.
+    """
+    if batch_size < 1:
+        raise ValueError("batch_size must be at least 1")
+    run_id = run_id or uuid.uuid4().hex[:12]
+    yield {"event": "stage", "run_id": run_id, "stage": "loading_inputs", "complete": False, "partial": True}
+    try:
+        prepared = load_scenario_inputs(scenario, data_root, code_revision)
+    except ValueError as exc:
+        yield {
+            "event": "error",
+            "run_id": run_id,
+            "stage": "failed",
+            "complete": False,
+            "partial": True,
+            "message": str(exc),
+            "samples_emitted": 0,
+        }
+        return
+
+    rows = prepared["rows"]
+    result_run_id = prepared["run_id"]
+    yield {
+        "event": "metadata",
+        "run_id": run_id,
+        "result_run_id": result_run_id,
+        "stage": "calculating",
+        "complete": False,
+        "partial": True,
+        "sample_count": len(rows),
+        "code_revision": prepared["code_revision"],
+        "labels": LANE_LABELS,
+        "scenario": {
+            "site_id": prepared["site_id"],
+            "horizon_mode": "geometric_0deg",
+            "start_utc": prepared["start_utc"],
+            "end_utc": prepared["end_utc"],
+            "step_seconds": prepared["step_seconds"],
+            "observer": prepared["observer"],
+        },
+        "practice": prepared["practice"],
+        "eligible_for_submission_claim": prepared["eligible_for_submission_claim"],
+    }
+
+    emitted: list[dict] = []
+    batch: list[dict] = []
+    batch_index = 0
+
+    def cancelled_event() -> dict:
+        return {
+            "event": "cancelled",
+            "run_id": run_id,
+            "result_run_id": result_run_id,
+            "stage": "cancelled",
+            "complete": False,
+            "partial": True,
+            "message": "run cancelled",
+            "samples_emitted": len(emitted),
+            "elapsed_seconds": copy.deepcopy(elapsed_from_samples(emitted)),
+            "intervals": intervals_from_samples(emitted),
+        }
+
+    def failed_event() -> dict:
+        return {
+            "event": "error",
+            "run_id": run_id,
+            "result_run_id": result_run_id,
+            "stage": "failed",
+            "complete": False,
+            "partial": True,
+            "message": f"calculation failed after batch {batch_index}",
+            "samples_emitted": len(emitted),
+            "elapsed_seconds": copy.deepcopy(elapsed_from_samples(emitted)),
+            "intervals": intervals_from_samples(emitted),
+        }
+
+    for index, row in enumerate(rows):
+        if cancel is not None and cancel.is_set():
+            yield cancelled_event()
+            return
+        if pause_seconds and emitted and not batch:
+            if cancel is not None and cancel.wait(pause_seconds):
+                yield cancelled_event()
+                return
+            if cancel is None:
+                time.sleep(pause_seconds)
+        nxt = None if index == len(rows) - 1 else rows[index + 1]
+        sample = classify_sample(row, nxt, step_seconds=prepared["step_seconds"])
+        batch.append(sample)
+        emitted.append(sample)
+        if len(batch) == batch_size:
+            yield _batch_event(run_id, result_run_id, batch_index, batch, emitted)
+            if fail_after_batches is not None and batch_index + 1 >= fail_after_batches:
+                yield failed_event()
+                return
+            batch = []
+            batch_index += 1
+
+    if batch:
+        yield _batch_event(run_id, result_run_id, batch_index, batch, emitted)
+        if fail_after_batches is not None and batch_index + 1 >= fail_after_batches:
+            yield failed_event()
+            return
+    finished = geometric_run_from_rows(rows=rows, **{key: value for key, value in prepared.items() if key != "rows"})
+    yield {
+        "event": "complete",
+        "run_id": run_id,
+        "result_run_id": result_run_id,
+        "stage": "complete",
+        "complete": True,
+        "partial": False,
+        "result": finished,
+    }
+
+
+def _site_batch_event(
+    *,
+    comparison_id: str,
+    role: str,
+    run_id: str,
+    result_run_id: str,
+    batch_index: int,
+    batch: list[dict],
+    emitted: list[dict],
+    emitted_a: list[dict],
+    emitted_b: list[dict],
+) -> dict:
+    shared, elapsed_a, elapsed_b = shared_elapsed(emitted_a, emitted_b)
+    return {
+        "event": "site_batch",
+        "comparison_id": comparison_id,
+        "role": role,
+        "run_id": run_id,
+        "result_run_id": result_run_id,
+        "batch_index": batch_index,
+        "stage": "calculating",
+        "complete": False,
+        "partial": True,
+        "samples": batch,
+        "samples_emitted": len(emitted),
+        "elapsed_seconds": copy.deepcopy(elapsed_from_samples(emitted)),
+        "intervals": intervals_from_samples(emitted),
+        "shared_samples": shared,
+        "comparison_partial": True,
+        "comparison_elapsed": {
+            "site_a": copy.deepcopy(elapsed_a),
+            "site_b": copy.deepcopy(elapsed_b),
+        },
+        "overlap": overlap_from_elapsed(elapsed_a, elapsed_b),
+    }
+
+
+def stream_comparison(
+    scenario_a: dict,
+    scenario_b: dict,
+    data_root: Path,
+    code_revision: str | None,
+    *,
+    batch_size_a: int = 4,
+    batch_size_b: int = 4,
+    cancel=None,
+    fail_after_batches_a: int | None = None,
+    fail_after_batches_b: int | None = None,
+    pause_seconds: float = 0,
+    comparison_id: str | None = None,
+    run_id_a: str | None = None,
+    run_id_b: str | None = None,
+):
+    """Yield a two-site live run on a shared UTC grid.
+
+    Comparison totals use only the shared resolved sample prefix. Pending samples
+    are not scientific Unknown. A complete comparison export is emitted only when
+    both sites finish.
+    """
+    if batch_size_a < 1 or batch_size_b < 1:
+        raise ValueError("batch_size must be at least 1")
+    comparison_id = comparison_id or uuid.uuid4().hex[:12]
+    run_id_a = run_id_a or uuid.uuid4().hex[:12]
+    run_id_b = run_id_b or uuid.uuid4().hex[:12]
+    yield {
+        "event": "stage",
+        "comparison_id": comparison_id,
+        "run_id_a": run_id_a,
+        "run_id_b": run_id_b,
+        "stage": "loading_inputs",
+        "complete": False,
+        "partial": True,
+    }
+    try:
+        assert_comparable_grids(
+            {
+                "start_utc": scenario_a.get("start_utc"),
+                "end_utc": scenario_a.get("end_utc"),
+                "step_seconds": scenario_a.get("step_seconds"),
+                "horizon_mode": scenario_a.get("horizon_mode", "geometric_0deg"),
+            },
+            {
+                "start_utc": scenario_b.get("start_utc"),
+                "end_utc": scenario_b.get("end_utc"),
+                "step_seconds": scenario_b.get("step_seconds"),
+                "horizon_mode": scenario_b.get("horizon_mode", "geometric_0deg"),
+            },
+        )
+        prepared_a = load_scenario_inputs(scenario_a, data_root, code_revision)
+        prepared_b = load_scenario_inputs(scenario_b, data_root, code_revision)
+        assert_comparable_grids(
+            {
+                "start_utc": prepared_a["start_utc"],
+                "end_utc": prepared_a["end_utc"],
+                "step_seconds": prepared_a["step_seconds"],
+                "horizon_mode": "geometric_0deg",
+            },
+            {
+                "start_utc": prepared_b["start_utc"],
+                "end_utc": prepared_b["end_utc"],
+                "step_seconds": prepared_b["step_seconds"],
+                "horizon_mode": "geometric_0deg",
+            },
+        )
+        stamps_a = [row["timestamp_utc"] for row in prepared_a["rows"]]
+        stamps_b = [row["timestamp_utc"] for row in prepared_b["rows"]]
+        if stamps_a != stamps_b:
+            raise ValueError("incompatible time grids: sample timestamps differ")
+    except ValueError as exc:
+        yield {
+            "event": "error",
+            "comparison_id": comparison_id,
+            "run_id_a": run_id_a,
+            "run_id_b": run_id_b,
+            "stage": "failed",
+            "complete": False,
+            "partial": True,
+            "message": str(exc),
+            "samples_emitted_a": 0,
+            "samples_emitted_b": 0,
+            "shared_samples": 0,
+        }
+        return
+
+    rows_a = prepared_a["rows"]
+    rows_b = prepared_b["rows"]
+    result_run_id_a = prepared_a["run_id"]
+    result_run_id_b = prepared_b["run_id"]
+
+    def site_meta(prepared: dict, role: str, run_id: str, result_run_id: str) -> dict:
+        return {
+            "role": role,
+            "run_id": run_id,
+            "result_run_id": result_run_id,
+            "sample_count": len(prepared["rows"]),
+            "code_revision": prepared["code_revision"],
+            "labels": LANE_LABELS,
+            "scenario": {
+                "site_id": prepared["site_id"],
+                "horizon_mode": "geometric_0deg",
+                "start_utc": prepared["start_utc"],
+                "end_utc": prepared["end_utc"],
+                "step_seconds": prepared["step_seconds"],
+                "observer": prepared["observer"],
+            },
+            "practice": prepared["practice"],
+            "eligible_for_submission_claim": prepared["eligible_for_submission_claim"],
+        }
+
+    yield {
+        "event": "metadata",
+        "comparison_id": comparison_id,
+        "run_id_a": run_id_a,
+        "run_id_b": run_id_b,
+        "stage": "calculating",
+        "complete": False,
+        "partial": True,
+        "sites": [
+            site_meta(prepared_a, "site_a", run_id_a, result_run_id_a),
+            site_meta(prepared_b, "site_b", run_id_b, result_run_id_b),
+        ],
+        "practice": prepared_a["practice"] or prepared_b["practice"],
+        "eligible_for_submission_claim": False,
+        "labels": LANE_LABELS,
+    }
+
+    emitted_a: list[dict] = []
+    emitted_b: list[dict] = []
+    batch_a: list[dict] = []
+    batch_b: list[dict] = []
+    batch_index_a = 0
+    batch_index_b = 0
+
+    def cancelled_event() -> dict:
+        shared, elapsed_shared_a, elapsed_shared_b = shared_elapsed(emitted_a, emitted_b)
+        return {
+            "event": "cancelled",
+            "comparison_id": comparison_id,
+            "run_id_a": run_id_a,
+            "run_id_b": run_id_b,
+            "stage": "cancelled",
+            "complete": False,
+            "partial": True,
+            "message": "comparison cancelled",
+            "samples_emitted_a": len(emitted_a),
+            "samples_emitted_b": len(emitted_b),
+            "shared_samples": shared,
+            "elapsed_seconds_a": copy.deepcopy(elapsed_from_samples(emitted_a)),
+            "elapsed_seconds_b": copy.deepcopy(elapsed_from_samples(emitted_b)),
+            "intervals_a": intervals_from_samples(emitted_a),
+            "intervals_b": intervals_from_samples(emitted_b),
+            "overlap": overlap_from_elapsed(elapsed_shared_a, elapsed_shared_b),
+        }
+
+    def failed_event(role: str, batch_index: int) -> dict:
+        shared, elapsed_shared_a, elapsed_shared_b = shared_elapsed(emitted_a, emitted_b)
+        return {
+            "event": "error",
+            "comparison_id": comparison_id,
+            "run_id_a": run_id_a,
+            "run_id_b": run_id_b,
+            "role": role,
+            "stage": "failed",
+            "complete": False,
+            "partial": True,
+            "message": f"calculation failed after batch {batch_index} on {role}",
+            "samples_emitted_a": len(emitted_a),
+            "samples_emitted_b": len(emitted_b),
+            "shared_samples": shared,
+            "elapsed_seconds_a": copy.deepcopy(elapsed_from_samples(emitted_a)),
+            "elapsed_seconds_b": copy.deepcopy(elapsed_from_samples(emitted_b)),
+            "intervals_a": intervals_from_samples(emitted_a),
+            "intervals_b": intervals_from_samples(emitted_b),
+            "overlap": overlap_from_elapsed(elapsed_shared_a, elapsed_shared_b),
+        }
+
+    def maybe_pause() -> bool:
+        if not pause_seconds:
+            return False
+        if cancel is not None and cancel.wait(pause_seconds):
+            return True
+        if cancel is None:
+            time.sleep(pause_seconds)
+        return False
+
+    for index in range(len(rows_a)):
+        if cancel is not None and cancel.is_set():
+            yield cancelled_event()
+            return
+        nxt_a = None if index == len(rows_a) - 1 else rows_a[index + 1]
+        nxt_b = None if index == len(rows_b) - 1 else rows_b[index + 1]
+        sample_a = classify_sample(rows_a[index], nxt_a, step_seconds=prepared_a["step_seconds"])
+        sample_b = classify_sample(rows_b[index], nxt_b, step_seconds=prepared_b["step_seconds"])
+        batch_a.append(sample_a)
+        emitted_a.append(sample_a)
+        batch_b.append(sample_b)
+        emitted_b.append(sample_b)
+
+        if len(batch_a) == batch_size_a:
+            if maybe_pause():
+                yield cancelled_event()
+                return
+            yield _site_batch_event(
+                comparison_id=comparison_id,
+                role="site_a",
+                run_id=run_id_a,
+                result_run_id=result_run_id_a,
+                batch_index=batch_index_a,
+                batch=batch_a,
+                emitted=emitted_a,
+                emitted_a=emitted_a,
+                emitted_b=emitted_b,
+            )
+            if fail_after_batches_a is not None and batch_index_a + 1 >= fail_after_batches_a:
+                yield failed_event("site_a", batch_index_a)
+                return
+            batch_a = []
+            batch_index_a += 1
+
+        if len(batch_b) == batch_size_b:
+            if maybe_pause():
+                yield cancelled_event()
+                return
+            yield _site_batch_event(
+                comparison_id=comparison_id,
+                role="site_b",
+                run_id=run_id_b,
+                result_run_id=result_run_id_b,
+                batch_index=batch_index_b,
+                batch=batch_b,
+                emitted=emitted_b,
+                emitted_a=emitted_a,
+                emitted_b=emitted_b,
+            )
+            if fail_after_batches_b is not None and batch_index_b + 1 >= fail_after_batches_b:
+                yield failed_event("site_b", batch_index_b)
+                return
+            batch_b = []
+            batch_index_b += 1
+
+    if batch_a:
+        if maybe_pause():
+            yield cancelled_event()
+            return
+        yield _site_batch_event(
+            comparison_id=comparison_id,
+            role="site_a",
+            run_id=run_id_a,
+            result_run_id=result_run_id_a,
+            batch_index=batch_index_a,
+            batch=batch_a,
+            emitted=emitted_a,
+            emitted_a=emitted_a,
+            emitted_b=emitted_b,
+        )
+        if fail_after_batches_a is not None and batch_index_a + 1 >= fail_after_batches_a:
+            yield failed_event("site_a", batch_index_a)
+            return
+    if batch_b:
+        if maybe_pause():
+            yield cancelled_event()
+            return
+        yield _site_batch_event(
+            comparison_id=comparison_id,
+            role="site_b",
+            run_id=run_id_b,
+            result_run_id=result_run_id_b,
+            batch_index=batch_index_b,
+            batch=batch_b,
+            emitted=emitted_b,
+            emitted_a=emitted_a,
+            emitted_b=emitted_b,
+        )
+        if fail_after_batches_b is not None and batch_index_b + 1 >= fail_after_batches_b:
+            yield failed_event("site_b", batch_index_b)
+            return
+
+    finished_a = geometric_run_from_rows(
+        rows=rows_a, **{key: value for key, value in prepared_a.items() if key != "rows"}
+    )
+    finished_b = geometric_run_from_rows(
+        rows=rows_b, **{key: value for key, value in prepared_b.items() if key != "rows"}
+    )
+    comparison = comparison_document(finished_a, finished_b, code_revision)
+    yield {
+        "event": "complete",
+        "comparison_id": comparison_id,
+        "run_id_a": run_id_a,
+        "run_id_b": run_id_b,
+        "result_run_id_a": result_run_id_a,
+        "result_run_id_b": result_run_id_b,
+        "stage": "complete",
+        "complete": True,
+        "partial": False,
+        "result_a": finished_a,
+        "result_b": finished_b,
+        "comparison": comparison,
+        "shared_samples": len(emitted_a),
+        "overlap": comparison["overlap"],
+    }
