@@ -245,7 +245,7 @@
   {
     "check": "evidence shows run ID, observer, source and export",
     "pass": true,
-    "detail": "B\nMalapert \u00b7 Sun-centre clearance\n\nEvidence\n\u2715\n\n2025-01-03T00:00:00Z \u00b7 follows the playhead\n\nSUN-CENTRE CLEARANCE \u00b7 AZIMUTH\n140.746429\u00b0\nSUN-CENTRE CLEARANCE \u00b7 ELEVATION, MARGIN\n-1.603613\u00b0, -1.603613\u00b0\nH"
+    "detail": "B\nMalapert \u00b7 Sun-centre clearance\n\nEvidence\n\u2212\n100%\n+\n\u2715\n\n2025-01-03T00:00:00Z \u00b7 follows the playhead\n\nSUN-CENTRE CLEARANCE \u00b7 AZIMUTH\n140.746429\u00b0\nSUN-CENTRE CLEARANCE \u00b7 ELEVATION, MARGIN\n-1.603613\u00b0, -1."
   },
   {
     "check": "Esc closes evidence",
@@ -496,7 +496,7 @@
   {
     "check": "marker click opens preview with chart",
     "pass": true,
-    "detail": "B\nMalapert \u00b7 Sun-centre clearance\n\nSun centre\nBlocked\n\u2715\n\n2025-01-01T13:00:00Z \u00b7 follows the playhead\n\nThe Sun centre is 2.216453\u00b0 below the 0\u00b0 horizon, so the s"
+    "detail": "B\nMalapert \u00b7 Sun-centre clearance\n\nSun centre\nBlocked\n\u2212\n100%\n+\n\u2715\n\n2025-01-01T13:00:00Z \u00b7 follows the playhead\n\nThe Sun centre is 2.216453\u00b0 below the 0\u00b0 horizon,"
   },
   {
     "check": "preview follows the playhead",
@@ -507,7 +507,7 @@
     "check": "Play advances the playhead",
     "pass": true,
     "detail": {
-      "i": 26,
+      "i": 28,
       "label": "Pause",
       "playing": true
     }
@@ -725,7 +725,7 @@
   {
     "check": "follow latest on at stream start",
     "pass": true,
-    "detail": "Results through 2025-01-01T01:15:00Z"
+    "detail": "Results through 2025-01-01T00:45:00Z"
   },
   {
     "check": "streaming: Start disabled, Stop enabled",

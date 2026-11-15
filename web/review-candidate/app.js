@@ -43,6 +43,7 @@ const state = {
   playing: false,
   playTimer: null,
   preview: null,
+  pvZoom: 1,
   runToken: 0,
   showTerrain: false,
   /** Selected window: { site, lane, start, end } from engine intervals, or null. */
@@ -1441,7 +1442,7 @@ function previewHtml() {
     return `<header class="pv-head">
         <div><p class="pv-kicker">${slotBadge(p.site)} ${esc(name)} · ${esc(item.label)}</p>
         <h3>${esc(p.body === "sun" ? "Sun" : "Earth")} centre <span class="status-pill status-${esc(item.state)}">${esc(titleCase(item.state))}</span></h3></div>
-        <button type="button" class="pv-close" aria-label="Close preview">✕</button>
+        <div class="pv-head-actions">${pvToolsHtml()}<button type="button" class="pv-close" aria-label="Close preview">✕</button></div>
       </header>
       <p class="pv-time">${esc(sample.timestamp_utc)} · follows the playhead</p>
       <p class="pv-text">${esc(explain(sample, p.body))}</p>
@@ -1475,7 +1476,7 @@ function evidencePreviewHtml(p, run, sample) {
   return `<header class="pv-head">
       <div><p class="pv-kicker">${slotBadge(p.site)} ${esc(siteName(run))} · ${esc(laneName(lane))}</p>
       <h3>Evidence</h3></div>
-      <button type="button" class="pv-close" aria-label="Close evidence">✕</button>
+      <div class="pv-head-actions">${pvToolsHtml()}<button type="button" class="pv-close" aria-label="Close evidence">✕</button></div>
     </header>
     <p class="pv-time" id="evidence">${esc(sample.timestamp_utc)} · follows the playhead</p>
     <dl class="evidence">
@@ -1488,17 +1489,52 @@ function evidencePreviewHtml(p, run, sample) {
     <p class="pv-foot">Centre-ray against geometric 0°. Terrain clearance unknown.</p>`;
 }
 
+const PV_ZOOM_MIN = 0.7;
+const PV_ZOOM_MAX = 2;
+const PV_ZOOM_STEP = 0.15;
+
+function pvToolsHtml() {
+  return `<div class="pv-tools" role="group" aria-label="Zoom the card">
+      <button type="button" class="pv-zoom-btn" data-pv-zoom="out" aria-label="Zoom out" title="Zoom out (Ctrl + wheel)">−</button>
+      <button type="button" class="pv-zoom-label" data-pv-zoom="reset" aria-label="Reset zoom" title="Reset zoom">${Math.round(state.pvZoom * 100)}%</button>
+      <button type="button" class="pv-zoom-btn" data-pv-zoom="in" aria-label="Zoom in" title="Zoom in (Ctrl + wheel)">+</button>
+    </div>`;
+}
+
+/** Zoom the centred card. Display only; nothing in the engine result changes. */
+function setPreviewZoom(value) {
+  const next = Math.min(PV_ZOOM_MAX, Math.max(PV_ZOOM_MIN, Math.round(value * 100) / 100));
+  state.pvZoom = next;
+  const host = document.getElementById("preview");
+  if (host) {
+    host.style.setProperty("--pvz", String(next));
+    const label = host.querySelector(".pv-zoom-label");
+    if (label) label.textContent = `${Math.round(next * 100)}%`;
+  }
+}
+
+/** The preview card is a centred dialog over a dimmed page. It follows the playhead and can be zoomed. */
 function renderPreview() {
   const host = document.getElementById("preview");
+  const backdrop = document.getElementById("preview-backdrop");
   if (!host) return;
   const html = state.preview ? previewHtml() : "";
   host.hidden = !html;
-  host.innerHTML = html;
+  if (backdrop) backdrop.hidden = !html;
+  document.body.classList.toggle("has-preview", Boolean(html));
+  host.style.setProperty("--pvz", String(state.pvZoom));
+  const scroll = host.querySelector(".pv-zoom-body");
+  const top = scroll ? host.scrollTop : 0;
+  host.innerHTML = html ? `<div class="pv-zoom-body">${html}</div>` : "";
+  if (top) host.scrollTop = top;
 }
 
 function openPreview(spec) {
+  const wasOpen = Boolean(state.preview);
   state.preview = spec;
   renderPreview();
+  const close = document.querySelector("#preview .pv-close");
+  if (!wasOpen && close) close.focus();
 }
 
 function closePreview() {
@@ -2762,7 +2798,13 @@ function bind() {
       openPreview({ kind: "evidence", site });
       return;
     }
-    if (event.target.closest(".pv-close")) {
+    const zoomBtn = event.target.closest("[data-pv-zoom]");
+    if (zoomBtn) {
+      const kind = zoomBtn.dataset.pvZoom;
+      setPreviewZoom(kind === "in" ? state.pvZoom + PV_ZOOM_STEP : kind === "out" ? state.pvZoom - PV_ZOOM_STEP : 1);
+      return;
+    }
+    if (event.target.closest(".pv-close") || event.target.id === "preview-backdrop") {
       closePreview();
       return;
     }
@@ -2822,6 +2864,11 @@ function bind() {
       if (state.runs.length && sharedSampleCount()) renderTimeline();
     }, 120);
   });
+  document.getElementById("preview").addEventListener("wheel", (event) => {
+    if (!event.ctrlKey) return;
+    event.preventDefault();
+    setPreviewZoom(state.pvZoom + (event.deltaY < 0 ? PV_ZOOM_STEP : -PV_ZOOM_STEP));
+  }, { passive: false });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && state.preview) {
       closePreview();
