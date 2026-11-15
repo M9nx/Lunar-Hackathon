@@ -198,7 +198,7 @@ def main() -> int:
         click("#decision .case-open")
         drv.wait("return state.source === 'practice30' && document.querySelectorAll('.sky-panel').length === 2", timeout=40)
         check("30-day case loads from the saved package, not the witnessed replay", drv.js("return state.comparison.runs[0].file") == "runs/site04-p02-practice-30d.json", None)
-        check("30-day case is labelled practice and not an eligible claim", "Practice · 30 days" in norm("#answers") and drv.js("return state.comparison.eligible_for_submission_claim") is False, norm("#answers .result-tags"))
+        check("30-day case is labelled practice and Lead-eligible", "Practice · 30 days" in norm("#answers") and drv.js("return state.comparison.eligible_for_submission_claim") is True, norm("#answers .result-tags"))
         scope = norm(".why-scope")
         check("30-day scope line: 2025-01-01 → 2025-01-31, 720 h", "2025-01-01T00:00Z → 2025-01-31T00:00Z" in scope and "720 h" in scope, scope)
         sun_sites = drv.js("return state.runs.map(r => r.payload.elapsed_seconds.sun.clear)")

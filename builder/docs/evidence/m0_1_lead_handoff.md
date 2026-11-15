@@ -9,7 +9,7 @@
    - Site B `malapert-practice`: east longitude −2.93°, latitude −85.99°, reference altitude 0 km.
    - Window `2025-01-01T00:00:00Z` through `2025-01-03T00:00:00Z`, step 900 s.
    - Sun `10`, Earth `399`, Moon observer `301`, quantity 4, airless, centre ray, geometric 0°.
-2. Can the saved January 2025 practice runs support the submission? Keep `eligible_for_submission_claim=false` until that decision is recorded.
+2. Can the saved January 2025 practice runs support the submission? **Resolved 2026-11-15:** yes for centre-ray 0° — see `l1_eligibility_decision.md`.
 3. Finish the AI-use disclosure. The organizing team requires it. Exact Project-tab fields and demo limits are still unread because the Resources guide page returned an error.
 
 ## What was checked
@@ -24,6 +24,6 @@ If Lead approves a replacement case, run that case through the hardened engine a
 
 Until Science finishes the terrain review, show terrain as Unknown. Malapert 4.86425 km is a sensitivity input. Keep both raw-response digest sets. The matching angle CSVs support the replay totals. Raw-file identity stays open.
 
-Keep the practice label and `eligible_for_submission_claim=false`.
+Keep the practice label. Eligibility flag flipped true on January packs after L1.
 
 The 0° judging record is `m6_0deg_submission_package.md`. It has the launch command, the five-part walkthrough, the Horizons credit, and the disclosure starter. The local page is `http://127.0.0.1:8765/`. Judges cannot open that address from their own machines, so the reachable demo link is still part of this handoff.

@@ -133,7 +133,7 @@ class PracticeSiteA(unittest.TestCase):
         self.assertEqual(self.result["elapsed_seconds"]["sun"]["clear"], 172800)
         self.assertEqual(self.result["elapsed_seconds"]["earth"]["blocked"], 172800)
         self.assertEqual(self.result["elapsed_seconds"]["both"]["unknown"], 0)
-        self.assertFalse(self.result["eligible_for_submission_claim"])
+        self.assertTrue(self.result["eligible_for_submission_claim"])
         self.assertEqual(self.result["inputs"]["appendix_b_raw_sha256"], "open_mismatch_preserved")
 
 
@@ -142,7 +142,7 @@ class ReplayPackage(unittest.TestCase):
     def test_package_files_and_offline_shell(self) -> None:
         comparison = json.loads((PACKAGE / "comparison.json").read_text())
         self.assertTrue(comparison["comparable"])
-        self.assertFalse(comparison["eligible_for_submission_claim"])
+        self.assertTrue(comparison["eligible_for_submission_claim"])
         self.assertEqual(comparison["overlap"]["sun_centre_clear_seconds"]["delta_b_minus_a"], -172800)
         html = (PACKAGE / "index.html").read_text(encoding="utf-8")
         script = (PACKAGE / "app.js").read_text(encoding="utf-8")

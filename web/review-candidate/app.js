@@ -2526,7 +2526,7 @@ function applyLiveComparisonEvent(event) {
     state.comparison = {
       practice: event.practice,
       qa_fixture: false,
-      eligible_for_submission_claim: false,
+      eligible_for_submission_claim: Boolean(event.eligible_for_submission_claim),
       comparable: true,
       overlap: emptyOverlap(),
       limitations: [
@@ -3192,7 +3192,7 @@ function decisionCasesHtml() {
     return `<li class="dec-case"><div><strong>${esc(c.label)}</strong> <span class="win-hint">${esc(range)}</span></div><div>${esc(laneName(lane))}${esc(minPhrase(min))}: ${esc(per)}</div><button type="button" class="mini case-open" data-case="${esc(c.id)}">Open this case</button></li>`;
   }).join("");
   return `<h3 class="dec-sub">Other supported cases</h3><ul class="dec-cases">${items}</ul>
-    <p class="win-hint">Only saved Horizons inputs are offered. Each case is a practice input, and none is an eligible submission claim. The QA fixture is synthetic and is not listed.</p>`;
+    <p class="win-hint">Only saved Horizons inputs are offered. Lead approved the January practice packs for a submission claim (centre-ray 0°). The QA fixture is synthetic and is not listed.</p>`;
 }
 
 async function ensureCaseData(c) {
@@ -3286,6 +3286,10 @@ function render() {
       : "Partial totals. This run is incomplete.";
   } else if (state.comparison && state.comparison.qa_fixture) {
     banner.textContent = "QA fixture. Synthetic transitions for review. Not the January practice comparison.";
+  } else if (state.comparison && state.comparison.eligible_for_submission_claim) {
+    banner.textContent = state.live
+      ? "Local calculation from saved Horizons inputs. Lead approved this practice case for a submission claim (centre-ray 0°)."
+      : "Lead-approved practice evidence for a submission claim. Centre-ray 0° only; terrain Unknown.";
   } else if (state.live) {
     banner.textContent = "Local calculation from saved Horizons inputs. Not an eligible submission claim.";
   } else {

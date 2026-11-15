@@ -3,7 +3,7 @@
   "run_id": "malapert-practice-q4-centre-0deg-d6262b73db76",
   "code_revision": "f534f8c-dirty",
   "practice": true,
-  "eligible_for_submission_claim": false,
+  "eligible_for_submission_claim": true,
   "definition": "horizons_q4_apparent_airless_target_centre",
   "labels": {
     "sun": "Sun-centre clearance",
@@ -20992,8 +20992,8 @@
     }
   ],
   "limitations": [
-    "Practice evidence. Not an eligible submission claim.",
-    "Centre-ray clearance of the target centre against the 0\u00b0 local horizontal plane.",
+    "Lead approved these Horizons practice runs for a submission claim. Centre-ray 0° only; terrain Unknown; disc/power/contact not claimed.",
+    "Centre-ray clearance of the target centre against the 0° local horizontal plane.",
     "Quantity 4 apparent airless angles. This is not disc visibility, received power, or ground-station contact.",
     "Terrain mode is Unknown until the M4 review. This run does not classify terrain.",
     "Appendix B raw-response digests and on-disk response.json digests are both retained. File identity of the appendix digest stays open."

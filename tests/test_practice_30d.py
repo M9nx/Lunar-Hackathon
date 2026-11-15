@@ -67,7 +67,7 @@ class Practice30Day(unittest.TestCase):
             self.assertEqual(run["samples"][-1]["timestamp_utc"], "2025-01-31T00:00:00Z")
             self.assertEqual(run["samples"][-1]["duration_seconds"], 0)
             self.assertTrue(run["practice"])
-            self.assertFalse(run["eligible_for_submission_claim"])
+            self.assertTrue(run["eligible_for_submission_claim"])
             self.assertEqual(run["inputs"]["appendix_b_raw_sha256"], "not_in_appendix_b")
             for lane in ("sun", "earth", "both"):
                 self.assertEqual(sum(run["elapsed_seconds"][lane].values()), WINDOW_S)
@@ -136,7 +136,7 @@ class Practice30Day(unittest.TestCase):
     def test_saved_package_matches_the_engine(self) -> None:
         saved = json.loads((PACKAGE / "comparison.json").read_text(encoding="utf-8"))
         self.assertEqual(saved["overlap"], comparison_document(self.a, self.b, "test")["overlap"])
-        self.assertFalse(saved["eligible_for_submission_claim"])
+        self.assertTrue(saved["eligible_for_submission_claim"])
         for run, name in ((self.a, "site04-p02-practice-30d"), (self.b, "malapert-practice-30d")):
             on_disk = json.loads((PACKAGE / "runs" / f"{name}.json").read_text(encoding="utf-8"))
             self.assertEqual(on_disk["run_id"], run["run_id"])

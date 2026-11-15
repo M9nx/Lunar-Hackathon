@@ -58,7 +58,7 @@ Official challenge (confirm live wording): [Lunar Landing Site Navigator](https:
 
 **Verdict: Strong for traced 0° practice runs with tests; not closed for production or terrain claims.**
 
-**Reason.** Classification is **reproducible from saved Horizons CSV/JSON** with SHA-checked pack checks, pytest coverage on the engine, and an independent notebook trace. Practice exports pass case-fit scripts. **Caveats:** January 2025 inputs are **practice** (`eligible_for_submission_claim: false`); **Appendix B vs on-disk `response.json` hash mismatch remains open**; Malapert observer height is a practice value; **terrain and Product 69 comparisons are not accepted**.
+**Reason.** Classification is **reproducible from saved Horizons CSV/JSON** with SHA-checked pack checks, pytest coverage on the engine, and an independent notebook trace. Practice exports pass case-fit scripts. **Caveats:** January 2025 inputs are **practice** and Lead-approved for a centre-ray 0° claim (`eligible_for_submission_claim: true` on those packs); **Appendix B vs on-disk `response.json` hash mismatch remains open**; Malapert observer height is a practice value; **terrain and Product 69 comparisons are not accepted**.
 
 **Evidence**
 

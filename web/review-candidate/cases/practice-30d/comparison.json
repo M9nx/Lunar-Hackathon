@@ -1,7 +1,7 @@
 {
   "schema_version": "replay-package-1",
   "practice": true,
-  "eligible_for_submission_claim": false,
+  "eligible_for_submission_claim": true,
   "code_revision": "f534f8c-dirty",
   "definition": "horizons_q4_apparent_airless_target_centre",
   "labels": {
@@ -47,8 +47,8 @@
     }
   },
   "limitations": [
-    "Practice pair. Submission eligibility is pending.",
-    "Comparison uses centre-ray 0\u00b0 totals only.",
+    "Lead approved this practice pair for a submission claim. Centre-ray 0° only; terrain Unknown; disc/power/contact not claimed.",
+    "Comparison uses centre-ray 0° totals only.",
     "Product 69 is long-term context and is not a check of these windows."
   ]
 }

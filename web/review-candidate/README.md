@@ -77,4 +77,4 @@ In the page, pick an entry under **Saved catalog** in "Or calculate live", then 
 
 The practice view reads `../replay/comparison.json` and the two run files. The QA fixture button loads synthetic transitions in this directory. Terrain stays Unknown. The DEM profile is drawn only as an opt-in diagnostic.
 
-The witnessed package remains `code_revision` `1f3fb06` with `eligible_for_submission_claim` false.
+The witnessed package remains `code_revision` `1f3fb06` with `eligible_for_submission_claim` true (Lead L1, 2026-11-15).

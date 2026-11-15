@@ -85,7 +85,7 @@ Check file integrity, scenario fit, and event eligibility as three separate step
    ```
 
    It compares raw-response SHA-256 values with the provenance records and Appendix B. The Appendix B mismatch for the original 48 h files is **open** and is kept open (see Known limits). The 30-day files are not in Appendix B and report `not_in_appendix_b`.
-4. **Eligibility** is a Lead decision, not a file check. Every case is practice. `eligible_for_submission_claim` stays `false` until the Lead records a decision in `builder/docs/evidence/s2_scope_decision.md`.
+4. **Eligibility** is a Lead decision, not a file check. Every case is practice-origin. Lead recorded L1 approve in `builder/docs/evidence/l1_eligibility_decision.md` / `s2_scope_decision.md`; January packs are `eligible_for_submission_claim: true`. QA stays false.
 
 The engine repeats checks on every run: it rejects a response whose hash does not match its provenance, whose frame or angle convention differs, or that has conflicting duplicate timestamps, and it gives an error naming the file. A grid with missing rows is not an error: the grid is kept and the missing samples are `unknown` with a reason.
 
@@ -216,7 +216,7 @@ It runs the synthetic Sun-gap case through the page, compares the page, the down
 
 ## 10. Known limits (operator view)
 
-* Centre-ray only; terrain Unknown; all inputs are practice; `eligible_for_submission_claim` is `false`.
+* Centre-ray only; terrain Unknown; January practice packs are Lead-eligible (`eligible_for_submission_claim` true); QA is not.
 * The raw-file hash of the original 48 h Horizons exports differs from Appendix B of the reference. Matching angle rows do not close this. It stays open until a file-level comparison is done by the team.
 * The Malapert practice case uses reference altitude 0 km. The alternative value 4.86425 km has **not** been re-queried; it needs the team's JPL contact and Lead/Science choice.
 * Lead decisions L1–L5 and Science decisions S1–S5 in `builder/docs/evidence/s2_scope_decision.md` are **pending**. See `docs/release/RELEASE.md`.

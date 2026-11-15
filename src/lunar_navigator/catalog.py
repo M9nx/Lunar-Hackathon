@@ -226,9 +226,14 @@ def validate_window(entry: dict, start_utc: str | None, end_utc: str | None) -> 
 
 
 def scenario_for(entry: dict, start_utc: str | None = None, end_utc: str | None = None) -> dict:
-    """Scenario record for the engine, derived from a catalog entry. Labelled practice, never eligible."""
+    """Scenario record for the engine from a catalog entry.
+
+    Practice-origin Horizons sites are Lead-eligible for a centre-ray 0° claim (L1, 2026-11-15).
+    Synthetic QA entries stay ineligible.
+    """
     start, end = validate_window(entry, start_utc, end_utc)
     cov = entry["coverage"]
+    synthetic = bool(entry["synthetic"])
     scenario = {
         "schema_version": "scenario-v1",
         "status": "practice",
@@ -243,10 +248,10 @@ def scenario_for(entry: dict, start_utc: str | None = None, end_utc: str | None 
         "angle_convention": "airless_apparent",
         "horizons_paths": {"sun": entry["sources"]["sun"]["path"], "earth": entry["sources"]["earth"]["path"]},
         "expected_row_count": int((_parse(end) - _parse(start)).total_seconds() // cov["step_seconds"]) + 1,
-        "eligible_for_submission_claim": False,
+        "eligible_for_submission_claim": not synthetic,
         "in_appendix_b": bool(entry["in_appendix_b"]),
     }
-    if entry["synthetic"]:
+    if synthetic:
         scenario["synthetic"] = True
         scenario["synthetic_note"] = (
             "SYNTHETIC QA fixture. Horizons-shaped text written by tests/qa_horizons_case.py. Not JPL output and not a result about the Moon."

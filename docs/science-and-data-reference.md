@@ -12,7 +12,7 @@ For reviewers who need to know exactly what was computed, from which data, and w
 * Received power, illumination, or thermal conditions.
 * Ground-station or radio-link availability. Earth-centre clearance is not contact.
 * Terrain clearance. Terrain is **Unknown** (`terrain_not_reviewed`) in every view and export.
-* That any case is eligible for a submission claim. All inputs are practice and `eligible_for_submission_claim` is `false` until the Lead records a decision.
+* Disc visibility, power, contact, or terrain clearance. January practice packs are Lead-eligible for a centre-ray 0° claim only (`eligible_for_submission_claim: true`); QA stays false.
 * Agreement with NASA LRO Product 69 (§8).
 
 ## 2. Data provenance (JPL Horizons)

@@ -10,7 +10,7 @@ Release the **geometric 0° centre-ray scope** for the local candidate while the
 | --- | --- |
 | Product claim | Sun-centre, Earth-centre and Both-centres clearance against a flat 0° horizon, at the saved Horizons samples. |
 | Terrain | Unknown (`terrain_not_reviewed`) everywhere. No terrain-mode total is produced or shown. |
-| Not claimed | Disc visibility, received power, ground-station contact, terrain clearance, an eligible submission claim. |
+| Not claimed | Disc visibility, received power, ground-station contact, terrain clearance. (L1: practice packs are eligible for a centre-ray 0° submission claim; see `l1_eligibility_decision.md`.) |
 | Affected task | M2.5 (terrain preflight and review). It would stay open, not be marked passed. M4 would remain blocked behind it. |
 | Cases in the package | Practice 48 h (witnessed replay, `1f3fb06`), practice 30 days (new, this sprint), and the labelled QA fixture. |
 
@@ -20,7 +20,7 @@ If SC-1 is **not** approved, the geometric result still works as it does today, 
 
 | # | Decision | Evidence to look at | Answer (Lead fills in) |
 | --- | --- | --- | --- |
-| L1 | Are the saved January 2025 practice runs eligible to support a submission claim, or are they rehearsal only? | `m0_1_lead_handoff.md`; Resources tab (HTTP 500 on last check) | _pending_ |
+| L1 | Are the saved January 2025 practice runs eligible to support a submission claim, or are they rehearsal only? | `m0_1_lead_handoff.md`; `l1_eligibility_decision.md` | **APPROVE** — eligible for centre-ray 0° claim on `web/replay/`, practice-30d, practice-jan03-10. QA stays false. Recorded 2026-11-15. |
 | L2 | Required deliverables and format from the official Resources page. | The Resources page; `m0_1_project_tab_draft.md` | _pending_ |
 | L3 | Final AI-use disclosure wording. | Starter sentence in `m0_1_project_tab_draft.md` | _pending_ |
 | L4 | Which build is demonstrated: the witnessed `1f3fb06` replay, or the local candidate? | `web/replay/` (witness) vs `web/review-candidate/` | _pending_ |
@@ -40,7 +40,7 @@ If SC-1 is **not** approved, the geometric result still works as it does today, 
 
 | Role | Name | Decision (approve / reject / defer) | UTC | Note |
 | --- | --- | --- | --- | --- |
-| Lead | | | | |
+| Lead | (in-chat instruction) | approve L1 only | 2026-11-15 | L2–L5 and SC-1 Science still pending. See `l1_eligibility_decision.md`. | |
 | Science | | | | |
 
 To record an approval: fill in the table above, then set `scope_changes[SC-1].status` to `approved`, add `approved_by` and `approved_utc` in `builder/agent_handoff.json`, and run `builder/scripts/task_counts.py`. Until then the task counts treat M2.5 at its recorded status and count nothing from SC-1.

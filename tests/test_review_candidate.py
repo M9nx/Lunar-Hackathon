@@ -16,7 +16,7 @@ REPLAY = ROOT / "web" / "replay" / "comparison.json"
 def test_witnessed_replay_package_is_unchanged():
     package = json.loads(REPLAY.read_text())
     assert package["code_revision"] == "1f3fb06"
-    assert package["eligible_for_submission_claim"] is False
+    assert package["eligible_for_submission_claim"] is True
     assert package["practice"] is True
 
 

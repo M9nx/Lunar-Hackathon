@@ -47,7 +47,7 @@ Run: `cd builder && python3 scripts/check_m0_closure.py`
 | Eligible NASA data sources | **Source listed; case still open** | Lead | The captured Resources tab lists JPL Horizons. Lead uses that screenshot for the source check. Whether the saved January 2025 practice runs can support the submission is a separate decision. |
 | Permitted tools / AI use | **Required, unfinished** | Lead | Disclose how AI was used before submission. [Organizer discussion](https://github.com/nasa/spaceapps/discussions/1849). A starter sentence is in the Project tab draft. |
 | Result format (UTC, Unknown states) | **Confirmed (design)** | Lead + QA | Versioned run JSON per §5; states `clear` / `blocked` / `unknown`; ISO 8601 UTC with `Z`. |
-| Practice Horizons for demo claim | **Open** | Lead | Keep `eligible_for_submission_claim=false` until Lead records whether the January 2025 practice runs can support the submission. Use demo commit `1f3fb06`. A replacement case, if approved, is a separate hardened-engine candidate. |
+| Practice Horizons for demo claim | **Closed (L1 approve)** | Lead | `eligible_for_submission_claim=true` on `web/replay/`, practice-30d, practice-jan03-10 (2026-11-15). Evidence: `builder/docs/evidence/l1_eligibility_decision.md`. QA stays false. Terrain / disc / power / contact still not claimed. L2–L5 remain open. |
 
 ### M0.2 — Observer selection (in progress)
 

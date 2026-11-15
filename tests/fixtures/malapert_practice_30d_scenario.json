@@ -21,5 +21,5 @@
   },
   "expected_row_count": 721,
   "in_appendix_b": false,
-  "eligible_for_submission_claim": false
+  "eligible_for_submission_claim": true
 }

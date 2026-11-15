@@ -20,5 +20,5 @@
     "earth": "horizons/site04-p02-practice/earth-167962cea6a2"
   },
   "expected_row_count": 193,
-  "eligible_for_submission_claim": false
+  "eligible_for_submission_claim": true
 }

@@ -99,7 +99,7 @@ def build() -> dict:
     return {
         "schema_version": "release-manifest-1",
         "practice": True,
-        "eligible_for_submission_claim": False,
+        "eligible_for_submission_claim": True,
         "revision": {
             key: rev.get(key)
             for key in ("head", "head_short", "branch", "dirty", "label", "witnessed_replay_revision", "code_digest_sha256", "code_paths")

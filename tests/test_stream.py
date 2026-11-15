@@ -55,7 +55,7 @@ class PracticeBatchAndStream(unittest.TestCase):
         self.assertEqual(window["samples"][-1]["duration_seconds"], 0)
         self.assertEqual(sum(window["elapsed_seconds"]["sun"].values()), 6 * 3600)
         self.assertNotEqual(window["run_id"], full["run_id"])
-        self.assertFalse(full["eligible_for_submission_claim"])
+        self.assertTrue(full["eligible_for_submission_claim"])
         self.assertIn("Terrain mode is Unknown", " ".join(full["limitations"]))
 
     def test_stream_matches_batch_and_yields_a_batch_first(self) -> None:

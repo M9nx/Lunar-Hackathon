@@ -7,7 +7,7 @@
     "M0.1"
   ],
   "schedule_source": "Master-Reference/MASTER_REFERENCE.json schedule.tasks (workbook has Timeline phases only; no Tasks tab)",
-  "objective": "M6.1 local 0\u00b0 judging package. Build landing page, finish User Guide / Operator Manual / API / Engine / Data & Research / Project Progress docs, package the Jan 3\u201310 practice case, and verify from a clean extracted copy (24/24 steps passed). Code digest 8c819792f2b36135dfde5aeac0b5fdb7abacae161fe81b79f9a83b47cbd02434. Lead eligibility and required deliverables remain pending; terrain stays Unknown.",
+  "objective": "M6.1 local 0\u00b0 judging package. Build landing page, finish User Guide / Operator Manual / API / Engine / Data & Research / Project Progress docs, package the Jan 3\u201310 practice case, and verify from a clean extracted copy (24/24 steps passed). Code digest 8c819792f2b36135dfde5aeac0b5fdb7abacae161fe81b79f9a83b47cbd02434. Lead L1 eligibility approved 2026-11-15 (January packs true; QA false); L2\u2013L5 and required deliverables remain pending; terrain stays Unknown.",
   "scenario_ref": "web/replay/comparison.json",
   "data_root": "data",
   "inputs": {
@@ -19,7 +19,7 @@
     "replay_package": "web/replay"
   },
   "checks": {
-    "practice_case_eligible_for_submission": "pending",
+    "practice_case_eligible_for_submission": "approved",
     "required_deliverables_confirmed": "pending"
   },
   "outputs": {

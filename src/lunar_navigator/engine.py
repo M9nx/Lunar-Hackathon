@@ -456,16 +456,21 @@ def load_scenario_inputs(scenario: dict, data_root: Path, code_revision: str | N
         joined = select_time_window(joined, scenario["start_utc"], scenario["end_utc"], scenario["step_seconds"])
         full_grid = False
 
-    practice = scenario.get("status") == "practice" or scenario.get("eligible_for_submission_claim") is False
     eligible = bool(scenario.get("eligible_for_submission_claim", False))
+    practice = scenario.get("status") == "practice" or not eligible
     limitations = [
         "Centre-ray clearance of the target centre against the 0° local horizontal plane.",
         "Quantity 4 apparent airless angles. This is not disc visibility, received power, or ground-station contact.",
         "Terrain mode is Unknown until the M4 review. This run does not classify terrain.",
         "Appendix B raw-response digests and on-disk response.json digests are both retained. File identity of the appendix digest stays open.",
     ]
-    if practice or not eligible:
+    if not eligible:
         limitations.insert(0, "Practice evidence. Not an eligible submission claim.")
+    elif practice:
+        limitations.insert(
+            0,
+            "Lead approved these Horizons practice runs for a submission claim. Centre-ray 0° only; terrain Unknown; disc/power/contact not claimed.",
+        )
     if horizon.mode == "terrain" and horizon.skyline is None:
         limitations.insert(
             0,
@@ -595,10 +600,16 @@ def comparison_document(site_a: dict, site_b: dict, code_revision: str | None) -
         and same(("scenario", "horizon_mode"))
         and same(("interval_policy", "id"))
     )
+    eligible = bool(site_a.get("eligible_for_submission_claim") and site_b.get("eligible_for_submission_claim"))
+    eligibility_note = (
+        "Lead approved this practice pair for a submission claim. Centre-ray 0° only; terrain Unknown; disc/power/contact not claimed."
+        if eligible
+        else "Practice pair. Submission eligibility is pending."
+    )
     return {
         "schema_version": "replay-package-1",
         "practice": bool(site_a.get("practice") or site_b.get("practice")),
-        "eligible_for_submission_claim": False,
+        "eligible_for_submission_claim": eligible,
         "code_revision": code_revision,
         "definition": site_a["definition"],
         "labels": LANE_LABELS,
@@ -609,7 +620,7 @@ def comparison_document(site_a: dict, site_b: dict, code_revision: str | None) -
         ],
         "overlap": overlap_from_elapsed(site_a["elapsed_seconds"], site_b["elapsed_seconds"]),
         "limitations": [
-            "Practice pair. Submission eligibility is pending.",
+            eligibility_note,
             "Comparison uses centre-ray 0° totals only.",
             "Product 69 is long-term context and is not a check of these windows.",
         ],
@@ -936,7 +947,9 @@ def stream_comparison(
             site_meta(prepared_b, "site_b", run_id_b, result_run_id_b),
         ],
         "practice": prepared_a["practice"] or prepared_b["practice"],
-        "eligible_for_submission_claim": False,
+        "eligible_for_submission_claim": bool(
+            prepared_a["eligible_for_submission_claim"] and prepared_b["eligible_for_submission_claim"]
+        ),
         "labels": LANE_LABELS,
     }
 

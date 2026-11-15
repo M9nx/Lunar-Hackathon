@@ -1,6 +1,6 @@
 # Project tab draft
 
-Approved for now as the Project tab text. This does not make the practice case eligible. `eligible_for_submission_claim` stays false until Lead records that decision.
+Approved for now as the Project tab text. Lead L1 (2026-11-15) set `eligible_for_submission_claim` true on the January practice packs; see `l1_eligibility_decision.md`. L2–L5 remain open.
 
 Demo recording uses the witnessed build `1f3fb06`. If Lead approves a replacement case, run it through the hardened engine and save it separately.
 

@@ -81,7 +81,7 @@ Where the local release stands, what was verified, and what remains open before 
 
 - **Geometric 0°** is the release calculation.
 - **Terrain clearance is Unknown** everywhere until M4 review passes.
-- **Practice inputs** are used; `eligible_for_submission_claim` is false.
+- **Practice inputs** are used; Lead set `eligible_for_submission_claim` true on the January packs (L1, 2026-11-15). QA stays false.
 - **No claim** is made about disc visibility, received power, radio-link availability, or ground-station contact.
 
 ## Next steps

@@ -1,7 +1,7 @@
 {
   "schema_version": "release-manifest-1",
   "practice": true,
-  "eligible_for_submission_claim": false,
+  "eligible_for_submission_claim": true,
   "revision": {
     "head": "f534f8c9447b2935bb9687e6f89fa146b6d79d52",
     "head_short": "f534f8c",

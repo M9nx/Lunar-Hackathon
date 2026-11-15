@@ -63,7 +63,7 @@ Check the files: `sha256sum -c docs/release/MANIFEST.sha256` from the repository
 
 1. Centre-ray only: the centre of the body against a flat 0° horizon at saved samples (15 min or 1 h). Not disc, power, or contact.
 2. Terrain is Unknown everywhere. The M4 review has not passed; M2.5 is blocked.
-3. All inputs are practice (Site04 and Malapert, January 2025). `eligible_for_submission_claim` is `false`.
+3. All inputs are practice-origin (Site04 and Malapert, January 2025). Lead set `eligible_for_submission_claim` true on those packs (L1, 2026-11-15).
 4. Malapert practice height is 0 km above the 1737.4 km sphere, about 4.85 km below the DEM surface there. The 4.86425 km capture is reported but was not re-queried.
 5. The raw-file hash of the original 48 h Horizons exports differs from Master Reference Appendix B. The mismatch is open and both digest sets are kept.
 6. Product 69 is context only; no comparison is made with it.

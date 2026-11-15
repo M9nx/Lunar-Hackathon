@@ -9,7 +9,6 @@
     { id: "overview", href: "", label: "Overview" },
     { id: "guide", href: "review-candidate/?tour=1", label: "Guide" },
     { id: "navigator", href: "review-candidate/", label: "Navigator" },
-    { id: "replay", href: "replay/", label: "Replay" },
     { id: "manual", href: "documents.html?doc=operator-manual.md", label: "Manual" },
     { id: "reference", href: "documents.html?doc=engine-reference.md", label: "Reference" }
   ];
@@ -50,8 +49,8 @@
           <ul>
             <li><a href="${root}review-candidate/?tour=1">Step-by-step guide</a></li>
             <li><a href="${root}review-candidate/">Navigator</a></li>
-            <li><a href="${root}replay/">Witnessed 0° replay</a></li>
             <li><a href="${root}documents.html?doc=about-solution.md">About this solution</a></li>
+            <li><a href="${root}documents.html?doc=judge-qa.md">Judge Q&A</a></li>
             <li><a href="${root}documents.html?doc=operator-manual.md">Operator manual</a></li>
           </ul>
         </div>

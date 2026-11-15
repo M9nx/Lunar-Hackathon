@@ -20,5 +20,5 @@
     "earth": "horizons/malapert-practice/earth-062e67d0fdf0"
   },
   "expected_row_count": 193,
-  "eligible_for_submission_claim": false
+  "eligible_for_submission_claim": true
 }
