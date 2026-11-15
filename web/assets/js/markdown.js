@@ -89,6 +89,41 @@
     });
   }
 
+  function promoteMermaidBlocks(container) {
+    container.querySelectorAll("pre > code.language-mermaid").forEach((code) => {
+      const pre = code.parentElement;
+      const div = document.createElement("div");
+      div.className = "mermaid";
+      div.textContent = code.textContent || "";
+      pre.replaceWith(div);
+    });
+  }
+
+  async function renderMermaid(container) {
+    if (!window.mermaid) return;
+    const nodes = container.querySelectorAll(".mermaid");
+    if (!nodes.length) return;
+    window.mermaid.initialize({
+      startOnLoad: false,
+      theme: "neutral",
+      securityLevel: "strict",
+      flowchart: { htmlLabels: true, curve: "basis" },
+      sequence: { actorMargin: 48, messageMargin: 40 },
+    });
+    try {
+      await window.mermaid.run({ nodes: [...nodes] });
+    } catch (err) {
+      nodes.forEach((node) => {
+        if (node.querySelector("svg")) return;
+        const note = document.createElement("p");
+        note.className = "doc-error";
+        note.textContent = "Diagram could not be rendered in the browser.";
+        node.insertAdjacentElement("afterend", note);
+      });
+      console.warn("Mermaid render failed", err);
+    }
+  }
+
   function addCopyButtons(container) {
     container.querySelectorAll("pre").forEach((block) => {
       const button = document.createElement("button");
@@ -124,11 +159,13 @@
       articleEl.innerHTML = html;
       const h1 = articleEl.querySelector("h1");
       if (h1) document.title = `${meta.title} · Lunar Landing Site Navigator`;
+      promoteMermaidBlocks(articleEl);
       addHeadingIds(articleEl);
       rewriteLinks(articleEl);
       styleTables(articleEl);
       buildToc(articleEl);
       addCopyButtons(articleEl);
+      await renderMermaid(articleEl);
       articleEl.insertAdjacentHTML("beforeend", pager());
       if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView();
     } catch (error) {
@@ -137,7 +174,7 @@
   }
 
   (function start() {
-    if (window.marked && window.DOMPurify) { render(); return; }
+    if (window.marked && window.DOMPurify && window.mermaid) { render(); return; }
     setTimeout(start, 40);
   })();
 })();

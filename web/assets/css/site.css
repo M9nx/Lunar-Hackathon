@@ -226,6 +226,8 @@ figcaption { font-size: 13px; color: var(--ink-soft); padding: 10px 0 0; }
 .doc-article code { font-family: var(--font-mono); font-size: .88em; background: var(--gray-5); border: 1px solid var(--gray-10); padding: .08em .35em; border-radius: 3px; overflow-wrap: anywhere; }
 .doc-article pre { position: relative; background: #1b1b1b; color: #f0f0f0; padding: 16px 84px 16px 16px; overflow-x: auto; border-radius: 4px; font-size: 13.5px; line-height: 1.5; }
 .doc-article pre code { background: none; border: 0; padding: 0; color: inherit; overflow-wrap: normal; }
+.doc-article .mermaid { margin: 20px 0 28px; padding: 18px 12px; max-width: 100%; overflow-x: auto; background: var(--gray-5); border: 1px solid var(--gray-10); border-radius: 4px; }
+.doc-article .mermaid svg { display: block; margin: 0 auto; max-width: none; height: auto; }
 .doc-article blockquote { margin: 18px 0; padding: 10px 18px; border-left: 6px solid var(--nasa-blue); background: var(--gray-5); }
 .doc-article blockquote > :first-child { margin-top: 0; } .doc-article blockquote > :last-child { margin-bottom: 0; }
 .doc-article hr { border: 0; border-top: 1px solid var(--gray-20); margin: 28px 0; }
