@@ -35,8 +35,17 @@ def horizons_stamp_to_utc(stamp: str) -> str:
     return f"{int(year_s):04d}-{month:02d}-{int(day_s):02d}T{int(hour_s):02d}:{int(minute_s):02d}:00Z"
 
 
-def parse_response_line(line: str) -> tuple[str, float, float] | None:
-    """Return UTC, azimuth, elevation from one Horizons CSV result line."""
+def _is_not_available(token: str) -> bool:
+    return token.strip().lower() in ("n.a.", "n.a", "na", "")
+
+
+def parse_response_line(line: str) -> tuple[str, float | None, float | None] | None:
+    """Return UTC, azimuth, elevation from one Horizons CSV result line.
+
+    A row whose angle columns read ``n.a.`` is a valid row with no angle, so it
+    returns ``(utc, None, None)`` and keeps its place on the grid. A line that is
+    not a data row, or has a malformed number, returns ``None``.
+    """
     stripped = line.strip()
     if not stripped or not stripped[0].isdigit():
         return None
@@ -44,10 +53,15 @@ def parse_response_line(line: str) -> tuple[str, float, float] | None:
     if len(parts) < 5:
         return None
     try:
-        azimuth = float(parts[3])
-        elevation = float(parts[4])
         utc = horizons_stamp_to_utc(parts[0])
     except (KeyError, ValueError):
+        return None
+    if _is_not_available(parts[3]) or _is_not_available(parts[4]):
+        return utc, None, None
+    try:
+        azimuth = float(parts[3])
+        elevation = float(parts[4])
+    except ValueError:
         return None
     return utc, azimuth, elevation
 
@@ -131,7 +145,8 @@ def index_response(path: Path) -> dict[str, str]:
     return index_result_text(load_response_text(path), path)
 
 
-def response_angles(line: str) -> tuple[float, float]:
+def response_angles(line: str) -> tuple[float | None, float | None]:
+    """Azimuth and elevation of a data row. ``(None, None)`` for an ``n.a.`` row."""
     parsed = parse_response_line(line)
     if parsed is None:
         raise ValueError("response line is not a quantity-4 data row")

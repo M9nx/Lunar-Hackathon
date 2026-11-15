@@ -10,6 +10,7 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from lunar_navigator.fsio import atomic_write_json
 from lunar_navigator.horizons_table import (
     index_result_text,
     load_angles_csv,
@@ -17,7 +18,8 @@ from lunar_navigator.horizons_table import (
     parse_response_header,
     response_angles,
 )
-from lunar_navigator.visibility import both_lane, classify_margin, validate_body_id
+from lunar_navigator.skyline import HorizonSource
+from lunar_navigator.visibility import ClassifiedSample, both_lane, classify_margin, validate_body_id
 
 LANE_LABELS = {
     "sun": "Sun-centre clearance",
@@ -94,9 +96,25 @@ def joint_lane(sun_state: str, earth_state: str, sun_reason: str | None, earth_r
     return {"state": joint, "reason": reason, "label": LANE_LABELS["both"]}
 
 
-def classify_bodies(sun_elevation, sun_azimuth, earth_elevation, earth_azimuth, sun_ref, earth_ref, sun_line, earth_line) -> dict:
-    sun = classify_margin(sun_elevation, 0.0, horizon_mode="geometric_0deg")
-    earth = classify_margin(earth_elevation, 0.0, horizon_mode="geometric_0deg")
+def classify_one(elevation, azimuth, horizon: HorizonSource | None) -> ClassifiedSample:
+    """One body against the baseline or a reviewed skyline.
+
+    A missing elevation is Unknown (missing_ephemeris). In terrain mode with no usable horizon the body is
+    Unknown with the terrain reason; the elevation stays on the record, the horizon and margin stay empty.
+    """
+    if horizon is None or horizon.mode == "geometric_0deg":
+        return classify_margin(elevation, 0.0, horizon_mode="geometric_0deg")
+    if elevation is None:
+        return classify_margin(None, None, horizon_mode="terrain")
+    value, reason = horizon.horizon_at(azimuth)
+    if value is None:
+        return ClassifiedSample(elevation, None, "unknown", None, reason or "terrain_not_reviewed")
+    return classify_margin(elevation, value, horizon_mode="terrain")
+
+
+def classify_bodies(sun_elevation, sun_azimuth, earth_elevation, earth_azimuth, sun_ref, earth_ref, sun_line, earth_line, horizon: HorizonSource | None = None) -> dict:
+    sun = classify_one(sun_elevation, sun_azimuth, horizon)
+    earth = classify_one(earth_elevation, earth_azimuth, horizon)
     return {
         "sun": {
             "azimuth_deg": sun_azimuth,
@@ -145,6 +163,8 @@ def apply_both_endpoints(classified: dict, nxt: dict | None) -> None:
         right_ok = _angles_usable(nxt[azimuth_key], nxt[elevation_key])
         if left_ok and right_ok:
             continue
+        if left_ok and classified[body]["state"] == "unknown" and classified[body]["reason"]:
+            continue  # already Unknown for a terrain reason; keep that reason
         classified[body]["state"] = "unknown"
         if left_ok:
             classified[body]["reason"] = "missing_right_endpoint"
@@ -158,7 +178,7 @@ def apply_both_endpoints(classified: dict, nxt: dict | None) -> None:
     )
 
 
-def classify_sample(row: dict, nxt: dict | None, *, step_seconds: int) -> dict:
+def classify_sample(row: dict, nxt: dict | None, *, step_seconds: int, horizon: HorizonSource | None = None) -> dict:
     """Classify one sample. The next row is required for every span except the terminal sample."""
     if nxt is None:
         duration = 0
@@ -176,6 +196,7 @@ def classify_sample(row: dict, nxt: dict | None, *, step_seconds: int) -> dict:
         row["earth_source_ref"],
         row.get("sun_response_line"),
         row.get("earth_response_line"),
+        horizon,
     )
     apply_both_endpoints(classified, nxt)
     return {"timestamp_utc": row["timestamp_utc"], "duration_seconds": duration, **classified}
@@ -208,6 +229,7 @@ def geometric_run_from_rows(
     inputs: dict,
     limitations: list[str],
     trace_utc: str | None = None,
+    horizon: HorizonSource | None = None,
 ) -> dict:
     if not rows:
         raise ValueError("no samples")
@@ -217,7 +239,7 @@ def geometric_run_from_rows(
         raise ValueError(f"last timestamp {rows[-1]['timestamp_utc']} != {end_utc}")
 
     samples = [
-        classify_sample(row, None if index == len(rows) - 1 else rows[index + 1], step_seconds=step_seconds)
+        classify_sample(row, None if index == len(rows) - 1 else rows[index + 1], step_seconds=step_seconds, horizon=horizon)
         for index, row in enumerate(rows)
     ]
     elapsed = elapsed_from_samples(samples)
@@ -246,7 +268,8 @@ def geometric_run_from_rows(
             }
         )
 
-    return {
+    terrain_block = horizon.describe() if horizon is not None else None
+    result = {
         "schema_version": SCHEMA_VERSION,
         "run_id": run_id,
         "code_revision": code_revision,
@@ -256,7 +279,7 @@ def geometric_run_from_rows(
         "labels": LANE_LABELS,
         "scenario": {
             "site_id": site_id,
-            "horizon_mode": "geometric_0deg",
+            "horizon_mode": horizon.mode if horizon is not None else "geometric_0deg",
             "start_utc": start_utc,
             "end_utc": end_utc,
             "step_seconds": step_seconds,
@@ -274,6 +297,9 @@ def geometric_run_from_rows(
         "traces": traces,
         "limitations": limitations,
     }
+    if terrain_block is not None:
+        result["terrain"] = terrain_block
+    return result
 
 
 def _east_longitude_delta_deg(left: float, right: float) -> float:
@@ -317,9 +343,17 @@ def verify_response_belongs_to_case(
 
 
 def _match_response(utc: str, csv_azimuth: float | None, csv_elevation: float | None, line: str) -> None:
-    if csv_azimuth is None or csv_elevation is None:
-        return
+    """The saved CSV row and the raw Horizons line must agree, including that both have no angle."""
     azimuth, elevation = response_angles(line)
+    csv_missing = csv_azimuth is None or csv_elevation is None
+    raw_missing = azimuth is None or elevation is None
+    if csv_missing != raw_missing:
+        raise ValueError(
+            f"{utc} CSV row is {'missing' if csv_missing else 'present'} but the raw Horizons line is "
+            f"{'missing' if raw_missing else 'present'}"
+        )
+    if csv_missing:
+        return
     if abs(azimuth - csv_azimuth) > 1e-6 or abs(elevation - csv_elevation) > 1e-6:
         raise ValueError(f"{utc} CSV angles do not match the raw Horizons response line")
 
@@ -343,8 +377,8 @@ def select_time_window(rows: list[dict], start_utc: str, end_utc: str, step_seco
     return selected
 
 
-def content_run_id(site_id: str, sun_csv_sha: str, *, full_grid: bool, start_utc: str, end_utc: str) -> str:
-    base = f"{site_id}-q4-centre-0deg-{sun_csv_sha[:12]}"
+def content_run_id(site_id: str, sun_csv_sha: str, *, full_grid: bool, start_utc: str, end_utc: str, mode: str = "geometric_0deg") -> str:
+    base = f"{site_id}-q4-centre-0deg-{sun_csv_sha[:12]}" if mode == "geometric_0deg" else f"{site_id}-q4-centre-terrain-{sun_csv_sha[:12]}"
     if full_grid:
         return base
     start = start_utc.replace("-", "").replace(":", "")
@@ -416,6 +450,7 @@ def load_scenario_inputs(scenario: dict, data_root: Path, code_revision: str | N
                 "earth_response_line": earth_line,
             }
         )
+    horizon = HorizonSource.for_observer(scenario.get("horizon_mode", "geometric_0deg"), observer, data_root)
     full_grid = True
     if joined[0]["timestamp_utc"] != scenario["start_utc"] or joined[-1]["timestamp_utc"] != scenario["end_utc"]:
         joined = select_time_window(joined, scenario["start_utc"], scenario["end_utc"], scenario["step_seconds"])
@@ -431,6 +466,17 @@ def load_scenario_inputs(scenario: dict, data_root: Path, code_revision: str | N
     ]
     if practice or not eligible:
         limitations.insert(0, "Practice evidence. Not an eligible submission claim.")
+    if horizon.mode == "terrain" and horizon.skyline is None:
+        limitations.insert(
+            0,
+            f"Terrain mode requested. {horizon.reason}: {horizon.detail}. Every state is Unknown. The saved Horizons "
+            "elevation is kept; no horizon or margin is shown and no 0 degree baseline is substituted.",
+        )
+    synthetic = bool(scenario.get("synthetic", False))
+    if synthetic:
+        limitations.insert(
+            0, scenario.get("synthetic_note") or "SYNTHETIC QA fixture. Not Horizons output and not a result about the Moon."
+        )
 
     return {
         "site_id": scenario["site_id"],
@@ -444,12 +490,14 @@ def load_scenario_inputs(scenario: dict, data_root: Path, code_revision: str | N
         "end_utc": scenario["end_utc"],
         "step_seconds": scenario["step_seconds"],
         "rows": joined,
+        "horizon": horizon,
         "run_id": content_run_id(
             scenario["site_id"],
             sun_csv_sha,
-            full_grid=full_grid,
+            full_grid=full_grid and horizon.mode == "geometric_0deg",
             start_utc=scenario["start_utc"],
             end_utc=scenario["end_utc"],
+            mode=horizon.mode,
         ),
         "code_revision": code_revision,
         "practice": practice,
@@ -461,7 +509,10 @@ def load_scenario_inputs(scenario: dict, data_root: Path, code_revision: str | N
             "earth_response_sha256": earth_raw_sha,
             "sun_response_matches_provenance": True,
             "earth_response_matches_provenance": True,
-            "appendix_b_raw_sha256": "open_mismatch_preserved",
+            "appendix_b_raw_sha256": (
+                "open_mismatch_preserved" if scenario.get("in_appendix_b", True) else "not_in_appendix_b"
+            ),
+            **({"synthetic": True} if synthetic else {}),
         },
         "limitations": limitations,
         "trace_utc": scenario["start_utc"],
@@ -515,6 +566,19 @@ def shared_elapsed(emitted_a: list[dict], emitted_b: list[dict]) -> tuple[int, d
     return shared, elapsed_from_samples(emitted_a[:shared]), elapsed_from_samples(emitted_b[:shared])
 
 
+def cutoff_fields(samples: list[dict]) -> dict:
+    """Last resolved sample and the end of its interval. Both are null before any sample.
+
+    Totals through a cutoff count each sample for its own interval, so they cover
+    [start, covered_through_utc). The terminal sample adds 0 s.
+    """
+    if not samples:
+        return {"cutoff_utc": None, "covered_through_utc": None}
+    last = samples[-1]
+    end = parse_utc(last["timestamp_utc"]) + timedelta(seconds=last["duration_seconds"])
+    return {"cutoff_utc": last["timestamp_utc"], "covered_through_utc": format_utc(end)}
+
+
 def comparison_document(site_a: dict, site_b: dict, code_revision: str | None) -> dict:
     def same(key_path: tuple[str, ...]) -> bool:
         left: object = site_a
@@ -553,8 +617,8 @@ def comparison_document(site_a: dict, site_b: dict, code_revision: str | None) -
 
 
 def write_json(path: Path, payload: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    """Atomic: a failed or interrupted write keeps the previous valid file."""
+    atomic_write_json(path, payload)
 
 
 def _batch_event(run_id: str, result_run_id: str, batch_index: int, batch: list[dict], emitted: list[dict]) -> dict:
@@ -570,6 +634,7 @@ def _batch_event(run_id: str, result_run_id: str, batch_index: int, batch: list[
         "samples_emitted": len(emitted),
         "elapsed_seconds": copy.deepcopy(elapsed_from_samples(emitted)),
         "intervals": intervals_from_samples(emitted),
+        **cutoff_fields(emitted),
     }
 
 
@@ -620,9 +685,10 @@ def stream_scenario(
         "sample_count": len(rows),
         "code_revision": prepared["code_revision"],
         "labels": LANE_LABELS,
+        **({"terrain": prepared["horizon"].describe()} if prepared["horizon"].describe() else {}),
         "scenario": {
             "site_id": prepared["site_id"],
-            "horizon_mode": "geometric_0deg",
+            "horizon_mode": prepared["horizon"].mode,
             "start_utc": prepared["start_utc"],
             "end_utc": prepared["end_utc"],
             "step_seconds": prepared["step_seconds"],
@@ -648,6 +714,7 @@ def stream_scenario(
             "samples_emitted": len(emitted),
             "elapsed_seconds": copy.deepcopy(elapsed_from_samples(emitted)),
             "intervals": intervals_from_samples(emitted),
+            **cutoff_fields(emitted),
         }
 
     def failed_event() -> dict:
@@ -662,6 +729,7 @@ def stream_scenario(
             "samples_emitted": len(emitted),
             "elapsed_seconds": copy.deepcopy(elapsed_from_samples(emitted)),
             "intervals": intervals_from_samples(emitted),
+            **cutoff_fields(emitted),
         }
 
     for index, row in enumerate(rows):
@@ -675,7 +743,7 @@ def stream_scenario(
             if cancel is None:
                 time.sleep(pause_seconds)
         nxt = None if index == len(rows) - 1 else rows[index + 1]
-        sample = classify_sample(row, nxt, step_seconds=prepared["step_seconds"])
+        sample = classify_sample(row, nxt, step_seconds=prepared["step_seconds"], horizon=prepared["horizon"])
         batch.append(sample)
         emitted.append(sample)
         if len(batch) == batch_size:
@@ -731,6 +799,7 @@ def _site_batch_event(
         "elapsed_seconds": copy.deepcopy(elapsed_from_samples(emitted)),
         "intervals": intervals_from_samples(emitted),
         "shared_samples": shared,
+        **cutoff_fields(emitted_a[:shared]),
         "comparison_partial": True,
         "comparison_elapsed": {
             "site_a": copy.deepcopy(elapsed_a),
@@ -798,13 +867,13 @@ def stream_comparison(
                 "start_utc": prepared_a["start_utc"],
                 "end_utc": prepared_a["end_utc"],
                 "step_seconds": prepared_a["step_seconds"],
-                "horizon_mode": "geometric_0deg",
+                "horizon_mode": prepared_a["horizon"].mode,
             },
             {
                 "start_utc": prepared_b["start_utc"],
                 "end_utc": prepared_b["end_utc"],
                 "step_seconds": prepared_b["step_seconds"],
-                "horizon_mode": "geometric_0deg",
+                "horizon_mode": prepared_b["horizon"].mode,
             },
         )
         stamps_a = [row["timestamp_utc"] for row in prepared_a["rows"]]
@@ -824,6 +893,7 @@ def stream_comparison(
             "samples_emitted_a": 0,
             "samples_emitted_b": 0,
             "shared_samples": 0,
+            **cutoff_fields([]),
         }
         return
 
@@ -842,7 +912,7 @@ def stream_comparison(
             "labels": LANE_LABELS,
             "scenario": {
                 "site_id": prepared["site_id"],
-                "horizon_mode": "geometric_0deg",
+                "horizon_mode": prepared["horizon"].mode,
                 "start_utc": prepared["start_utc"],
                 "end_utc": prepared["end_utc"],
                 "step_seconds": prepared["step_seconds"],
@@ -850,6 +920,7 @@ def stream_comparison(
             },
             "practice": prepared["practice"],
             "eligible_for_submission_claim": prepared["eligible_for_submission_claim"],
+            **({"terrain": prepared["horizon"].describe()} if prepared["horizon"].describe() else {}),
         }
 
     yield {
@@ -890,6 +961,7 @@ def stream_comparison(
             "samples_emitted_a": len(emitted_a),
             "samples_emitted_b": len(emitted_b),
             "shared_samples": shared,
+            **cutoff_fields(emitted_a[:shared]),
             "elapsed_seconds_a": copy.deepcopy(elapsed_from_samples(emitted_a)),
             "elapsed_seconds_b": copy.deepcopy(elapsed_from_samples(emitted_b)),
             "intervals_a": intervals_from_samples(emitted_a),
@@ -912,6 +984,7 @@ def stream_comparison(
             "samples_emitted_a": len(emitted_a),
             "samples_emitted_b": len(emitted_b),
             "shared_samples": shared,
+            **cutoff_fields(emitted_a[:shared]),
             "elapsed_seconds_a": copy.deepcopy(elapsed_from_samples(emitted_a)),
             "elapsed_seconds_b": copy.deepcopy(elapsed_from_samples(emitted_b)),
             "intervals_a": intervals_from_samples(emitted_a),
@@ -934,17 +1007,18 @@ def stream_comparison(
             return
         nxt_a = None if index == len(rows_a) - 1 else rows_a[index + 1]
         nxt_b = None if index == len(rows_b) - 1 else rows_b[index + 1]
-        sample_a = classify_sample(rows_a[index], nxt_a, step_seconds=prepared_a["step_seconds"])
-        sample_b = classify_sample(rows_b[index], nxt_b, step_seconds=prepared_b["step_seconds"])
+        sample_a = classify_sample(rows_a[index], nxt_a, step_seconds=prepared_a["step_seconds"], horizon=prepared_a["horizon"])
+        sample_b = classify_sample(rows_b[index], nxt_b, step_seconds=prepared_b["step_seconds"], horizon=prepared_b["horizon"])
+        # emitted_a and emitted_b hold only samples already sent in a site_batch event,
+        # so every shared total and cutoff matches what the client has received.
         batch_a.append(sample_a)
-        emitted_a.append(sample_a)
         batch_b.append(sample_b)
-        emitted_b.append(sample_b)
 
         if len(batch_a) == batch_size_a:
             if maybe_pause():
                 yield cancelled_event()
                 return
+            emitted_a.extend(batch_a)
             yield _site_batch_event(
                 comparison_id=comparison_id,
                 role="site_a",
@@ -966,6 +1040,7 @@ def stream_comparison(
             if maybe_pause():
                 yield cancelled_event()
                 return
+            emitted_b.extend(batch_b)
             yield _site_batch_event(
                 comparison_id=comparison_id,
                 role="site_b",
@@ -987,6 +1062,7 @@ def stream_comparison(
         if maybe_pause():
             yield cancelled_event()
             return
+        emitted_a.extend(batch_a)
         yield _site_batch_event(
             comparison_id=comparison_id,
             role="site_a",
@@ -1005,6 +1081,7 @@ def stream_comparison(
         if maybe_pause():
             yield cancelled_event()
             return
+        emitted_b.extend(batch_b)
         yield _site_batch_event(
             comparison_id=comparison_id,
             role="site_b",

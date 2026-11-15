@@ -16,6 +16,8 @@ from typing import Any
 
 import numpy as np
 
+from lunar_navigator.fsio import atomic_write_json
+
 MOON_RADIUS_M = 1_737_400.0
 
 
@@ -192,9 +194,7 @@ def sample_horizon_profile(
 
 
 def write_profile(profile: HorizonProfile, path: Path) -> None:
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(profile.to_dict(), indent=2) + "\n", encoding="utf-8")
+    atomic_write_json(Path(path), profile.to_dict())
 
 
 def profile_from_csv(
@@ -242,3 +242,44 @@ def profile_from_csv(
             "Demo classification remains geometric 0°.",
         ],
     )
+
+
+def normalize_azimuth(azimuth_deg: float) -> float:
+    """Map any finite azimuth to [0, 360), clockwise from true north."""
+    if not math.isfinite(azimuth_deg):
+        raise ValueError("azimuth must be finite")
+    value = azimuth_deg % 360.0
+    # A tiny negative input can round to 360.0 after the modulo. Keep the half-open range.
+    return 0.0 if value >= 360.0 else value
+
+
+def horizon_at_azimuth(bins: list[HorizonBin], azimuth_deg: float) -> tuple[float | None, str | None]:
+    """Linear horizon between the two bins that bracket an azimuth, wrapping 360° back to 0°.
+
+    Returns (horizon_deg, None) or (None, reason). A gap in either bracketing bin gives Unknown:
+    a populated neighbour does not establish continuity across the gap. Needs at least two bins
+    with distinct azimuths. Diagnostic helper only; terrain mode stays Unknown until the M4 review.
+    """
+    if len(bins) < 2:
+        return None, "insufficient_bins"
+    az = normalize_azimuth(azimuth_deg)
+    ordered = sorted(bins, key=lambda b: b.azimuth_deg)
+    lower = None
+    upper = None
+    for item in ordered:
+        if item.azimuth_deg <= az:
+            lower = item
+        if item.azimuth_deg > az and upper is None:
+            upper = item
+    if lower is None:
+        lower = ordered[-1]  # before the first bin: bracket with the last bin, one turn earlier
+    if upper is None:
+        upper = ordered[0]  # after the last bin: bracket with the first bin, one turn later
+    if not (lower.known and upper.known) or lower.horizon_deg is None or upper.horizon_deg is None:
+        return None, "terrain_gap_in_azimuth_bracket"
+    lo_az = lower.azimuth_deg if lower.azimuth_deg <= az else lower.azimuth_deg - 360.0
+    hi_az = upper.azimuth_deg if upper.azimuth_deg > az else upper.azimuth_deg + 360.0
+    if az == lo_az:
+        return float(lower.horizon_deg), None
+    t = (az - lo_az) / (hi_az - lo_az)
+    return float(lower.horizon_deg + t * (upper.horizon_deg - lower.horizon_deg)), None
