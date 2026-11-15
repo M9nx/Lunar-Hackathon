@@ -1,11 +1,13 @@
 {
   "handoff_version": "1",
   "reference_revision": "0.5",
-  "task_id": "M0.1",
+  "task_id": "M6.1",
   "owner_role": "Lead",
-  "depends_on": ["Kickoff"],
+  "depends_on": [
+    "M0.1"
+  ],
   "schedule_source": "Master-Reference/MASTER_REFERENCE.json schedule.tasks (workbook has Timeline phases only; no Tasks tab)",
-  "objective": "M0.1 stays open. Two-site live calculation from saved Horizons is available locally (comparison stream + /api/comparisons) beside the witnessed 1f3fb06 replay. Lead still decides eligibility, a reachable demo link, and the AI disclosure. Keep eligible_for_submission_claim false. Do not regenerate web/replay. Science reviews terrain in parallel.",
+  "objective": "M6.1 local 0\u00b0 judging package. Build landing page, finish User Guide / Operator Manual / API / Engine / Data & Research / Project Progress docs, package the Jan 3\u201310 practice case, and verify from a clean extracted copy (24/24 steps passed). Code digest 8c819792f2b36135dfde5aeac0b5fdb7abacae161fe81b79f9a83b47cbd02434. Lead eligibility and required deliverables remain pending; terrain stays Unknown.",
   "scenario_ref": "web/replay/comparison.json",
   "data_root": "data",
   "inputs": {
@@ -31,71 +33,153 @@
     "demo_build": "1f3fb06",
     "new_horizons_engine": "hardened working tree; do not replace web/replay",
     "local_stream": "cli run|stream|serve; docs/evidence/stream_local_run.md",
-    "local_comparison_stream": "cli stream-comparison; /api/comparisons; docs/evidence/stream_comparison_live.md"
+    "local_comparison_stream": "cli stream-comparison; /api/comparisons; docs/evidence/stream_comparison_live.md",
+    "release_package": "docs/release/ (RELEASE.md, WALKTHROUGH.md, TEAMMATE_CHECKLIST.md, manifest.json, MANIFEST.sha256)",
+    "guides": "docs/user-guide.md; docs/operator-manual.md; docs/science-and-data-reference.md",
+    "sprint_evidence": "docs/evidence/s1/, s2/, s3/ (s3/release_verify/ = reproduction from a clone of the candidate)",
+    "landing_page": "web/index.html",
+    "landing_css": "web/assets/css/site.css",
+    "navigator_tour": "web/review-candidate/tour.js + tour.css (welcome + 25 steps covering every control; Guide button or ?tour=1; skipped under webdriver)",
+    "docs_viewer": "web/documents.html (marked + DOMPurify + fonts vendored under web/assets/, no CDN)",
+    "docs_mirror": "web/docs/",
+    "docs_pages": [
+      "docs/user-guide.md",
+      "docs/operator-manual.md",
+      "docs/science-and-data-reference.md",
+      "docs/api-reference.md",
+      "docs/engine-reference.md",
+      "docs/data-research.md",
+      "docs/project-progress.md"
+    ],
+    "packaged_cases": [
+      "web/replay/ (witnessed 1f3fb06)",
+      "web/review-candidate/cases/practice-30d/",
+      "web/review-candidate/cases/practice-jan03-10/"
+    ],
+    "code_digest": "956979148e2039b255dd6564887bac24a3d080d7319672e40d93bdf26cf93113",
+    "code_digest_note": "Landing and docs viewer restyled after the 24/24 release verification at digest 8c819792f2b36135dfde5aeac0b5fdb7abacae161fe81b79f9a83b47cbd02434. Manifest check and pytest 136 passed on the new digest; verify_release_package.py not re-run.",
+    "manifest_sha256": "631f7d1a54ea07a31430827f2dcb2bf28f1ffc14cc0fe308a1c83e9634674413",
+    "live_server": {
+      "url": "http://127.0.0.1:8766/",
+      "pid": 1856440,
+      "command": "PYTHONPATH=src python3 -m lunar_navigator.cli --revision f534f8c-dirty serve --port 8766",
+      "log": "/tmp/lunar_server_8766.log",
+      "status": "running"
+    },
+    "navigator_cleanup": "Folded Live run into Options; dropped duplicate header chips and Both-lane margins table; one ask-bar for lane+window length; sky More view options; stage-live only while streaming"
   },
   "report": {
     "status": "pending",
     "files_changed": [
+      "builder/scripts/make_release_manifest.py",
+      "builder/scripts/s2_flow_check.py",
+      "docs/api-reference.md",
+      "docs/data-research.md",
+      "docs/decision-log.md",
+      "docs/engine-reference.md",
+      "docs/evidence/m0_5_backup_checksums.log",
+      "docs/evidence/m0_5_wifi_off.log",
+      "docs/evidence/m3_review.md",
+      "docs/evidence/wifi_off_attestation.txt",
+      "docs/operator-manual.md",
+      "docs/project-progress.md",
+      "docs/release/MANIFEST.sha256",
+      "docs/release/RELEASE.md",
+      "docs/release/manifest.json",
+      "docs/task-log.md",
+      "docs/user-guide.md",
+      "src/lunar_navigator/cli.py",
       "src/lunar_navigator/engine.py",
       "src/lunar_navigator/horizons_table.py",
-      "src/lunar_navigator/cli.py",
+      "src/lunar_navigator/live_server.py",
       "tests/test_engine.py",
+      "web/docs/",
+      "web/index.html",
+      "web/landing.css",
       "web/replay/",
-      "docs/task-log.md",
-      "docs/decision-log.md",
-      "docs/evidence/m0_5_wifi_off.log",
-      "docs/evidence/m0_5_backup_checksums.log",
-      "docs/evidence/wifi_off_attestation.txt",
-      "docs/evidence/m3_review.md"
+      "web/review-candidate/app.js",
+      "web/review-candidate/cases/practice-jan03-10/",
+      "web/review-candidate/index.html"
     ],
     "commands_run": [
-      "rsync -a data/ /home/m9nx/Lunar-Hackathon-data-backup/",
-      "python3 lunar_offline_pack.py --root data check core",
-      "python3 lunar_offline_pack.py --root /home/m9nx/Lunar-Hackathon-data-backup check core",
       "python3 lunar_offline_pack.py --root data check-horizons",
-      "python3 lunar_offline_pack.py --root /home/m9nx/Lunar-Hackathon-data-backup check-horizons",
-      "unset WIFI_OFF_CONFIRMED; ./scripts/wifi_off_smoke.sh",
+      "builder/scripts/make_release_manifest.py",
+      "python3 lunar_offline_pack.py --root data check core",
+      "python3 builder/scripts/make_release_manifest.py",
+      "python3 builder/scripts/run_acceptance.py --gate M1",
       "PYTHONPATH=src python3 -m lunar_navigator.cli package --out web/replay",
-      "python3 builder/scripts/verify_result_contract.py web/replay/runs/site04-p02-practice.json",
       "python3 builder/scripts/verify_result_contract.py web/replay/runs/malapert-practice.json",
+      "python3 lunar_offline_pack.py --root /home/m9nx/Lunar-Hackathon-data-backup check-horizons",
+      "rsync -a data/ /home/m9nx/Lunar-Hackathon-data-backup/",
       ".venv/bin/python -m pytest tests -q",
-      "python3 builder/scripts/run_acceptance.py --gate M1"
+      ".venv/bin/python builder/scripts/verify_release_package.py",
+      "builder/scripts/run_sprint_evidence.sh s3",
+      "python3 lunar_offline_pack.py --root /home/m9nx/Lunar-Hackathon-data-backup check core",
+      "unset WIFI_OFF_CONFIRMED; ./scripts/wifi_off_smoke.sh",
+      "PYTHONPATH=src python3 -m lunar_navigator.cli package --catalog-window malapert-practice__20250103T000000Z__20250110T000000Z__900s++site04-p02-practice__20250103T000000Z__20250110T000000Z__900s --out web/review-candidate/cases/practice-jan03-10",
+      "python3 builder/scripts/verify_result_contract.py web/replay/runs/site04-p02-practice.json",
+      "PYTHONPATH=src python3 -m lunar_navigator.cli --revision f534f8c-dirty serve --port 8766"
     ],
     "evidence_refs": [
-      "docs/evidence/wifi_off_attestation.txt",
-      "docs/evidence/m0_5_wifi_off.log",
-      "docs/evidence/m0_5_backup_checksums.log",
-      "docs/evidence/m3_review.md",
-      "docs/evidence/m3_clean_browser.md",
-      "docs/evidence/m3_3_pitch.md",
-      "docs/evidence/m2_5_preflight.md",
+      "builder/docs/evidence/s3/release_verify/",
+      "builder/docs/evidence/s3/release_verify/release_verify.md",
       "docs/evidence/m0_1_lead_handoff.md",
       "docs/evidence/m0_1_project_tab_draft.md",
+      "docs/evidence/m0_5_backup_checksums.log",
+      "docs/evidence/m0_5_wifi_off.log",
+      "docs/evidence/m2_5_preflight.md",
+      "docs/evidence/m3_3_pitch.md",
+      "docs/evidence/m3_clean_browser.md",
+      "docs/evidence/m3_review.md",
       "docs/evidence/m6_0deg_submission_package.md",
-      "web/replay/comparison.json",
+      "docs/evidence/s3/release_verify/release_verify.md",
+      "docs/evidence/s3/summary.txt",
+      "docs/evidence/stream_comparison_live.md",
       "docs/evidence/stream_local_run.md",
-      "docs/evidence/stream_comparison_live.md"
+      "docs/evidence/wifi_off_attestation.txt",
+      "docs/release/MANIFEST.sha256",
+      "docs/release/RELEASE.md",
+      "docs/release/TEAMMATE_CHECKLIST.md",
+      "docs/release/manifest.json",
+      "web/replay/comparison.json"
     ],
     "blockers": [
-      "M0.1: Active handoff. Challenge page and 2026 hub returned HTTP 500 on 2026-11-14. Lead confirms practice-case eligibility and required deliverables. Demo stays 1f3fb06 — owner Lead",
-      "M0.2: Both raw-response digest sets stay. Matching angle CSVs support the replay totals. Raw-file identity stays open. Malapert practice altitude is 0 km. 4.86425 km is a sensitivity input — owner Data+Science",
-      "M2.5: Science reviews terrain in parallel. Frame tie, height reference, coverage, and one independent skyline are still open. Show terrain as Unknown — owner Science"
+      "M6.1: Lead confirms eligibility, required deliverables, AI disclosure, and a reachable demo link. Practice inputs remain ineligible until then.",
+      "M2.5: Science terrain review stays open. Terrain clearance remains Unknown.",
+      "M0.2: Raw-response SHA-256 identity against Master Reference Appendix B stays open."
     ]
   },
-  "parallel_completed": ["M0.3", "M0.4", "M1.2", "M1.3"],
+  "parallel_completed": [
+    "M0.3",
+    "M0.4",
+    "M1.2",
+    "M1.3"
+  ],
   "prior_tasks": {
     "M0.1": {
       "status": "passed_with_open_decisions",
-      "evidence_refs": ["docs/decision-log.md"]
+      "evidence_refs": [
+        "docs/decision-log.md"
+      ]
     },
     "M0.2": {
       "status": "passed_with_open_decisions",
       "note": "Practice pair selected for the replay. Eligibility, 0 km height, and Appendix B raw hash remain open."
     },
-    "M0.3": { "status": "passed", "evidence_refs": ["docs/evidence/m0_offline_smoke.log"] },
+    "M0.3": {
+      "status": "passed_with_open_decisions",
+      "evidence_refs": [
+        "docs/evidence/m0_offline_smoke.log",
+        "docs/evidence/horizons_digest_provenance.md"
+      ],
+      "note": "Raw-response digest identity against Appendix B stays open."
+    },
     "M0.4": {
       "status": "passed",
-      "evidence_refs": ["docs/evidence/m0_4_wheels.log", "docs/evidence/m0_4_open_dem.log"]
+      "evidence_refs": [
+        "docs/evidence/m0_4_wheels.log",
+        "docs/evidence/m0_4_open_dem.log"
+      ]
     },
     "M0.5": {
       "status": "passed",
@@ -105,32 +189,88 @@
         "docs/evidence/m0_5_backup_checksums.log"
       ]
     },
-    "M1.1": { "status": "passed" },
-    "M1.2": { "status": "passed" },
-    "M1.3": { "status": "passed" },
-    "M1.4": { "status": "passed", "run_id": "site04-p02-practice-q4-centre-0deg-a24325ba50c4" },
-    "M1.5": { "status": "passed", "evidence_refs": ["docs/evidence/m3_review.md"] },
-    "M2.1": { "status": "passed", "run_id": "malapert-practice-q4-centre-0deg-88b9b3cfef57" },
-    "M2.2": { "status": "passed" },
-    "M2.3": { "status": "passed" },
-    "M2.4": { "status": "passed" },
+    "M1.1": {
+      "status": "passed"
+    },
+    "M1.2": {
+      "status": "passed"
+    },
+    "M1.3": {
+      "status": "passed"
+    },
+    "M1.4": {
+      "status": "passed",
+      "run_id": "site04-p02-practice-q4-centre-0deg-a24325ba50c4"
+    },
+    "M1.5": {
+      "status": "passed",
+      "evidence_refs": [
+        "docs/evidence/m3_review.md"
+      ]
+    },
+    "M2.1": {
+      "status": "passed",
+      "run_id": "malapert-practice-q4-centre-0deg-88b9b3cfef57"
+    },
+    "M2.2": {
+      "status": "passed"
+    },
+    "M2.3": {
+      "status": "passed"
+    },
+    "M2.4": {
+      "status": "passed"
+    },
     "M2.5": {
       "status": "blocked",
       "note": "Science reviews in parallel. Terrain stays Unknown. Not the active handoff."
     },
-    "M3.1": { "status": "passed", "evidence_refs": ["web/replay/README.md"] },
-      "M3.2": {
+    "M3.1": {
+      "status": "passed",
+      "evidence_refs": [
+        "web/replay/README.md"
+      ]
+    },
+    "M3.2": {
       "status": "passed",
       "note": "Clean Chromium profile, Wi-Fi off, 2026-11-14T10:35:24Z. Commit 1f3fb06. Both exports opened.",
-      "evidence_refs": ["docs/evidence/m3_clean_browser.md"]
+      "evidence_refs": [
+        "docs/evidence/m3_clean_browser.md"
+      ]
     },
     "M3.3": {
       "status": "passed",
-      "evidence_refs": ["docs/evidence/m3_3_pitch.md"]
+      "evidence_refs": [
+        "docs/evidence/m3_3_pitch.md"
+      ]
     },
     "M3.4": {
-      "status": "passed_with_open_decisions",
-      "note": "0° package and run IDs handed off. M2.5 terrain review is still open, so terrain stays out of the demo."
+      "status": "blocked",
+      "note": "Re-evaluated 2026-11-15. Depends on M2.5 (blocked). Passes after M2.5 closes or an approved scope change is recorded in scope_changes."
+    },
+    "M6.1": {
+      "status": "pending",
+      "note": "Local 0\u00b0 judging package built and verified from a clean extracted copy. 24/24 release-verification steps passed. Code digest 8c819792f2b36135dfde5aeac0b5fdb7abacae161fe81b79f9a83b47cbd02434. Live server running on http://127.0.0.1:8766/ (pid 1856440). Lead decisions and terrain review still open.",
+      "evidence_refs": [
+        "builder/docs/evidence/s3/release_verify/"
+      ]
     }
-  }
+  },
+  "scope_changes": [
+    {
+      "id": "SC-1",
+      "status": "proposed",
+      "tasks": [
+        "M2.5"
+      ],
+      "summary": "Release the geometric 0\u00b0 scope while the terrain review stays open. Terrain remains Unknown.",
+      "requires": [
+        "Lead",
+        "Science"
+      ],
+      "approved_by": null,
+      "approved_utc": null,
+      "record": "docs/evidence/s2_scope_decision.md"
+    }
+  ]
 }
