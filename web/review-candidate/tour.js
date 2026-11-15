@@ -64,7 +64,7 @@
       body: "The table breaks Clear, Blocked and Unknown for Sun, Earth and Both at each site. Unknown is never folded into Clear or Blocked. Open <b>Details</b> under it for the raw seconds, sample counts, run IDs and the terrain reason code.",
     },
     {
-      target: "#why-result",
+      target: "#why",
       title: "Ask “Why this result?”",
       body: "Choose a question to see the range, the rule, and the saved Horizons rows behind the whole-window answer. The engine owns the classification. Display never recomputes a state.",
     },
@@ -132,7 +132,7 @@
       body: "Show the DEM skyline on the sky plots as a diagnostic only. Terrain clearance stays Unknown until a reviewed skyline passes. A populated azimuth bin does not prove radial coverage.",
     },
     {
-      target: "#inspect-evidence",
+      target: "#open-evidence",
       title: "View evidence",
       body: "Opens the Horizons row, observer, run ID and the JSON export for the selected sample. Use this when a number on screen needs to be traced to a saved file.",
     },

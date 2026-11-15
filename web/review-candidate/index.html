@@ -27,6 +27,8 @@
         <a href="../replay/">Replay</a>
       </nav>
       <div class="header-chips" aria-label="Run mode">
+        <span id="case-chip" class="demo-chip">Practice</span>
+        <span id="terrain-chip" class="demo-chip soft">Terrain clearance unknown</span>
         <span id="live-chip" class="demo-chip soft">Replay</span>
       </div>
     </div>
@@ -118,8 +120,8 @@
           <button type="button" class="seg-btn tool" data-key="lane" data-value="both" aria-pressed="false" title="Both centres clear">Both centres</button>
         </div>
       </div>
-      <label class="min-filter" for="min-duration"><span class="tool-label">Window length</span>
-        <select id="min-duration">
+      <label class="min-filter" for="min-duration"><span class="tool-label">Minimum clear window</span>
+        <select id="min-duration" title="Keep only Clear spans at least this long. Does not change Clear totals.">
           <option value="0" selected>Any length</option>
           <option value="0.25">15 min or longer</option>
           <option value="1">1 h or longer</option>
@@ -145,7 +147,7 @@
         <div id="site-progress" class="site-progress"></div>
       </div>
       <div id="answers-details"></div>
-      <div id="why-result"></div>
+      <div id="why"><div id="why-result"></div></div>
     </section>
 
     <!-- Is there a clear window? -->
@@ -231,7 +233,7 @@
     <section class="panel stage" id="inspect" aria-labelledby="inspect-heading">
       <div class="inspect-head">
         <h2 id="inspect-heading">Why this state?</h2>
-        <button type="button" class="tool-btn" id="inspect-evidence" data-evidence title="Horizons row, observer, run ID and JSON export for the selected sample">View evidence</button>
+        <button type="button" class="tool-btn" id="open-evidence" data-evidence title="Horizons row, observer, run ID and JSON export for the selected sample">View evidence</button>
       </div>
 
       <div id="verdict" class="verdict" aria-live="polite"></div>
@@ -267,6 +269,14 @@
                 <button type="button" class="seg-btn tool" data-key="trail" data-value="off" aria-pressed="true">Off</button>
                 <button type="button" class="seg-btn tool" data-key="trail" data-value="window" aria-pressed="false">±6 h</button>
                 <button type="button" class="seg-btn tool" data-key="trail" data-value="full" aria-pressed="false">Full window</button>
+              </div>
+            </div>
+            <div class="tool-group" role="group" aria-label="Layers">
+              <span class="tool-label">Layers</span>
+              <div class="seg-group">
+                <button type="button" class="seg-btn tool" data-toggle="grid" aria-pressed="true">Grid</button>
+                <button type="button" class="seg-btn tool" data-toggle="shade" aria-pressed="true">Shading</button>
+                <button type="button" class="seg-btn tool" data-toggle="labels" aria-pressed="true">Labels</button>
               </div>
             </div>
             <div class="tool-group" role="group" aria-label="Sites shown">
