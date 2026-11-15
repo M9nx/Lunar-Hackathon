@@ -51,6 +51,7 @@
             <li><a href="${root}review-candidate/?tour=1">Step-by-step guide</a></li>
             <li><a href="${root}review-candidate/">Navigator</a></li>
             <li><a href="${root}replay/">Witnessed 0° replay</a></li>
+            <li><a href="${root}documents.html?doc=about-solution.md">About this solution</a></li>
             <li><a href="${root}documents.html?doc=operator-manual.md">Operator manual</a></li>
           </ul>
         </div>

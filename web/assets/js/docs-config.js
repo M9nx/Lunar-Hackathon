@@ -1,5 +1,6 @@
 // Rendered documents. The step-by-step Guide is the tour inside review-candidate/; these are the manual and the reference set.
 window.NAVIGATOR_DOCS = [
+  { file: "about-solution.md", title: "About this solution", group: "manual" },
   { file: "operator-manual.md", title: "Operator manual", group: "manual" },
   { file: "api-reference.md", title: "API reference", group: "reference" },
   { file: "engine-reference.md", title: "Engine reference", group: "reference" },
