@@ -2,6 +2,156 @@
 
 How the centre-ray engine turns a saved JPL Horizons row into a classified sample, an interval, and an export. For the API contract see [API Reference](api-reference.md). For data sources and terrain limits see [Data & Research](data-research.md).
 
+## Architecture and data flow
+
+The engine does not call JPL Horizons at classification time. It reads saved `response.json`, `provenance.json`, and `angles.csv` under `data/horizons/` (or `qa/`), validates them against the scenario, then classifies each timestamp. The review UI and the live server both consume the same `stream_scenario` / `geometric_run_from_rows` path; only packaging (batches vs one shot) differs.
+
+### Context (level 0)
+
+```mermaid
+flowchart LR
+  subgraph external["External (out of scope at run time)"]
+    JPL["JPL Horizons\n(prior export only)"]
+  end
+  subgraph storage["Saved inputs"]
+    RAW["response.json +\nprovenance.json +\nangles.csv"]
+    SCN["scenario JSON"]
+    SKY["terrain/reviewed/*.json\n(optional, M4)"]
+  end
+  subgraph engine["lunar_navigator"]
+    ENG["engine.load_scenario_inputs\n+ classify_sample"]
+    VIS["visibility.classify_margin\n+ both_lane"]
+    HOR["skyline.HorizonSource"]
+  end
+  subgraph outputs["Versioned outputs"]
+    RUN["run-result JSON\nsamples + intervals + totals"]
+    CMP["comparison JSON\noverlap deltas"]
+  end
+  JPL -.->|"acquisition"| RAW
+  RAW --> ENG
+  SCN --> ENG
+  SKY --> HOR
+  HOR --> ENG
+  ENG --> VIS
+  ENG --> RUN
+  RUN --> CMP
+```
+
+### Classification pipeline (level 1)
+
+```mermaid
+flowchart TB
+  A[Scenario record] --> B[Integrity: SHA-256 CSV/raw vs provenance]
+  B --> C[Header fit: body 10/399, observer 301, Q4 airless]
+  C --> D[Join Sun + Earth rows on UTC grid]
+  D --> E[HorizonSource: 0° or terrain skyline]
+  E --> F[classify_bodies per sample]
+  F --> G[apply_both_endpoints\nleft_sample_both_endpoints]
+  G --> H[elapsed_seconds + intervals]
+  H --> I[Assert Clear+Blocked+Unknown = requested duration]
+```
+
+### Geometric calculation (what the numbers mean)
+
+Horizons **Quantity 4** returns, for each UTC sample and each target body (Sun centre `10`, Earth centre `399`):
+
+| Quantity | Symbol in export | Convention |
+|----------|------------------|------------|
+| Azimuth | `azimuth_deg` | Degrees clockwise from **true local north**, range `[0, 360)`. |
+| Apparent airless elevation | `elevation_deg` | Degrees above the **local horizontal** plane at the lunar observer (`coord@301`). Refraction is off (airless). |
+
+The observer sits at `SITE_COORD`: east longitude, latitude, and height **kilometres above the 1737.4 km reference sphere** (practice files use the values in each scenario). The angles are already in the observer’s topocentric frame (`MEAN_ME` in the saved headers); the engine does **not** recompute ephemeris or rotate vectors.
+
+**Geometric 0° mode** (`horizon_mode: geometric_0deg`):
+
+```
+horizon_deg = 0.0
+margin_deg  = elevation_deg - horizon_deg
+```
+
+**Terrain mode** (`horizon_mode: terrain`) — selectable but M4-not-passed in this release:
+
+```
+H = skyline horizon angle at the body’s azimuth (linear interp between bins, 359°↔0° wrap)
+margin_deg = elevation_deg - H   only when H is defined
+```
+
+If no approved skyline matches the observer, every sample is `unknown` with reason `terrain_not_reviewed`; `horizon_deg` and `margin_deg` stay `null` and the saved elevation is kept. A gap in either bracketing azimuth bin yields `terrain_gap_in_azimuth_bracket` (no invented fill).
+
+**Diagnostic DEM profiles** (`lunar_navigator.terrain`, LDEM sampling) build display-only skylines under `web/review-candidate/terrain/`. They do not feed `HorizonSource` until Science signs a reviewed `terrain/reviewed/*.json` file.
+
+**Classification rule** (unrounded margin):
+
+```
+clear   if margin_deg > 0
+blocked if margin_deg ≤ 0   (includes exact contact)
+unknown if elevation or required horizon is missing
+```
+
+**Both lane** after per-body states and endpoint checks:
+
+```
+blocked if either body is blocked
+else unknown if either body is unknown
+else clear
+```
+
+### Sequence: classify one timestamp
+
+```mermaid
+sequenceDiagram
+  participant Row as angles.csv row
+  participant Nxt as next row
+  participant Eng as engine.classify_sample
+  participant Hor as HorizonSource
+  participant Vis as visibility
+
+  Row->>Eng: sun/earth azimuth + elevation + source_ref
+  Nxt->>Eng: next timestamp (or none if terminal)
+  Eng->>Hor: horizon_at(sun_azimuth)
+  Hor-->>Eng: horizon_deg or reason
+  Eng->>Vis: classify_margin(sun elev, horizon)
+  Vis-->>Eng: sun state + margin
+  Eng->>Hor: horizon_at(earth_azimuth)
+  Eng->>Vis: classify_margin(earth elev, horizon)
+  Eng->>Vis: both_lane(sun, earth)
+  Eng->>Eng: apply_both_endpoints (missing right angle → Unknown span)
+  Eng-->>Eng: sample + duration_seconds (0 on terminal)
+```
+
+### Sequence: load scenario and emit (streamed run)
+
+```mermaid
+sequenceDiagram
+  participant API as live_server / CLI
+  participant Ld as load_scenario_inputs
+  participant Str as stream_scenario
+  participant Disk as data/horizons
+
+  API->>Str: scenario + data_root + revision
+  Str-->>API: stage loading_inputs
+  Str->>Ld: validate + join rows
+  Ld->>Disk: read CSV + response + provenance
+  Ld-->>Str: rows + HorizonSource
+  Str-->>API: metadata (observer, grid, labels)
+  loop each batch
+    Str->>Str: classify_sample × batch_size
+    Str-->>API: batch (partial totals through cutoff)
+  end
+  Str-->>API: complete | cancelled | error
+```
+
+### Module map
+
+| Module | Role |
+|--------|------|
+| `horizons_table.py` | Parse CSV/response text; map `n.a.` to null angles. |
+| `engine.py` | Validation, join, classify, intervals, streaming, comparison export. |
+| `visibility.py` | Margin → state; body ID guardrails; Both-lane priority. |
+| `skyline.py` | Reviewed skyline lookup; azimuth interpolation; terrain Unknown reasons. |
+| `terrain.py` | DEM skyline **diagnostics** only (not production classification). |
+| `catalog.py` | Discover saved entries and comparable two-site windows. |
+
 ## What the engine calculates
 
 For each saved timestamp, for each of Sun (`10`) and Earth (`399`):
