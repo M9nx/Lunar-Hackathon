@@ -245,17 +245,17 @@ function scenarioBarHtml() {
 
 /** Whole-window clear seconds per site for the two headline measures. Two sites use the engine overlap block. */
 function headlineSeconds() {
-  if (state.runs.length >= 2) {
-    const o = state.comparison.overlap;
-    return {
-      sun: [o.sun_centre_clear_seconds.site_a, o.sun_centre_clear_seconds.site_b],
-      both: [o.both_centres_clear_seconds.site_a, o.both_centres_clear_seconds.site_b],
-      sunDelta: o.sun_centre_clear_seconds.delta_b_minus_a,
-      bothDelta: o.both_centres_clear_seconds.delta_b_minus_a,
-    };
-  }
-  const e = state.runs[0].payload.elapsed_seconds;
-  return { sun: [e.sun.clear], both: [e.both.clear], sunDelta: null, bothDelta: null };
+  const clear = (lane) => state.runs.map((run) => run.payload.elapsed_seconds[lane].clear);
+  const sun = clear("sun");
+  const earth = clear("earth");
+  const both = clear("both");
+  const delta = (arr) => (arr.length >= 2 ? arr[1] - arr[0] : null);
+  return {
+    sun, earth, both,
+    sunDelta: delta(sun), earthDelta: delta(earth), bothDelta: delta(both),
+    clear: clear(state.lane),
+    delta: delta(clear(state.lane)),
+  };
 }
 
 const SHORT_LANE = { sun: "Sun", earth: "Earth", both: "Both" };
@@ -279,7 +279,7 @@ function breakdownHtml() {
   const two = state.runs.length >= 2;
   const rows = state.runs.map((run, i) => ["sun", "earth", "both"].map((lane) => {
     const e = run.payload.elapsed_seconds[lane];
-    return `<tr class="${e.unknown ? "has-unknown" : ""}">${two ? `<th scope="row">${slotBadge(i)} ${esc(siteName(run))}</th>` : ""}<td>${esc(SHORT_LANE[lane])}</td>
+    return `<tr class="${e.unknown ? "has-unknown" : ""}${lane === state.lane ? " is-active-lane" : ""}">${two ? `<th scope="row">${slotBadge(i)} ${esc(siteName(run))}</th>` : ""}<td>${esc(SHORT_LANE[lane])}</td>
       <td>${esc(fmtDuration(e.clear))}</td><td>${esc(fmtDuration(e.blocked))}</td><td class="${e.unknown ? "unk-val" : ""}">${esc(fmtDuration(e.unknown))}</td></tr>`;
   }).join("")).join("");
   return `<table class="res-break"><caption>${state.partial ? "So far, by lane" : "Whole window, by lane"} · Clear + Blocked + Unknown = the requested time</caption>
@@ -315,40 +315,83 @@ function unknownNoticeHtml(terrainUnknown) {
   return `<div class="res-unknown" role="note"><p><strong>${esc(lead)}</strong> ${esc(lines)}. Unknown is not counted as clear or blocked.</p>${buttons ? `<p class="res-unknown-go">${buttons}</p>` : ""}</div>`;
 }
 
+/** Clear windows that pass the Window length filter, for the selected Clearance lane. */
+function windowFilterHtml() {
+  if (!state.runs.length) return "";
+  const lane = state.lane;
+  const min = state.minHours;
+  const label = min ? `${minLabel()} or longer` : "any length";
+  const sites = state.runs.map((run, i) => {
+    const clear = mergedStates(run, lane).filter((s) => s.state === "clear");
+    const keep = clear.filter(qualifies);
+    const longest = (keep.length ? keep : clear).slice().sort((a, b) => (b.endMs - b.startMs) - (a.endMs - a.startMs))[0] || null;
+    const seconds = longest ? (longest.endMs - longest.startMs) / 1000 : 0;
+    let btn = "";
+    if (longest) {
+      const which = keep.length ? "longest qualifying" : "longest clear (shorter than the filter)";
+      btn = `<button type="button" class="mini win-open win-scroll" data-site="${i}" data-lane="${lane}" data-utc="${esc(longest.start)}" data-end="${esc(longest.end)}" data-state="clear">Show ${which}: ${esc(compactUtc(longest.start))} → ${esc(compactUtc(longest.end))} · ${esc(fmtDuration(seconds))}</button>`;
+    }
+    const countText = keep.length
+      ? `<strong>${keep.length}</strong> clear window${keep.length === 1 ? "" : "s"}`
+      : clear.length
+        ? `<strong>none</strong> of ${clear.length} clear window${clear.length === 1 ? "" : "s"} is long enough`
+        : `<strong>no clear window</strong>`;
+    return `<div class="wf-site">${slotBadge(i)} <strong>${esc(siteName(run))}</strong> · ${countText}${longest && keep.length ? ` · longest ${esc(fmtDuration(seconds))}` : ""}${btn ? `<div class="wf-go">${btn}</div>` : ""}</div>`;
+  }).join("");
+  const note = min
+    ? `The Clearance totals above count every Clear second. This filter only keeps Clear spans of ${esc(minLabel())} or longer for the Windows list and the question below.`
+    : "Any length: every Clear span counts as a window. Raise the filter to ask for a longer continuous Clear period.";
+  return `<div class="res-windows" role="region" aria-label="Clear windows for the selected clearance">
+    <p class="wf-head"><span class="wf-k">Clear windows</span> <strong>${esc(SHORT_LANE[lane])}</strong> · ${esc(label)}</p>
+    ${sites}
+    <p class="wf-note">${note}</p>
+  </div>`;
+}
+
 function answerHtml() {
   if (!state.comparison || !state.runs.length) return "";
   const two = state.runs.length >= 2;
   const names = state.runs.map(siteName);
-  const { sun, both } = headlineSeconds();
+  const lane = state.lane;
+  const head = headlineSeconds();
+  const clear = head.clear;
   const partial = state.partial;
   const cutoff = sharedCutoffUtc();
+  const title = laneName(lane);
+  const phrase = lane === "both" ? "both-centres clear time" : `${SHORT_LANE[lane]}-centre clearance`;
   let lead;
   if (!two) {
-    lead = `${names[0]} ${partial ? "has so far" : "had"} ${fmtDuration(sun[0])} of Sun-centre clearance.`;
-  } else if (sun[0] === sun[1]) {
-    lead = `${names[0]} and ${names[1]} ${partial ? "have" : "had"} the same Sun-centre clearance.`;
+    lead = `${names[0]} ${partial ? "has so far" : "had"} ${fmtDuration(clear[0])} of ${phrase}.`;
+  } else if (clear[0] === clear[1]) {
+    lead = `${names[0]} and ${names[1]} ${partial ? "have" : "had"} the same ${phrase}.`;
   } else {
-    const more = sun[0] > sun[1] ? 0 : 1;
-    lead = `${names[more]} ${partial ? "has" : "had"} more Sun-centre clearance than ${names[1 - more]}, by ${fmtDuration(Math.abs(sun[0] - sun[1]))}.`;
+    const more = clear[0] > clear[1] ? 0 : 1;
+    lead = `${names[more]} ${partial ? "has" : "had"} more ${phrase} than ${names[1 - more]}, by ${fmtDuration(Math.abs(clear[0] - clear[1]))}.`;
   }
   const terrainUnknown = terrainMode() && state.runs.every((run) => !run.payload.terrain || run.payload.terrain.status !== "reviewed");
   if (terrainUnknown) {
     lead = `Terrain mode: every state is Unknown (${(state.runs[0].payload.terrain && state.runs[0].payload.terrain.reason) || "terrain_not_reviewed"}). No clear or blocked time is reported.`;
   }
-  const unknownSun = state.runs.map((run) => run.payload.elapsed_seconds.sun.unknown);
+  const unknownLane = state.runs.map((run) => run.payload.elapsed_seconds[lane].unknown);
   const cards = names
-    .map((name, i) => `<article class="site-num"><span class="sn-name">${slotBadge(i)} ${esc(name)}</span><strong class="sn-val">${esc(terrainUnknown ? "Unknown" : fmtDuration(sun[i]))}</strong>${terrainUnknown ? `<span class="sn-sub">${esc(fmtDuration(unknownSun[i]))} Unknown</span>` : ""}${splitHtml(state.runs[i].payload.elapsed_seconds.sun, name + " Sun centre")}</article>`)
+    .map((name, i) => `<article class="site-num"><span class="sn-name">${slotBadge(i)} ${esc(name)}</span><strong class="sn-val">${esc(terrainUnknown ? "Unknown" : fmtDuration(clear[i]))}</strong>${terrainUnknown ? `<span class="sn-sub">${esc(fmtDuration(unknownLane[i]))} Unknown</span>` : ""}${splitHtml(state.runs[i].payload.elapsed_seconds[lane], name + " " + SHORT_LANE[lane])}</article>`)
     .join("");
-  const joint = terrainUnknown
-    ? "Both centres clear · Unknown (terrain)"
-    : two && both.every((v) => v === 0)
-    ? "Both centres clear · 0 h at either site"
-    : "Both centres clear · " + names.map((name, i) => `${name} ${fmtDuration(both[i])}`).join(" · ");
+  let joint;
+  if (terrainUnknown) {
+    joint = "Both centres clear · Unknown (terrain)";
+  } else if (lane === "both") {
+    joint = "Also · Sun " + names.map((name, i) => `${name} ${fmtDuration(head.sun[i])}`).join(" / ")
+      + " · Earth " + names.map((name, i) => `${name} ${fmtDuration(head.earth[i])}`).join(" / ");
+  } else if (two && head.both.every((v) => v === 0)) {
+    joint = "Both centres clear · 0 h at either site";
+  } else {
+    joint = "Both centres clear · " + names.map((name, i) => `${name} ${fmtDuration(head.both[i])}`).join(" · ");
+  }
   let status = "";
   if (partial && state.runEnd) {
     const end = state.runEnd;
     const verb = end.kind === "failed" ? "Failed" : "Stopped";
-    status = `<p class="qa-banner res-status" role="status"><strong>${verb}. Incomplete run.</strong> Partial result through <strong>${esc(end.cutoff || "—")}</strong> (${esc(end.shared)} shared samples; totals cover through ${esc(end.covered || end.cutoff || "—")}). Only the shared resolved interval is counted. Not exportable.${end.kind === "failed" && end.message ? " " + esc(end.message) + "." : ""}</p>`;
+    status = `<p class="qa-banner res-status" role="status"><strong>${verb}. Incomplete run.</strong> Partial result through <strong>${esc(end.cutoff || "—")}</strong> (${esc(end.shared)} shared samples; totals cover through ${esc(end.covered || end.cutoff || "—")}). Only the shared resolved interval is counted. Not exportable.</p>`;
   } else if (partial && state.stopping) {
     status = `<p class="qa-banner res-status" role="status"><strong>Stopping.</strong> These totals are not final until the engine reports the final cutoff.</p>`;
   } else if (partial) {
@@ -357,23 +400,25 @@ function answerHtml() {
     status = '<p class="qa-banner res-status">QA fixture. These hours are synthetic. They are not the January practice result.</p>';
   }
   return `
-    <h1 id="result-heading" class="result-title">Sun-centre clearance</h1>
-    <p class="result-sub">${partial ? "Partial window" : "Whole window"} · ${terrainMode() ? "centre-ray against a reviewed terrain skyline (none available)" : "centre-ray against geometric 0°"}</p>
+    <h1 id="result-heading" class="result-title">${esc(title)}</h1>
+    <p class="result-sub">${partial ? "Partial window" : "Whole window"} · ${terrainMode() ? "centre-ray against a reviewed terrain skyline (none available)" : "centre-ray against geometric 0°"} · Clearance: ${esc(SHORT_LANE[lane])}</p>
     ${status}
     <div class="result-pair${two ? "" : " is-single"}">${cards}</div>
     <p class="result-lead">${esc(lead)}</p>
     <p class="result-joint">${esc(joint)}</p>
+    <p class="result-tags"><span class="demo-chip">${esc(caseLabel())}</span><span class="demo-chip soft">${terrainMode() ? "Terrain mode · Unknown" : "Terrain clearance unknown"}</span></p>
     ${unknownNoticeHtml(terrainUnknown)}
-    ${breakdownHtml()}
-    <p class="result-tags"><span class="demo-chip">${esc(caseLabel())}</span><span class="demo-chip soft">${terrainMode() ? "Terrain mode · Unknown" : "Terrain clearance unknown"}</span></p>`;
+    ${windowFilterHtml()}
+    ${breakdownHtml()}`;
 }
+
 
 /** Raw seconds, sample counts, Unknown durations and the terrain reason code live behind Details. */
 function answerDetailsHtml(open) {
   if (!state.comparison || !state.runs.length) return "";
   const two = state.runs.length >= 2;
   const names = state.runs.map(siteName);
-  const { sun, both, sunDelta, bothDelta } = headlineSeconds();
+  const head = headlineSeconds();
   const secs = (arr) => arr.map((v, i) => `${names[i]} ${v} s`).join(" · ");
   const counts = state.runs.map((run, i) => `${names[i]} ${state.siteProgress[i] ?? run.payload.samples.length}`).join(" · ");
   const unknownFor = (u) => `Sun ${fmtDuration(u.sun)}, Earth ${fmtDuration(u.earth)}, Both ${fmtDuration(u.both)}`;
@@ -386,9 +431,12 @@ function answerDetailsHtml(open) {
     unknown = `${names[0]}: ${unknownFor({ sun: e.sun.unknown, earth: e.earth.unknown, both: e.both.unknown })}.`;
   }
   const row = (k, v) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`;
+  const deltaNote = (delta) => (two ? ` · delta (${names[1]} − ${names[0]}) ${delta} s` : "");
   const rows = [
-    row("Sun-centre clear, saved seconds", secs(sun) + (two ? ` · delta (${names[1]} − ${names[0]}) ${sunDelta} s` : "")),
-    row("Both centres clear, saved seconds", secs(both) + (two ? ` · delta (${names[1]} − ${names[0]}) ${bothDelta} s` : "")),
+    row("Active clearance", `${laneName(state.lane)} · ${secs(head.clear)}${deltaNote(head.delta)}`),
+    row("Sun-centre clear, saved seconds", secs(head.sun) + deltaNote(head.sunDelta)),
+    row("Earth-centre clear, saved seconds", secs(head.earth) + deltaNote(head.earthDelta)),
+    row("Both centres clear, saved seconds", secs(head.both) + deltaNote(head.bothDelta)),
     row("Samples", counts + (two ? ` · shared ${sharedSampleCount()}` : "")),
     row(terrainMode() ? "Unknown duration, terrain mode" : "Geometric Unknown duration", unknown),
     row("Terrain", terrainMode()
@@ -1333,7 +1381,7 @@ function metricsHtml(runIndex, sample, profile) {
         ${metricRow("Elevation", typeof item.elevation_deg === "number" ? fmt3(item.elevation_deg) : "null", "°")}
         ${metricRow("Horizon", show(item.horizon_deg), "°")}
         ${metricRow("Margin", fmt3(item.margin_deg), "°")}
-        ${state.showTerrain ? metricRow("DEM (diagnostic)", dem, dem === "no data" ? "" : "°") : ""}
+        ${metricRow("DEM (diagnostic)", dem, dem === "no data" ? "" : "°")}
       </dl>
     </button>`;
   });
@@ -1415,6 +1463,12 @@ function skyPlot(run, runIndex) {
       </g>`
     : "";
 
+  const pills = `
+    <span class="status-pill status-${esc(sun.state)}">Sun · ${esc(titleCase(sun.state))} at geometric 0°</span>
+    <span class="status-pill status-${esc(earth.state)}">Earth · ${esc(titleCase(earth.state))} at geometric 0°</span>
+    <span class="status-pill status-${esc(sample.both.state)}">Both · ${esc(titleCase(sample.both.state))}</span>
+    <span class="status-pill status-unknown">Terrain clearance unknown</span>`;
+
   let terrainNote = "";
   let terrainLayers = "";
   let terrainDefs = "";
@@ -1444,6 +1498,7 @@ function skyPlot(run, runIndex) {
   return `<article class="sky-panel${selected ? " is-selected" : ""}" data-site="${runIndex}">
     <div class="sky-panel-head">
       <h3>${slotBadge(runIndex)} ${esc(siteName(run))}${selected ? ' <span class="sel-tag">selected</span>' : ""}</h3>
+      <div class="sky-pills">${pills}</div>
     </div>
     ${liveMeterHtml(runIndex)}
     <svg class="sky-svg" viewBox="0 0 440 440" role="img" aria-label="Polar sky for ${esc(siteName(run))}. Centre is ${rangeDef.centre} degrees elevation, the dashed ring is 0 degrees, the edge is ${rangeDef.edge} degrees.">
@@ -1997,6 +2052,24 @@ function currentSamples() {
 }
 
 function setLiveChip() {
+  const caseChip = document.getElementById("case-chip");
+  if (caseChip) {
+    if (state.source === "qa" || (state.comparison && state.comparison.qa_fixture)) {
+      caseChip.textContent = "QA fixture";
+    } else if (state.live) {
+      caseChip.textContent = "Practice";
+    } else if (state.source === "practice30") {
+      caseChip.textContent = "Practice · 30 days";
+    } else if (state.source === "jan03-10") {
+      caseChip.textContent = "Practice · Jan 3–10";
+    } else {
+      caseChip.textContent = "Practice";
+    }
+  }
+  const terrainChip = document.getElementById("terrain-chip");
+  if (terrainChip) {
+    terrainChip.textContent = terrainMode() ? "Terrain mode · Unknown" : "Terrain clearance unknown";
+  }
   const chip = document.getElementById("live-chip");
   if (!chip) return;
   if (state.live && state.runEnd) {
@@ -2839,7 +2912,7 @@ function renderWaiting() {
     : state.stopping
       ? "Stopping. Waiting for the engine to report the final cutoff."
       : "Waiting for the first shared sample. Pending is not Unknown.";
-  document.getElementById("answers").innerHTML = `<h1 id="result-heading" class="result-title">Sun-centre clearance</h1>
+  document.getElementById("answers").innerHTML = `<h1 id="result-heading" class="result-title">${esc(laneName(state.lane))}</h1>
     <p class="result-sub">${detail}</p>`;
   document.getElementById("answers-details").innerHTML = "";
   setLiveChip();
@@ -2979,6 +3052,20 @@ function whyTerrainHtml() {
     <p>Observer reference altitude in the saved inputs: ${esc(heights)}. These are the practice request values and not a reviewed surface height.</p></div>`;
 }
 
+function whyScopeHtml() {
+  if (!state.runs.length) return "";
+  const win = sharedWindow();
+  const mode = terrainMode()
+    ? "Terrain · Unknown"
+    : (win.mode === "geometric_0deg" ? "Geometric 0°" : String(win.mode));
+  const span = (win.end - win.start) / 1000;
+  return `<div class="why-scope" aria-label="Result scope">
+    <span><b>UTC range</b> ${esc(shortUtc(win.startUtc))} → ${esc(shortUtc(win.endUtc))} · ${esc(fmtDuration(span))}</span>
+    <span><b>Mode</b> ${esc(mode)} (centre-ray)</span>
+    <span><b>Terrain</b> Unknown</span>
+  </div>`;
+}
+
 function whyKey(lane, runIndex) {
   return lane === "both" ? "both" : `${lane}:${runIndex}`;
 }
@@ -2994,12 +3081,22 @@ function whyBodyHtml() {
 
 function whyResultHtml() {
   if (!state.runs.length || !sharedSampleCount()) return "";
-  const { sun, both } = headlineSeconds();
+  const head = headlineSeconds();
   const names = state.runs.map(siteName);
   const buttons = [];
-  names.forEach((name, i) => buttons.push({ key: whyKey("sun", i), text: `Why ${name} ${terrainMode() ? "Unknown" : fmtDuration(sun[i])}?` }));
-  const bothLabel = both.every((v) => v === both[0]) ? fmtDuration(both[0]) : both.map(fmtDuration).join(" / ");
-  buttons.push({ key: "both", text: `Why both centres ${bothLabel}?` });
+  const lane = state.lane;
+  const clear = head.clear;
+  names.forEach((name, i) => buttons.push({
+    key: whyKey(lane === "both" ? "both" : lane, i),
+    text: `Why ${name} ${terrainMode() ? "Unknown" : fmtDuration(clear[i])}?`,
+  }));
+  if (lane !== "both") {
+    const bothLabel = head.both.every((v) => v === head.both[0]) ? fmtDuration(head.both[0]) : head.both.map(fmtDuration).join(" / ");
+    buttons.push({ key: "both", text: `Why both centres ${bothLabel}?` });
+  }
+  if (lane !== "sun") {
+    buttons.push({ key: whyKey("sun", 0), text: `Why ${names[0]} Sun ${fmtDuration(head.sun[0])}?` });
+  }
   buttons.push({ key: "terrain", text: "Why terrain Unknown?" });
   if (state.why && !buttons.some((b) => b.key === state.why)) {
     const [lane, site] = state.why.split(":");
@@ -3009,12 +3106,13 @@ function whyResultHtml() {
     .map((b) => `<button type="button" class="why-q" data-why="${esc(b.key)}" aria-pressed="${state.why === b.key}">${esc(b.text)}</button>`)
     .join("");
   return `<section class="why-result" aria-label="Why this result?"><h2 class="why-h">Why this result?</h2>
+    ${whyScopeHtml()}
     <div class="why-qs" role="group" aria-label="Questions">${chips}</div>
     <div class="why-body" id="why-body" aria-live="polite">${whyBodyHtml()}</div></section>`;
 }
 
 function renderWhy() {
-  const host = document.getElementById("why-result");
+  const host = document.getElementById("why-result") || document.getElementById("why");
   if (host) host.innerHTML = whyResultHtml();
 }
 
@@ -3045,7 +3143,7 @@ function decisionSiteHtml(run, runIndex, sum, lane) {
       <p class="win-hint">Open the Windows list below for every interval. First matching window:
         <button type="button" class="mini win-open" data-site="${runIndex}" data-lane="${lane}" data-utc="${esc(first.start)}" data-end="${esc(first.end)}" data-state="clear">${esc(compactUtc(first.start))} → ${esc(compactUtc(first.end))}</button></p>`;
   } else if (sum.clear.length) {
-    body = `<p><strong>No clear window${esc(minPhrase(min))}.</strong> Longest clear window ${esc(fmtDuration(sum.longest))}. Choose a shorter minimum in <b>Window length</b> above.</p>`;
+    body = `<p><strong>No clear window${esc(minPhrase(min))}.</strong> Longest clear window ${esc(fmtDuration(sum.longest))}. Choose a shorter minimum in <b>Minimum clear window</b> above.</p>`;
   } else if (sum.elapsed.clear === 0 && sum.elapsed.blocked === 0 && sum.elapsed.unknown > 0) {
     body = `<p><strong>Unknown.</strong> Every sample is Unknown (${esc(fmtDuration(sum.elapsed.unknown))}). No clear window can be named, and none is ruled out.</p>`;
   } else {
@@ -3364,13 +3462,13 @@ function bind() {
     if (why) {
       state.why = why.dataset.why;
       renderWhy();
-      document.getElementById("why-result").scrollIntoView({ block: "start" });
+      document.getElementById("why").scrollIntoView({ block: "start" });
       return;
     }
     const open = event.target.closest(".case-open");
     if (open) openCase(open.dataset.case).catch((error) => setRunStatus("Failed to load. " + error));
   });
-  document.getElementById("why-result").addEventListener("click", (event) => {
+  document.getElementById("why").addEventListener("click", (event) => {
     const question = event.target.closest(".why-q");
     if (question) {
       state.why = state.why === question.dataset.why ? null : question.dataset.why;
