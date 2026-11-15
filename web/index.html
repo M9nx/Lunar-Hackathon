@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Compare when the Sun and Earth are above the horizon at lunar south-pole sites, from saved JPL Horizons data. Offline.">
+  <title>Lunar Landing Site Navigator</title>
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="overview" data-root="">
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="site-banner">Unofficial NASA Space Apps Challenge project. Not an official NASA website.</div>
+  <header id="site-header" class="site-header"></header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <img class="hero-img" src="assets/img/earthrise-hero.jpg" width="2400" height="1047" alt="Earth above the lunar horizon, photographed from lunar orbit by Apollo 8">
+      <div class="hero-copy">
+        <div class="wrap">
+          <p class="eyebrow">NASA Space Apps Challenge 2026</p>
+          <h1 id="hero-title">Is the Sun or Earth above the horizon at a lunar south-pole site?</h1>
+          <p class="lead">Compare two sites sample by sample from saved JPL Horizons data. Every number traces to a saved row, and everything runs offline on this computer.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="review-candidate/?tour=1">Start the guide</a>
+            <a class="btn btn-outline-inverse" href="review-candidate/">Open the navigator</a>
+          </div>
+        </div>
+      </div>
+      <p class="credit">Earthrise, Apollo 8, 1968. Credit: NASA</p>
+    </section>
+
+    <section class="section" aria-labelledby="result-title">
+      <div class="wrap">
+        <h2 id="result-title">A result from this release</h2>
+        <div class="summary-box">
+          <h3>January 3–10, 2025 UTC · geometric 0° horizon · 15-minute samples</h3>
+          <p>Hours in which the centre of the Sun, and then both the Sun and Earth centres, were above 0° at each site. Practice inputs; terrain clearance is Unknown.</p>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="result-table">
+            <caption>Clearance at the 0° horizon, January 3–10, 2025 UTC</caption>
+            <thead><tr><th scope="col">Site</th><th scope="col" class="num">Sun centre clear</th><th scope="col" class="num">Both centres clear</th><th scope="col" class="num">Unknown</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Malapert</th><td class="num">110 h 30 min</td><td class="num">110 h 30 min</td><td class="num">0 h</td></tr>
+              <tr><th scope="row">Site04</th><td class="num">168 h</td><td class="num">92 h 45 min</td><td class="num">0 h</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note" id="result-note">Method: Horizons Quantity 4 apparent airless elevation of the target centre minus 0°. Sun, Earth and Both are separate lanes; Both is Clear only when each is Clear.</p>
+        <p><a class="btn btn-outline" href="review-candidate/#case=jan03-10">Open this case in the navigator</a></p>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="sites-title">
+      <div class="wrap two-col wide-left">
+        <figure class="map-figure">
+          <div class="map-stage" id="map-stage">
+            <img src="assets/img/south-pole-lroc-wac.jpg" width="1200" height="1200" alt="Mosaic of the lunar south pole from the Lunar Reconnaissance Orbiter, with the two practice sites marked">
+          </div>
+          <figcaption>LROC WAC south pole mosaic, polar stereographic, 400 m/pixel. Credit: NASA/GSFC/Arizona State University. Markers are placed from the saved observer coordinates and are for orientation only.</figcaption>
+        </figure>
+        <div>
+          <h2 id="sites-title">The two sites</h2>
+          <p class="intro">Both are practice observers on the Moon, given to Horizons as geodetic longitude, latitude and height above the 1737.4 km reference sphere.</p>
+          <div class="table-wrap">
+            <table class="data-table" id="sites-table">
+              <caption>Saved observers</caption>
+              <thead><tr><th scope="col">Site</th><th scope="col" class="num">Latitude</th><th scope="col" class="num">Longitude E</th><th scope="col" class="num">Height</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Malapert</th><td class="num">−85.9900°</td><td class="num">−2.9300°</td><td class="num">0 km</td></tr>
+                <tr><th scope="row">Site04</th><td class="num">−89.7812°</td><td class="num">−156.4386°</td><td class="num">1.738902 km</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Site04 is about 7 km from the pole and Malapert about 120 km, from the saved latitudes. Malapert’s 0 km height is a practice value, not a reviewed surface height, so it stays an open item for terrain work.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="checks-title">
+      <div class="wrap">
+        <h2 id="checks-title">What it checks</h2>
+        <p class="intro">Two bodies, one horizon. The tool tests the centre of each against a flat 0° horizon and reports three lanes.</p>
+        <div class="bodies">
+          <figure class="body-card">
+            <img src="assets/img/sun-sdo-171.jpg" alt="The Sun in extreme ultraviolet, imaged by the Solar Dynamics Observatory" loading="lazy">
+            <figcaption><strong>Sun-centre clearance</strong>Horizons target 10. Credit: NASA/SDO (AIA 171, 2025-09-10).</figcaption>
+          </figure>
+          <figure class="body-card">
+            <img src="assets/img/earth-crop.jpg" alt="Earth over the lunar horizon" loading="lazy">
+            <figcaption><strong>Earth-centre clearance</strong>Horizons target 399. Credit: NASA (Apollo 8).</figcaption>
+          </figure>
+        </div>
+        <p style="margin-top:20px;max-width:70ch"><strong>Both centres clear</strong> is Blocked if either centre is Blocked, Unknown if neither is Blocked and either is Unknown, and Clear only when both are Clear. A margin of 0° or less is Blocked.</p>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="go-title">
+      <div class="wrap">
+        <h2 id="go-title">Where to go next</h2>
+        <div class="tiles">
+          <a class="tile" href="review-candidate/?tour=1">
+            <img src="assets/guide/tile-guide.png" alt="" loading="lazy">
+            <div class="tile-body"><h3>Guide</h3><p>Ten short steps: start the server, read a result, ask why, and check the evidence.</p><span class="go">Start the guide →</span></div>
+          </a>
+          <a class="tile" href="review-candidate/">
+            <img src="assets/guide/tile-navigator.png" alt="" loading="lazy">
+            <div class="tile-body"><h3>Navigator</h3><p>Compare the sites on one timeline. Inspect the saved Horizons row behind any sample.</p><span class="go">Open the navigator →</span></div>
+          </a>
+          <a class="tile" href="documents.html?doc=operator-manual.md">
+            <img src="assets/img/south-pole-lroc-wac.jpg" alt="" loading="lazy" style="object-position:center">
+            <div class="tile-body"><h3>Manual and reference</h3><p>Install and run it, call the API, follow the engine, and read the data and research notes.</p><span class="go">Open the manual →</span></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="limits-title">
+      <div class="wrap">
+        <h2 id="limits-title">What this release does not claim</h2>
+        <div class="alert" role="note">
+          <strong>Practice inputs, centre ray only</strong>
+          <p>A centre below the horizon can still leave part of the disc above that plane, and a clear centre says nothing about received power or a ground-station link. Terrain clearance is Unknown until a reviewed skyline passes the M4 check. Submission eligibility is a Lead decision that is still open. See <a href="documents.html?doc=project-progress.md">project progress</a>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+  <script src="assets/js/docs-config.js"></script>
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/landing.js"></script>
+</body>
+</html>

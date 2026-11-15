@@ -1,0 +1,11 @@
+Imagery on the landing page and guide. All files are local; nothing loads from the network.
+Sources are the project's offline asset folder (data/offline/assets/).
+
+earthrise-hero.jpg, earth-crop.jpg   Crop of apollo8-earthrise.jpg. Earthrise, Apollo 8, 1968. Credit: NASA.
+sun-sdo-171.jpg                      PIA26681 (SDO/AIA 171, 2025-09-10 15:55:22 UT). Credit: NASA/SDO.
+south-pole-lroc-wac.jpg              PIA13523, LROC WAC south pole mosaic, polar stereographic, 400 m/pixel.
+                                     Credit: NASA/GSFC/Arizona State University.
+../guide/*.png                       Crops of screenshots of this navigator (evidence under builder/docs/evidence/s3/).
+
+Site markers on the pole map are placed from the saved observer longitude and latitude with the same
+projection the navigator uses (checked there against the 85°S ring and Amundsen). They are orientation only.
