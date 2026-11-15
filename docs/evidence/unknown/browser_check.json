@@ -91,7 +91,7 @@
     {
       "check": "selected missing row shows Unknown, a reason and no invented margin",
       "pass": true,
-      "detail": "Selected UTC 2024-06-01T00:30:00Z View evidence A qa-gap-north Unknown no saved margin Unknown, not a clearance: missing_ephemeris. Any margin shown is the saved sample value."
+      "detail": "Selected UTC 2024-06-01T00:30:00Z A qa-gap-north Unknown no saved margin Unknown, not a clearance: missing_ephemeris. Any margin shown is the saved sample value."
     },
     {
       "check": "no zero placed on the chart at the missing sample",
@@ -112,7 +112,7 @@
       "check": "Sun split bar is 25% clear, 25% blocked, 50% Unknown",
       "pass": true,
       "detail": {
-        "label": "qa-gap-north Sun centre: Clear 15 min, Blocked 15 min, Unknown 30 min",
+        "label": "qa-gap-north Sun: Clear 15 min, Blocked 15 min, Unknown 30 min",
         "parts": [
           [
             "clear",
@@ -149,9 +149,38 @@
       ]
     },
     {
+      "check": "Both centres: result title and card follow the Clearance toggle",
+      "pass": true,
+      "detail": [
+        "Both centres clear",
+        [
+          "15 min"
+        ]
+      ]
+    },
+    {
+      "check": "Both centres: clear-window filter is for Both",
+      "pass": true,
+      "detail": "Clear windows Both \u00b7 any length A qa-gap-north \u00b7 1 clear window \u00b7 longest 15 minShow longest qualifying: 06-01 00:00Z \u2192 06-01 00:15Z \u00b7 15 min Any length: every Clear span counts as a window. Raise the filter to ask for a longer continuous Clear period."
+    },
+    {
+      "check": "Minimum clear window 1 h: filter says none of the clear windows is long enough",
+      "pass": true,
+      "detail": "Clear windows Sun \u00b7 1 h or longer A qa-gap-north \u00b7 none of 1 clear window is long enoughShow longest clear (shorter than the filter): 06-01 00:00Z \u2192 06-01 00:15Z \u00b7 15 min The Clearance totals above count every Clear second. This filter only keeps Clear spans of 1 h or longer for the Windows list and the question below."
+    },
+    {
+      "check": "filter button still jumps to the longest clear span",
+      "pass": true,
+      "detail": [
+        "clear",
+        "2024-06-01T00:00:00Z",
+        "2024-06-01T00:15:00Z"
+      ]
+    },
+    {
       "check": "Unknown counted separately: Sun 30 min, Earth 0 h, Both 15 min",
       "pass": true,
-      "detail": "DetailsSun-centre clear, saved secondsqa-gap-north 900 sBoth centres clear, saved secondsqa-gap-north 900 sSamplesqa-gap-north 5Geometric Unknown durationqa-gap-north: Sun 30 min, Earth 0 h, Both 15 min.TerrainUnknown \u00b7 terrain_not_reviewed. No reviewed skyline is available. This is not the geometric Unknown duration.Runsqa-gap-north qa-gap-north-q4-centre-0deg-7fb030361136 (browsercheck)"
+      "detail": "DetailsActive clearanceSun-centre clearance \u00b7 qa-gap-north 900 sSun-centre clear, saved secondsqa-gap-north 900 sEarth-centre clear, saved secondsqa-gap-north 2700 sBoth centres clear, saved secondsqa-gap-north 900 sSamplesqa-gap-north 5Geometric Unknown durationqa-gap-north: Sun 30 min, Earth 0 h, Both 15 min.TerrainUnknown \u00b7 terrain_not_reviewed. No reviewed skyline is available. This is not the"
     },
     {
       "check": "Both lane: clear, blocked, unknown, blocked",
@@ -231,12 +260,12 @@
     {
       "check": "terrain headline says Unknown, not 0 h of clearance",
       "pass": true,
-      "detail": "Sun-centre clearance Whole window \u00b7 centre-ray against a reviewed terrain skyline (none available) A qa-gap-northUnknown1 h UnknownClear 0 hBlocked 0 hUnknown 1 h Terrain mode: every state is Unknown (terrain_not_reviewed). No clear or blocked time is reported"
+      "detail": "Sun-centre clearance Whole window \u00b7 centre-ray against a reviewed terrain skyline (none available) \u00b7 Clearance: Sun A qa-gap-northUnknown1 h UnknownClear 0 hBlocked 0 hUnknown 1 h Terrain mode: every state is Unknown (terrain_not_reviewed). No clear or blocked"
     },
     {
       "check": "terrain decision answer is Unknown, not No",
       "pass": true,
-      "detail": "Unknown. Every sample is Unknown, so no Sun-centre clearance window can be named and none is ruled out.A qa-gap-north Why?Unknown. Every sample in this range is Unknown (1 h). No clear window can be named, and none is ruled out."
+      "detail": "Unknown. Every sample is Unknown, so no Sun-centre clearance window can be named and none is ruled out.A qa-gap-north Why?Unknown. Every sample is Unknown (1 h). No clear window can be named, and none is ruled out."
     },
     {
       "check": "terrain chart keeps the elevation trace and does not call 0\u00b0 the horizon",
@@ -251,7 +280,7 @@
     {
       "check": "terrain readout: Unknown, reason code, no horizon or margin",
       "pass": true,
-      "detail": "Selected UTC 2024-06-01T00:00:00Z View evidence A qa-gap-north Unknown no horizon, no margin Unknown in terrain mode: terrain_not_reviewed. The elevation is the saved value; there is no horizon or margin."
+      "detail": "Selected UTC 2024-06-01T00:00:00Z A qa-gap-north Unknown no horizon, no margin Unknown in terrain mode: terrain_not_reviewed. The elevation is the saved value; there is no horizon or margin."
     },
     {
       "check": "terrain details name the reason",
@@ -299,85 +328,6 @@
       "check": "an off-grid range is refused with the reason",
       "pass": true,
       "detail": "Failed to start. start and end must fall on the saved 15-minute grid"
-    },
-    {
-      "check": "partial real run: Pending past the cutoff, not Unknown, chart drawn through the cutoff",
-      "pass": true,
-      "detail": {
-        "cut": true,
-        "cutX": 75.3,
-        "label": "Pending \u00b7 not Unknown",
-        "lastX": 75.3,
-        "n": 16,
-        "pend": true,
-        "unknown": 0
-      }
-    },
-    {
-      "check": "real window: page result equals the engine batch result",
-      "pass": true,
-      "detail": "malapert-practice-q4-centre-0deg-d6262b73db76"
-    },
-    {
-      "check": "Malapert Earth lane: blocked until 01-03 09:00, then clear (a crossing)",
-      "pass": true,
-      "detail": [
-        [
-          "blocked",
-          "2025-01-03T00:00:00Z",
-          "2025-01-03T09:00:00Z"
-        ],
-        [
-          "clear",
-          "2025-01-03T09:00:00Z",
-          "2025-01-10T00:00:00Z"
-        ]
-      ]
-    },
-    {
-      "check": "Malapert Both lane: blocked, then clear from 01-05 09:30",
-      "pass": true,
-      "detail": [
-        [
-          "blocked",
-          "2025-01-03T00:00:00Z",
-          "2025-01-05T09:30:00Z"
-        ],
-        [
-          "clear",
-          "2025-01-05T09:30:00Z",
-          "2025-01-10T00:00:00Z"
-        ]
-      ]
-    },
-    {
-      "check": "real two-site window has no Unknown (no n.a. rows in real data)",
-      "pass": true,
-      "detail": [
-        [
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "check": "no Unknown notice when nothing is Unknown",
-      "pass": true,
-      "detail": null
-    },
-    {
-      "check": "two-site window runs both exports through the same engine path",
-      "pass": true,
-      "detail": [
-        "malapert-practice-q4-centre-0deg-d6262b73db76",
-        "site04-p02-practice-q4-centre-0deg-1fbe00ad8549"
-      ]
     }
   ]
 }
