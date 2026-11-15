@@ -423,6 +423,49 @@ def horizons_rows(payload, target, observer, start, stop, step):
     return before, rows, version
 
 
+def import_horizons_export(directory, payload, *, url, target, label, observer, start, stop, step, practice,
+                           practice_reference=None, raw_source=None, synthetic_note=None):
+    """The one importer: parse a Horizons reply, then write response.json, angles.csv and provenance.json.
+
+    A row whose angles read ``n.a.`` is a valid gap. It keeps its UTC row in the CSV with an empty angle and
+    ``angle_status=missing``, and the receipt records how many rows are missing and when. Bad observers, wrong
+    targets, off-grid or duplicate timestamps and malformed numbers still raise ValueError.
+    """
+    directory = Path(directory)
+    directory.mkdir(parents=True, exist_ok=True)
+    header, rows, version = horizons_rows(payload, target, observer, start, stop, step)
+    raw = directory / "response.json"
+    if raw_source is None:
+        temp = directory / "response.json.part"
+        temp.write_text(json.dumps(payload), encoding="utf-8")
+        raw_source = temp
+    if Path(raw_source) != raw:
+        os.replace(raw_source, raw)
+    csv_path = directory / "angles.csv"
+    csv_tmp = csv_path.with_suffix(".csv.part")
+    with csv_tmp.open("w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(("timestamp_utc", "azimuth_deg", "elevation_deg", "angle_status"))
+        writer.writerows(rows)
+    os.replace(csv_tmp, csv_path)
+    missing = [row[0] for row in rows if row[-1] == "missing"]
+    lon, lat, alt = observer
+    receipt = {
+        "source": HORIZONS_DOCS, "request_url": url, "api_version": version,
+        "observer": [lon, lat, alt], "observer_units": ["deg E", "deg N", "km"],
+        "target": label, "step_minutes": step, "raw_sha256": sha(raw),
+        "csv_sha256": sha(csv_path), "row_count": len(rows), "header": header,
+        "missing_row_count": len(missing), "missing_timestamps": missing,
+        "practice": practice,
+        "practice_point_reference": practice_reference,
+    }
+    if synthetic_note:
+        receipt["synthetic"] = True
+        receipt["synthetic_note"] = synthetic_note
+    write_json(directory / "provenance.json", receipt)
+    return len(rows)
+
+
 def horizons_command(root, args):
     sites = args.site or []
     if args.practice:
@@ -472,25 +515,13 @@ def horizons_command(root, args):
                         raise RuntimeError("request failed. Rerun to retry. Completed requests are cached.")
                 source = raw if raw.exists() else temp
                 payload = json.loads(source.read_text(encoding="utf-8"))
-                header, rows, version = horizons_rows(payload, target, (lon, lat, alt), start, stop, step)
-                if source == temp:
-                    os.replace(temp, raw)
-                csv_path = directory / "angles.csv"
-                csv_tmp = csv_path.with_suffix(".csv.part")
-                with csv_tmp.open("w", newline="", encoding="utf-8") as file:
-                    writer = csv.writer(file)
-                    writer.writerow(("timestamp_utc", "azimuth_deg", "elevation_deg", "angle_status"))
-                    writer.writerows(rows)
-                os.replace(csv_tmp, csv_path)
-                write_json(directory / "provenance.json", {
-                    "source": HORIZONS_DOCS, "request_url": url, "api_version": version,
-                    "observer": [lon, lat, alt], "observer_units": ["deg E", "deg N", "km"],
-                    "target": label, "step_minutes": step, "raw_sha256": sha(raw),
-                    "csv_sha256": sha(csv_path), "row_count": len(rows), "header": header,
-                    "practice": args.practice,
-                    "practice_point_reference": PRACTICE_MALAPERT if name == "malapert-practice" else None,
-                })
-                print(f" OK  {len(rows):>5} rows  {csv_path}")
+                rows_written = import_horizons_export(
+                    directory, payload, url=url, target=target, label=label, observer=(lon, lat, alt),
+                    start=start, stop=stop, step=step, practice=args.practice,
+                    practice_reference=PRACTICE_MALAPERT if name == "malapert-practice" else None,
+                    raw_source=source,
+                )
+                print(f" OK  {rows_written:>5} rows  {directory / 'angles.csv'}")
             except (OSError, ValueError, RuntimeError, KeyError) as exc:
                 print(f"FAIL {name} / {label}: {exc}\n     Inspect {raw if raw.exists() else temp}", file=sys.stderr)
                 failures += 1
