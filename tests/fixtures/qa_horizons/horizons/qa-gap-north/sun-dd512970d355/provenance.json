@@ -1,0 +1,29 @@
+{
+  "source": "https://ssd-api.jpl.nasa.gov/doc/horizons.html",
+  "request_url": "synthetic://qa-gap/qa-gap-north/sun",
+  "api_version": "1.2",
+  "observer": [
+    10.0,
+    -85.0,
+    0.0
+  ],
+  "observer_units": [
+    "deg E",
+    "deg N",
+    "km"
+  ],
+  "target": "sun",
+  "step_minutes": 15,
+  "raw_sha256": "13a21fe9ba6bbd1e5ba347c9a21e889d60bfa6324820f2d4cb69cb5d68adc5f0",
+  "csv_sha256": "7fb03036113695f325a93f087cbfa7bc314aedf9ff07e0d59b67fa108fc95af9",
+  "row_count": 5,
+  "header": "*******************************************************************************\nSYNTHETIC QA FIXTURE - not JPL Horizons output. Written by tests/qa_horizons_case.py.\n*******************************************************************************\nTarget body name: Sun (10)                        {source: QA}\nCenter body name: Moon (301)                      {source: QA}\nCenter-site name: (user defined site below)\n*******************************************************************************\nStart time      : A.D. 2024-Jun-01 00:00:00.0000 UT\nStop  time      : A.D. 2024-Jun-01 01:00:00.0000 UT\nStep-size       : 15 minutes\n*******************************************************************************\nCenter geodetic : 10.00, -85.0, 0.0             {E-lon(deg),Lat(deg),Alt(km)}\nCenter pole/equ : MEAN_ME (high precision)        {East-longitude positive}\nCenter radii    : 1737.4, 1737.4, 1737.4 km       {Equator_a, b, pole_c}\nAtmos refraction: NO (AIRLESS)\nTable format    : Comma Separated Values (spreadsheet)\n*******************************************************************************\n Date__(UT)__HR:MN, , ,Azi_(a-app), Elev_(a-app),\n*************************************************\n",
+  "missing_row_count": 1,
+  "missing_timestamps": [
+    "2024-06-01T00:30:00Z"
+  ],
+  "practice": true,
+  "practice_point_reference": null,
+  "synthetic": true,
+  "synthetic_note": "SYNTHETIC QA fixture. Horizons-shaped text written by tests/qa_horizons_case.py. Not JPL output."
+}

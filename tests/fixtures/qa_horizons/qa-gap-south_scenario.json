@@ -1,0 +1,27 @@
+{
+  "schema_version": "scenario-v1",
+  "status": "practice",
+  "synthetic": true,
+  "synthetic_note": "SYNTHETIC QA fixture. Horizons-shaped text written by tests/qa_horizons_case.py. Not JPL output.",
+  "site_id": "qa-gap-south",
+  "observer": {
+    "longitude_east_deg": 120.0,
+    "latitude_deg": -80.0,
+    "reference_altitude_km": 0.0,
+    "center_body_id": 301,
+    "coord_type": "GEODETIC"
+  },
+  "start_utc": "2024-06-01T00:00:00Z",
+  "end_utc": "2024-06-01T01:00:00Z",
+  "step_seconds": 900,
+  "horizon_mode": "geometric_0deg",
+  "observer_frame": "MEAN_ME",
+  "angle_convention": "airless_apparent",
+  "horizons_paths": {
+    "sun": "horizons/qa-gap-south/sun-1a67691dfb47",
+    "earth": "horizons/qa-gap-south/earth-7d0b24c3272f"
+  },
+  "expected_row_count": 5,
+  "eligible_for_submission_claim": false,
+  "in_appendix_b": false
+}

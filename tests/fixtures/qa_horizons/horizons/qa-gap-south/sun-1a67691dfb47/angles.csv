@@ -1,0 +1,6 @@
+timestamp_utc,azimuth_deg,elevation_deg,angle_status
+2024-06-01T00:00:00Z,80.0,-0.5,available
+2024-06-01T00:15:00Z,90.0,1.5,available
+2024-06-01T00:30:00Z,100.0,1.0,available
+2024-06-01T00:45:00Z,110.0,0.4,available
+2024-06-01T01:00:00Z,120.0,0.2,available

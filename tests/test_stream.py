@@ -106,7 +106,7 @@ class StreamControl(unittest.TestCase):
         csv_lines = ["timestamp_utc,azimuth_deg,elevation_deg,angle_status\n"]
         for stamp, utc, azimuth, elevation in rows:
             if azimuth is None or elevation is None:
-                lines.append(f" {stamp},*, , 0.000000, 0.000000,")
+                lines.append(f" {stamp},*, ,       n.a.,        n.a.,")
                 csv_lines.append(f"{utc},,,missing\n")
             else:
                 lines.append(f" {stamp},*, , {azimuth:.6f}, {elevation:.6f},")
@@ -374,7 +374,7 @@ class ComparisonControl(unittest.TestCase):
         csv_lines = ["timestamp_utc,azimuth_deg,elevation_deg,angle_status\n"]
         for stamp, utc, azimuth, elevation in rows:
             if azimuth is None or elevation is None:
-                lines.append(f" {stamp},*, , 0.000000, 0.000000,")
+                lines.append(f" {stamp},*, ,       n.a.,        n.a.,")
                 csv_lines.append(f"{utc},,,missing\n")
             else:
                 lines.append(f" {stamp},*, , {azimuth:.6f}, {elevation:.6f},")
@@ -547,6 +547,84 @@ class ComparisonControl(unittest.TestCase):
         )
         self.assertNotEqual(second[0]["comparison_id"], cancelled["comparison_id"])
         self.assertEqual(second[-1]["event"], "complete")
+
+
+@unittest.skipUnless(DATA.is_dir(), "local Horizons practice bundle")
+class DeliveredSampleAccounting(unittest.TestCase):
+    """Shared totals, cutoff and failure/cancel events count only samples already delivered."""
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.a = json.loads(SITE04.read_text())
+        cls.b = json.loads(MALAPERT.read_text())
+
+    def _events(self, **kwargs) -> list[dict]:
+        return list(stream_comparison(self.a, self.b, DATA, "test", **kwargs))
+
+    def test_every_event_reports_delivered_shared_samples(self) -> None:
+        delivered = {"site_a": 0, "site_b": 0}
+        events = self._events(batch_size_a=3, batch_size_b=4)
+        for event in events:
+            if event["event"] == "site_batch":
+                delivered[event["role"]] += len(event["samples"])
+                self.assertEqual(event["shared_samples"], min(delivered.values()))
+                self.assertEqual(event["samples_emitted"], delivered[event["role"]])
+                if event["shared_samples"]:
+                    self.assertIsNotNone(event["cutoff_utc"])
+                else:
+                    self.assertIsNone(event["cutoff_utc"])
+        self.assertEqual(events[-1]["event"], "complete")
+
+    def test_failure_before_the_other_site_delivers_reports_no_shared_samples(self) -> None:
+        events = self._events(batch_size_a=3, batch_size_b=4, fail_after_batches_a=1)
+        failed = events[-1]
+        self.assertEqual(failed["event"], "error")
+        self.assertEqual(failed["samples_emitted_a"], 3)
+        self.assertEqual(failed["samples_emitted_b"], 0)
+        self.assertEqual(failed["shared_samples"], 0)
+        self.assertIsNone(failed["cutoff_utc"])
+        self.assertEqual(failed["overlap"]["sun_centre_clear_seconds"]["site_a"], 0)
+
+    def test_failure_with_shared_samples_reports_actual_partial_result_and_cutoff(self) -> None:
+        events = self._events(batch_size_a=3, batch_size_b=4, fail_after_batches_a=2)
+        failed = events[-1]
+        self.assertEqual(failed["event"], "error")
+        self.assertEqual(failed["samples_emitted_a"], 6)
+        self.assertEqual(failed["samples_emitted_b"], 4)
+        self.assertEqual(failed["shared_samples"], 4)
+        self.assertEqual(failed["cutoff_utc"], "2025-01-01T00:45:00Z")
+        self.assertEqual(failed["covered_through_utc"], "2025-01-01T01:00:00Z")
+        # Four 900 s samples: one hour of Sun-centre clearance at Site04, none at Malapert.
+        self.assertEqual(failed["overlap"]["sun_centre_clear_seconds"]["site_a"], 3600)
+        self.assertEqual(failed["overlap"]["sun_centre_clear_seconds"]["site_b"], 0)
+
+    def test_cancel_reports_delivered_cutoff(self) -> None:
+        cancel = threading.Event()
+        stream = stream_comparison(
+            self.a, self.b, DATA, "test", batch_size_a=2, batch_size_b=2, cancel=cancel, pause_seconds=0.01
+        )
+        seen = 0
+        cancelled = None
+        for event in stream:
+            if event["event"] == "site_batch":
+                seen += 1
+                if seen == 4:
+                    cancel.set()
+            if event["event"] == "cancelled":
+                cancelled = event
+                break
+        self.assertIsNotNone(cancelled)
+        self.assertEqual(cancelled["shared_samples"], min(cancelled["samples_emitted_a"], cancelled["samples_emitted_b"]))
+        self.assertEqual(cancelled["cutoff_utc"] is None, cancelled["shared_samples"] == 0)
+        self.assertGreaterEqual(cancelled["shared_samples"], 2)
+
+    def test_single_run_events_carry_the_cutoff(self) -> None:
+        events = list(stream_scenario(self.a, DATA, "test", batch_size=5, fail_after_batches=2))
+        failed = events[-1]
+        self.assertEqual(failed["event"], "error")
+        self.assertEqual(failed["samples_emitted"], 10)
+        self.assertEqual(failed["cutoff_utc"], "2025-01-01T02:15:00Z")
+        self.assertEqual(failed["covered_through_utc"], "2025-01-01T02:30:00Z")
 
 
 if __name__ == "__main__":
