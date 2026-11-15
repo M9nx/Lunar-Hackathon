@@ -4,6 +4,72 @@ The local server is part of `lunar_navigator.cli serve`. It serves the landing p
 
 Base URL for the examples below: `http://127.0.0.1:8766`.
 
+## Architecture
+
+The server binds **loopback only** (`127.0.0.1`). Static assets come from `web/`; JSON and NDJSON from Python in `src/lunar_navigator/live_server.py`. Classification always goes through `engine.stream_scenario` / `engine.stream_comparison` on saved files under `data/` (default) or `qa/`.
+
+```mermaid
+flowchart TB
+  subgraph client["Browser / curl"]
+    UI["review-candidate app.js"]
+    CURL["curl / scripts"]
+  end
+  subgraph http["live_server.Handler"]
+    GET["GET static + /api/catalog"]
+    POST["POST /api/runs | /api/comparisons"]
+    EVT["GET …/events NDJSON stream"]
+    CAN["POST …/cancel"]
+  end
+  subgraph core["lunar_navigator"]
+    CAT["catalog.build_catalog"]
+    STR["engine.stream_*"]
+  end
+  subgraph disk["On disk"]
+    WEB["web/**"]
+    HZ["data/horizons/**"]
+    FIX["tests/fixtures scenarios"]
+  end
+  UI --> GET
+  UI --> POST
+  UI --> EVT
+  UI --> CAN
+  CURL --> GET
+  CURL --> POST
+  GET --> WEB
+  GET --> CAT
+  POST --> STR
+  EVT --> STR
+  CAT --> HZ
+  STR --> HZ
+  STR --> FIX
+```
+
+### Context data flow (level 0)
+
+```mermaid
+flowchart LR
+  Client["HTTP client"] -->|"GET /api/catalog"| Catalog["Catalog JSON\nentries + comparisons"]
+  Client -->|"POST /api/runs"| RunId["run_id"]
+  Client -->|"GET …/events"| NDJSON["NDJSON events\nbatch → complete"]
+  Catalog --> Disk["Saved Horizons trees"]
+  RunId --> Worker["Background thread\nstream_scenario"]
+  Worker --> Disk
+  Worker --> NDJSON
+```
+
+### Endpoint map
+
+| Method | Path | Response | Purpose |
+|--------|------|----------|---------|
+| `GET` | `/`, `/web/**` | static | Landing, navigator, replay, docs. |
+| `GET` | `/api/catalog` | JSON | List classifiable entries and shared windows. |
+| `POST` | `/api/runs` | JSON `{run_id}` | Start single-site stream. |
+| `GET` | `/api/runs/{id}/events` | NDJSON | Stream run events until `complete`/`cancelled`/`error`. |
+| `POST` | `/api/runs/{id}/cancel` | JSON | Request cancel after current batch. |
+| `POST` | `/api/comparisons` | JSON ids | Start two-site stream. |
+| `GET` | `/api/comparisons/{id}/events` | NDJSON | `site_batch` × N then `complete` with overlap. |
+| `POST` | `/api/comparisons/{id}/cancel` | JSON | Cancel comparison worker. |
+
 ## Start the server
 
 ```sh
@@ -24,6 +90,18 @@ Leave the terminal open. The server does not call JPL; it reads the saved Horizo
 ## GET /api/catalog
 
 Returns every saved Horizons entry and every shared two-site window that the engine can compare. A `problems` list explains entries that failed integrity checks.
+
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant H as Handler
+  participant B as catalog.build_catalog
+
+  C->>H: GET /api/catalog
+  H->>B: scan data/ + qa/ horizons trees
+  B-->>H: entries, comparisons, problems
+  H-->>C: 200 application/json
+```
 
 ### Request
 
@@ -99,6 +177,31 @@ Start a single-site streamed run from a saved catalog entry or a named scenario.
 
 `catalog` and `scenario` are mutually exclusive. A bad `horizon_mode`, an unknown entry, or an off-grid range returns HTTP 400 with an `error` field.
 
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant H as Handler
+  participant Q as LiveRun queue
+  participant T as stream_scenario thread
+
+  C->>H: POST /api/runs JSON body
+  H->>H: resolve scenario + validate batch_size
+  H->>Q: create run_id + LiveRun
+  H-->>C: 200 {run_id}
+  par background
+    T->>T: load_scenario_inputs
+    loop batches
+      T->>Q: put batch events
+    end
+    T->>Q: put complete or error
+    T->>Q: put None sentinel
+  and stream
+    C->>H: GET /api/runs/{id}/events
+    H->>Q: read lines until sentinel
+    H-->>C: NDJSON lines
+  end
+```
+
 ### Example: named scenario
 
 ```sh
@@ -130,6 +233,20 @@ curl -s -X POST http://127.0.0.1:8766/api/runs \
 Server-sent NDJSON stream. The server keeps events in memory only; if you close the connection you cannot resume.
 
 ### Event sequence
+
+```mermaid
+stateDiagram-v2
+  [*] --> loading: stage loading_inputs
+  loading --> calculating: metadata
+  calculating --> calculating: batch (partial)
+  calculating --> complete: all samples
+  calculating --> cancelled: cancel or interrupt
+  loading --> failed: error
+  calculating --> failed: error
+  complete --> [*]
+  cancelled --> [*]
+  failed --> [*]
+```
 
 1. `stage` — `loading_inputs`.
 2. `metadata` — scenario, observer, sample count, labels, `practice`, `eligible_for_submission_claim`.
@@ -186,6 +303,30 @@ Each sample contains:
 ## POST /api/comparisons
 
 Start a two-site comparison. The response contains `comparison_id`, `run_id_a`, and `run_id_b`.
+
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant H as Handler
+  participant Q as comparison LiveRun
+  participant S as stream_comparison
+
+  C->>H: POST /api/comparisons
+  Note over H: pair practice-48h/30d or catalog_window
+  H->>Q: comparison_id + two run ids
+  H-->>C: 200 {comparison_id, run_id_a, run_id_b}
+  par worker
+    S->>S: load both scenarios, assert same grid
+    loop interleaved site_batch
+      S->>Q: site_batch site_a / site_b
+    end
+    S->>Q: complete + comparison + overlap
+    S->>Q: None sentinel
+  and client
+    C->>H: GET /api/comparisons/{id}/events
+    H-->>C: NDJSON until sentinel
+  end
+```
 
 ### Body fields
 
@@ -284,6 +425,21 @@ The `comparison` object has the same shape as `web/review-candidate/cases/practi
 
 Request cancellation. The engine finishes the current batch and then emits a `cancelled` event.
 
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant H as Handler
+  participant L as LiveRun
+  participant T as stream thread
+
+  C->>H: POST /api/runs/{id}/cancel
+  H->>L: cancel.set()
+  H-->>C: 200 {accepted: true}
+  T->>T: finish current batch
+  T->>L: put cancelled event + sentinel
+  Note over C: events stream may still deliver partial totals
+```
+
 ```sh
 curl -s -X POST http://127.0.0.1:8766/api/runs/a1b2c3d4e5f6/cancel
 ```
@@ -311,6 +467,16 @@ Same shape for comparisons.
 | 200 | Success for GET/POST API and static files. |
 | 400 | Bad request body, unknown id, off-grid range, incompatible grids, or unsupported `horizon_mode`. Body: `{"error": "..."}`. |
 | 404 | Unknown run/comparison id or static file not found. |
+
+## Error handling
+
+| Stage | HTTP | NDJSON `event` | Client action |
+|-------|------|----------------|---------------|
+| Bad body / unknown catalog id | 400 JSON `error` | — | Fix request; no `run_id` created. |
+| Unknown run/comparison id | 404 JSON | — | Start a new run. |
+| Validation during load | — | `error` | Show message; no export. |
+| User cancel | 200 cancel ack | `cancelled` | Keep last partial batch totals. |
+| Test hook `fail_after_batches` | — | `error` after N batches | Harness only. |
 
 ## Client usage notes
 
