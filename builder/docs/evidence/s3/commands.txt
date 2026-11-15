@@ -1,0 +1,7 @@
+## pytest
+.venv/bin/python -m pytest tests -q -p no:cacheprovider
+.venv/bin/python builder/scripts/live_stream_trace.py --out builder/docs/evidence/s3/live_trace.json --shots builder/docs/evidence/s3
+.venv/bin/python builder/scripts/review_candidate_browser_check.py --base http://127.0.0.1:8798/review-candidate/ --evidence-dir builder/docs/evidence/s3/browser
+.venv/bin/python builder/scripts/s2_flow_check.py --base http://127.0.0.1:8798/review-candidate/ --evidence-dir builder/docs/evidence/s3/flow
+.venv/bin/python builder/scripts/s2_independent_skyline.py --out builder/docs/evidence/s3/terrain_independent_skyline.json
+.venv/bin/python builder/scripts/run_notebook.py --check docs/notebooks/01_trace_observation_to_interval_total.ipynb

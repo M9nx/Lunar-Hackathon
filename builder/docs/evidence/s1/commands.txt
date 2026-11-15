@@ -1,0 +1,4 @@
+## pytest
+.venv/bin/python -m pytest tests -q -p no:cacheprovider
+.venv/bin/python builder/scripts/live_stream_trace.py --out builder/docs/evidence/s1/live_trace.json --shots builder/docs/evidence/s1
+.venv/bin/python builder/scripts/review_candidate_browser_check.py --base http://127.0.0.1:8798/review-candidate/ --evidence-dir builder/docs/evidence/s1/browser

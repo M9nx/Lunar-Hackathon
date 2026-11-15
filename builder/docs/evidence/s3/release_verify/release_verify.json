@@ -1,0 +1,219 @@
+{
+  "schema_version": "release-verify-1",
+  "revision": {
+    "head": "f534f8c9447b2935bb9687e6f89fa146b6d79d52",
+    "head_short": "f534f8c",
+    "branch": "main",
+    "dirty": true,
+    "label": "f534f8c-dirty",
+    "witnessed_replay_revision": "1f3fb06",
+    "code_digest_sha256": "8c819792f2b36135dfde5aeac0b5fdb7abacae161fe81b79f9a83b47cbd02434",
+    "code_paths": [
+      "src/",
+      "tests/",
+      "web/",
+      "builder/scripts/",
+      "Master-Reference/"
+    ]
+  },
+  "data_from": "/home/m9nx/Lunar-Hackathon/data/horizons",
+  "skip_browser": false,
+  "temp_copy": "removed",
+  "seconds": 162.5,
+  "passed": 24,
+  "total": 24,
+  "steps": [
+    {
+      "step": "source HEAD matches the manifest",
+      "pass": true,
+      "detail": "f534f8c9447b vs f534f8c9447b",
+      "command": "",
+      "seconds": 0.0,
+      "log": ""
+    },
+    {
+      "step": "overlay applied",
+      "pass": true,
+      "detail": "274 changed/untracked files copied, 0 deletions",
+      "command": "git clone + overlay",
+      "seconds": 0.0,
+      "log": ""
+    },
+    {
+      "step": "saved Horizons inputs copied",
+      "pass": true,
+      "detail": "/home/m9nx/Lunar-Hackathon/data/horizons",
+      "command": "",
+      "seconds": 0.0,
+      "log": ""
+    },
+    {
+      "step": "every manifest file matches in the copy",
+      "pass": true,
+      "detail": "216/216 files match",
+      "command": "sha256 of each file in docs/release/manifest.json",
+      "seconds": 0.0,
+      "log": ""
+    },
+    {
+      "step": "copy reports the manifest revision and code digest",
+      "pass": true,
+      "detail": "f534f8c-dirty 8c819792f2b36135dfde5aeac0b5fdb7abacae161fe81b79f9a83b47cbd02434 vs f534f8c-dirty 8c819792f2b36135dfde5aeac0b5fdb7abacae161fe81b79f9a83b47cbd02434",
+      "command": "python3 builder/scripts/record_revision.py",
+      "seconds": 0.0,
+      "log": ""
+    },
+    {
+      "step": "copy imports its own engine",
+      "pass": true,
+      "detail": "/tmp/lunar-release-4s575mpb/candidate/src/lunar_navigator/__init__.py",
+      "command": "",
+      "seconds": 0.0,
+      "log": ""
+    },
+    {
+      "step": "input files (Manual 4.1)",
+      "pass": true,
+      "detail": "rc=0  OK    721 rows  /tmp/lunar-release-4s575mpb/candidate/data/horizons/site04-p02-practice-30d/earth-67a08fde71c1/angles.csv |  OK    721 rows  /tmp/lunar-release-4s575mpb/candidate/data/horizons/site04",
+      "command": "python3 lunar_offline_pack.py check-horizons",
+      "seconds": 0.1,
+      "log": "logs/07_input_files_(Manual_4.1).log"
+    },
+    {
+      "step": "scenario fit site04_p02_practice (Manual 4.2)",
+      "pass": true,
+      "detail": "rc=0 site=site04-p02-practice pass=True",
+      "command": "python3 builder/scripts/case_fit_horizons.py --scenario tests/fixtures/site04_p02_practice_scenario.json",
+      "seconds": 0.1,
+      "log": "logs/08_scenario_fit_site04_p02_practice_(Manual_4.2).log"
+    },
+    {
+      "step": "scenario fit malapert_practice (Manual 4.2)",
+      "pass": true,
+      "detail": "rc=0 site=malapert-practice pass=True",
+      "command": "python3 builder/scripts/case_fit_horizons.py --scenario tests/fixtures/malapert_practice_scenario.json",
+      "seconds": 0.0,
+      "log": "logs/09_scenario_fit_malapert_practice_(Manual_4.2).log"
+    },
+    {
+      "step": "scenario fit site04_p02_practice_30d (Manual 4.2)",
+      "pass": true,
+      "detail": "rc=0 site=site04-p02-practice-30d pass=True",
+      "command": "python3 builder/scripts/case_fit_horizons.py --scenario tests/fixtures/site04_p02_practice_30d_scenario.json",
+      "seconds": 0.1,
+      "log": "logs/10_scenario_fit_site04_p02_practice_30d_(Manual_4.2).log"
+    },
+    {
+      "step": "scenario fit malapert_practice_30d (Manual 4.2)",
+      "pass": true,
+      "detail": "rc=0 site=malapert-practice-30d pass=True",
+      "command": "python3 builder/scripts/case_fit_horizons.py --scenario tests/fixtures/malapert_practice_30d_scenario.json",
+      "seconds": 0.1,
+      "log": "logs/11_scenario_fit_malapert_practice_30d_(Manual_4.2).log"
+    },
+    {
+      "step": "raw digest provenance (Manual 4.3)",
+      "pass": true,
+      "detail": "rc=0 raw_mismatch_vs_appendix_b=4/4 provenance_broken=0",
+      "command": "python3 builder/scripts/horizons_digest_check.py --check",
+      "seconds": 0.1,
+      "log": "logs/12_raw_digest_provenance_(Manual_4.3).log"
+    },
+    {
+      "step": "package --pair practice-48h (Manual 6)",
+      "pass": true,
+      "detail": "rc=0 run_id_b=malapert-practice-q4-centre-0deg-88b9b3cfef57 | package=/tmp/lunar-release-4s575mpb/fresh-practice-48h",
+      "command": "python3 -m lunar_navigator.cli --revision f534f8c-dirty package --pair practice-48h --out <temp>",
+      "seconds": 0.1,
+      "log": "logs/13_package_--pair_practice-48h_(Manual_6).log"
+    },
+    {
+      "step": "practice-48h package equals the saved package (ignoring code_revision)",
+      "pass": true,
+      "detail": "all JSON files equal",
+      "command": "",
+      "seconds": 0.0,
+      "log": ""
+    },
+    {
+      "step": "package --pair practice-30d (Manual 6)",
+      "pass": true,
+      "detail": "rc=0 run_id_b=malapert-practice-30d-q4-centre-0deg-2ee148c7ee51 | package=/tmp/lunar-release-4s575mpb/fresh-practice-30d",
+      "command": "python3 -m lunar_navigator.cli --revision f534f8c-dirty package --pair practice-30d --out <temp>",
+      "seconds": 0.1,
+      "log": "logs/15_package_--pair_practice-30d_(Manual_6).log"
+    },
+    {
+      "step": "practice-30d package equals the saved package (ignoring code_revision)",
+      "pass": true,
+      "detail": "all JSON files equal",
+      "command": "",
+      "seconds": 0.0,
+      "log": ""
+    },
+    {
+      "step": "test suite",
+      "pass": true,
+      "detail": "rc=0 ................................................................         [100%] | 136 passed in 6.87s",
+      "command": ".venv/bin/python -m pytest tests -q -p no:cacheprovider",
+      "seconds": 7.1,
+      "log": "logs/17_test_suite.log"
+    },
+    {
+      "step": "notebook trace",
+      "pass": true,
+      "detail": "rc=0 executed 7 code cells OK (not written)",
+      "command": "python3 builder/scripts/run_notebook.py --check docs/notebooks/01_trace_observation_to_interval_total.ipynb",
+      "seconds": 0.1,
+      "log": "logs/18_notebook_trace.log"
+    },
+    {
+      "step": "release manifest check",
+      "pass": true,
+      "detail": "rc=0 manifest matches disk (216 files)",
+      "command": "python3 builder/scripts/make_release_manifest.py --check",
+      "seconds": 0.1,
+      "log": "logs/19_release_manifest_check.log"
+    },
+    {
+      "step": "guide walk (User Guide quick start, literal command)",
+      "pass": true,
+      "detail": "rc=0 PASS step 6: clicking a window selects it :: 2 | 8/8 guide-walk checks passed",
+      "command": "/home/m9nx/Lunar-Hackathon/.venv/bin/python builder/scripts/s3_guide_walk.py --evidence-dir /home/m9nx/Lunar-Hackathon/builder/docs/evidence/s3/release_verify/guide_walk --driver-port 43305 --profile /tmp/lunar-s3v-walk-1846218",
+      "seconds": 3.4,
+      "log": "logs/20_guide_walk_(User_Guide_quick_start,_literal_comman.log"
+    },
+    {
+      "step": "live stream trace",
+      "pass": true,
+      "detail": "rc=0 PASS restart is a new comparison id | 28 passed, 0 failed",
+      "command": "/home/m9nx/Lunar-Hackathon/.venv/bin/python builder/scripts/live_stream_trace.py --out /home/m9nx/Lunar-Hackathon/builder/docs/evidence/s3/release_verify/live_trace.json --shots /home/m9nx/Lunar-Hackathon/builder/docs/evidence/s3/release_verify",
+      "seconds": 17.6,
+      "log": "logs/21_live_stream_trace.log"
+    },
+    {
+      "step": "browser check",
+      "pass": true,
+      "detail": "rc=0 PASS 390 px QA fixture: no overflow, Unknown span selectable :: {'cw': 375, 'sw': 375, 'utc': '2024-06-01T00:15:00Z'} | 139 passed, 0 failed",
+      "command": "/home/m9nx/Lunar-Hackathon/.venv/bin/python builder/scripts/review_candidate_browser_check.py --base http://127.0.0.1:37059/review-candidate/ --evidence-dir /home/m9nx/Lunar-Hackathon/builder/docs/evidence/s3/release_verify/browser --driver-port 52569 --profile /tmp/lunar-s3v-browser-1846218",
+      "seconds": 102.7,
+      "log": "logs/22_browser_check.log"
+    },
+    {
+      "step": "flow check",
+      "pass": true,
+      "detail": "rc=0 PASS live run: decision verdict matches the saved case (Yes, both sites) :: Yes. Both sites have a Sun-centre clearance window. | 39 passed, 0 failed",
+      "command": "/home/m9nx/Lunar-Hackathon/.venv/bin/python builder/scripts/s2_flow_check.py --base http://127.0.0.1:44167/review-candidate/ --evidence-dir /home/m9nx/Lunar-Hackathon/builder/docs/evidence/s3/release_verify/flow --driver-port 39063 --profile /tmp/lunar-s3v-flow-1846218",
+      "seconds": 30.2,
+      "log": "logs/23_flow_check.log"
+    },
+    {
+      "step": "web/replay identical in source and copy",
+      "pass": true,
+      "detail": "bf0ad7f906324f9039547d5740f649d66ef90d4bf6c776710afa333332c45e4a",
+      "command": "",
+      "seconds": 0.0,
+      "log": ""
+    }
+  ]
+}

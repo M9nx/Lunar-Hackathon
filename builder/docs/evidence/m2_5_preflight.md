@@ -4,7 +4,7 @@
 
 ## Replay to keep
 
-PR #1 at `4cd9a52`. Clean-profile witness 2026-11-14T10:35:24Z. Engine revision in the package: `1f3fb06`. Run IDs `site04-p02-practice-q4-centre-0deg-a24325ba50c4` and `malapert-practice-q4-centre-0deg-88b9b3cfef57`. That package was not regenerated for this preflight.
+PR #1 (head `4cd9a52`, squash-merged into `main` as `d40d575`). Clean-profile witness 2026-11-14T10:35:24Z. Engine revision in the package: `1f3fb06`. Run IDs `site04-p02-practice-q4-centre-0deg-a24325ba50c4` and `malapert-practice-q4-centre-0deg-88b9b3cfef57`. That package was not regenerated for this preflight.
 
 ## Raw-response digests
 

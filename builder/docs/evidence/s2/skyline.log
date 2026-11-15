@@ -1,0 +1,18 @@
+analytic flat 100 km: -1.648894 deg
+site04-p02-practice
+  az   0.000000  dem240 -2.2190  dem20@same-grid -2.2357 (diff -0.0168)  dem20@100m -1.0618 at 200 m (diff +1.1572)  ray_az_err 2.3e-13
+  az  90.000000  dem240 -2.2431  dem20@same-grid -2.2411 (diff +0.0020)  dem20@100m -1.5338 at 200 m (diff +0.7093)  ray_az_err 8.4e-11
+  az 180.000000  dem240 -3.1785  dem20@same-grid -3.1725 (diff +0.0060)  dem20@100m -3.1157 at 44500 m (diff +0.0628)  ray_az_err 2.6e-13
+  az 270.000000  dem240 -0.7859  dem20@same-grid -0.7797 (diff +0.0062)  dem20@100m -0.7485 at 35600 m (diff +0.0374)  ray_az_err 8.4e-11
+  az 359.000000  dem240 -2.3631  dem20@same-grid -2.3541 (diff +0.0090)  dem20@100m -1.0618 at 200 m (diff +1.3014)  ray_az_err 2.2e-12
+  az   1.000000  dem240 -2.0993  dem20@same-grid -2.1568 (diff -0.0576)  dem20@100m -1.0618 at 200 m (diff +1.0375)  ray_az_err 1.3e-12
+  az 318.623526  dem240 -2.7027  dem20@same-grid -2.6860 (diff +0.0167)  dem20@100m -2.6375 at 6700 m (diff +0.0652)  ray_az_err 3.4e-11
+malapert-practice
+  az   0.000000  dem240 -0.5745  dem20@same-grid -0.4554 (diff +0.1191)  dem20@100m +7.9456 at 300 m (diff +8.5201)  ray_az_err 1.4e-13
+  az  90.000000  dem240 +1.4074  dem20@same-grid +1.4216 (diff +0.0142)  dem20@100m +1.5387 at 2000 m (diff +0.1313)  ray_az_err 2.6e-11
+  az 180.000000  dem240 -10.3821  dem20@same-grid -10.3881 (diff -0.0060)  dem20@100m -10.3021 at 50000 m (diff +0.0800)  ray_az_err 1.1e-13
+  az 270.000000  dem240 -4.9672  dem20@same-grid -5.0094 (diff -0.0422)  dem20@100m -4.7859 at 700 m (diff +0.1813)  ray_az_err 2.7e-11
+  az 359.000000  dem240 -0.5745  dem20@same-grid -0.5293 (diff +0.0452)  dem20@100m +7.9456 at 300 m (diff +8.5201)  ray_az_err 1.1e-12
+  az   1.000000  dem240 -0.4992  dem20@same-grid -0.4331 (diff +0.0660)  dem20@100m +7.9456 at 300 m (diff +8.4448)  ray_az_err 1.4e-12
+  az 318.623526  dem240 +3.4637  dem20@same-grid +3.7301 (diff +0.2663)  dem20@100m +4.3910 at 700 m (diff +0.9273)  ray_az_err 2.2e-11
+checks_ok True

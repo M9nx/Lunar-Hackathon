@@ -1,0 +1,245 @@
+{
+  "dem20": {
+    "path": "data/LOLA_20mpp/LDEM_80S_20MPP_ADJ.TIF",
+    "sha256": "09b7ca80f9e6a146f970225d18af72fc02787669b3ef51b888e347d2b6845649",
+    "width": 30400,
+    "height": 30400,
+    "res_m": [
+      20.0,
+      20.0
+    ],
+    "nodata": "nan"
+  },
+  "sites": {
+    "site04-p02-practice": {
+      "observer": {
+        "lon": -156.4386,
+        "lat": -89.7812,
+        "height_m": 1738.902
+      },
+      "observer_height_source": "DEM240 profile observer_height_m (Site04 equals the practice altitude; Malapert is the DEM surface, not the practice 0 km)",
+      "native_trace": {
+        "max_range_m": 50000.0,
+        "step_m": 100.0
+      },
+      "profile_range_m": 50000,
+      "profile_azimuth_step_deg": 5,
+      "rows": [
+        {
+          "azimuth_deg": 0.0,
+          "dem20_horizon_deg": -1.06176861152974,
+          "dem20_limiting_range_m": 200.0,
+          "dem20_valid_samples": "500/500",
+          "ray_azimuth_error_deg": 2.2737367544323206e-13,
+          "dem20_same_radial_grid_horizon_deg": -2.235727597840457,
+          "dem20_same_radial_grid_range_m": 13500.0,
+          "dem240_horizon_deg": -2.218971456184587,
+          "dem240_note": null,
+          "difference_deg": 1.1572028446548468,
+          "difference_same_radial_grid_deg": -0.016756141655870138
+        },
+        {
+          "azimuth_deg": 90.0,
+          "dem20_horizon_deg": -1.5337856237591776,
+          "dem20_limiting_range_m": 200.0,
+          "dem20_valid_samples": "500/500",
+          "ray_azimuth_error_deg": 8.36735125631094e-11,
+          "dem20_same_radial_grid_horizon_deg": -2.2411209107550625,
+          "dem20_same_radial_grid_range_m": 30000.0,
+          "dem240_horizon_deg": -2.2430783289715444,
+          "dem240_note": null,
+          "difference_deg": 0.7092927052123668,
+          "difference_same_radial_grid_deg": 0.0019574182164818765
+        },
+        {
+          "azimuth_deg": 180.0,
+          "dem20_horizon_deg": -3.1157386629621295,
+          "dem20_limiting_range_m": 44500.0,
+          "dem20_valid_samples": "500/500",
+          "ray_azimuth_error_deg": 2.5579538487363607e-13,
+          "dem20_same_radial_grid_horizon_deg": -3.172488648550026,
+          "dem20_same_radial_grid_range_m": 46500.0,
+          "dem240_horizon_deg": -3.1785097634323276,
+          "dem240_note": null,
+          "difference_deg": 0.06277110047019807,
+          "difference_same_radial_grid_deg": 0.006021114882301504
+        },
+        {
+          "azimuth_deg": 270.0,
+          "dem20_horizon_deg": -0.7485458500991066,
+          "dem20_limiting_range_m": 35600.0,
+          "dem20_valid_samples": "500/500",
+          "ray_azimuth_error_deg": 8.350298230652697e-11,
+          "dem20_same_radial_grid_horizon_deg": -0.7797030870948142,
+          "dem20_same_radial_grid_range_m": 36000.0,
+          "dem240_horizon_deg": -0.7859293291402241,
+          "dem240_note": null,
+          "difference_deg": 0.037383479041117496,
+          "difference_same_radial_grid_deg": 0.006226242045409891
+        },
+        {
+          "azimuth_deg": 359.0,
+          "dem20_horizon_deg": -1.0617686115614302,
+          "dem20_limiting_range_m": 200.0,
+          "dem20_valid_samples": "500/500",
+          "ray_azimuth_error_deg": 2.2168933355715126e-12,
+          "dem20_same_radial_grid_horizon_deg": -2.354101678059557,
+          "dem20_same_radial_grid_range_m": 13500.0,
+          "dem240_horizon_deg": -2.3631432249522564,
+          "dem240_note": null,
+          "difference_deg": 1.3013746133908262,
+          "difference_same_radial_grid_deg": 0.009041546892699426
+        },
+        {
+          "azimuth_deg": 1.0,
+          "dem20_horizon_deg": -1.0617686115614258,
+          "dem20_limiting_range_m": 200.0,
+          "dem20_valid_samples": "500/500",
+          "ray_azimuth_error_deg": 1.2505552149377763e-12,
+          "dem20_same_radial_grid_horizon_deg": -2.156826945703786,
+          "dem20_same_radial_grid_range_m": 13500.0,
+          "dem240_horizon_deg": -2.099255917499446,
+          "dem240_note": null,
+          "difference_deg": 1.0374873059380203,
+          "difference_same_radial_grid_deg": -0.05757102820434001
+        },
+        {
+          "azimuth_deg": 318.623526,
+          "dem20_horizon_deg": -2.6374505940910167,
+          "dem20_limiting_range_m": 6700.0,
+          "dem20_valid_samples": "500/500",
+          "ray_azimuth_error_deg": 3.376499080331996e-11,
+          "dem20_same_radial_grid_horizon_deg": -2.685972118701049,
+          "dem20_same_radial_grid_range_m": 49500.0,
+          "dem240_horizon_deg": -2.7026681730390654,
+          "dem240_note": null,
+          "difference_deg": 0.0652175789480487,
+          "difference_same_radial_grid_deg": 0.016696054338016353
+        }
+      ]
+    },
+    "malapert-practice": {
+      "observer": {
+        "lon": -2.93,
+        "lat": -85.99,
+        "height_m": 4864.24951171875
+      },
+      "observer_height_source": "DEM240 profile observer_height_m (Site04 equals the practice altitude; Malapert is the DEM surface, not the practice 0 km)",
+      "native_trace": {
+        "max_range_m": 50000.0,
+        "step_m": 100.0
+      },
+      "profile_range_m": 50000,
+      "profile_azimuth_step_deg": 5,
+      "rows": [
+        {
+          "azimuth_deg": 0.0,
+          "dem20_horizon_deg": 7.945613431352178,
+          "dem20_limiting_range_m": 300.0,
+          "dem20_valid_samples": "500/500",
+          "ray_azimuth_error_deg": 1.4210854715202004e-13,
+          "dem20_same_radial_grid_horizon_deg": -0.4553841588457526,
+          "dem20_same_radial_grid_range_m": 1500.0,
+          "dem240_horizon_deg": -0.574502210273,
+          "dem240_note": null,
+          "difference_deg": 8.520115641625178,
+          "difference_same_radial_grid_deg": 0.11911805142724735
+        },
+        {
+          "azimuth_deg": 90.0,
+          "dem20_horizon_deg": 1.538716476774796,
+          "dem20_limiting_range_m": 2000.0,
+          "dem20_valid_samples": "500/500",
+          "ray_azimuth_error_deg": 2.580691216280684e-11,
+          "dem20_same_radial_grid_horizon_deg": 1.4215824500754737,
+          "dem20_same_radial_grid_range_m": 10500.0,
+          "dem240_horizon_deg": 1.40738091175541,
+          "dem240_note": null,
+          "difference_deg": 0.13133556501938615,
+          "difference_same_radial_grid_deg": 0.014201538320063767
+        },
+        {
+          "azimuth_deg": 180.0,
+          "dem20_horizon_deg": -10.302115778823906,
+          "dem20_limiting_range_m": 50000.0,
+          "dem20_valid_samples": "500/500",
+          "ray_azimuth_error_deg": 1.1368683772161603e-13,
+          "dem20_same_radial_grid_horizon_deg": -10.3881358574923,
+          "dem20_same_radial_grid_range_m": 49500.0,
+          "dem240_horizon_deg": -10.382135127159934,
+          "dem240_note": null,
+          "difference_deg": 0.08001934833602853,
+          "difference_same_radial_grid_deg": -0.006000730332365478
+        },
+        {
+          "azimuth_deg": 270.0,
+          "dem20_horizon_deg": -4.785944678823,
+          "dem20_limiting_range_m": 700.0,
+          "dem20_valid_samples": "500/500",
+          "ray_azimuth_error_deg": 2.745537130977027e-11,
+          "dem20_same_radial_grid_horizon_deg": -5.009449755845492,
+          "dem20_same_radial_grid_range_m": 37500.0,
+          "dem240_horizon_deg": -4.967249401317393,
+          "dem240_note": null,
+          "difference_deg": 0.1813047224943931,
+          "difference_same_radial_grid_deg": -0.04220035452809867
+        },
+        {
+          "azimuth_deg": 359.0,
+          "dem20_horizon_deg": 7.945613431340632,
+          "dem20_limiting_range_m": 300.0,
+          "dem20_valid_samples": "500/500",
+          "ray_azimuth_error_deg": 1.0800249583553523e-12,
+          "dem20_same_radial_grid_horizon_deg": -0.5293475554207213,
+          "dem20_same_radial_grid_range_m": 1500.0,
+          "dem240_horizon_deg": -0.5745022102741263,
+          "dem240_note": null,
+          "difference_deg": 8.520115641614758,
+          "difference_same_radial_grid_deg": 0.045154654853404974
+        },
+        {
+          "azimuth_deg": 1.0,
+          "dem20_horizon_deg": 7.945613431340618,
+          "dem20_limiting_range_m": 300.0,
+          "dem20_valid_samples": "500/500",
+          "ray_azimuth_error_deg": 1.3926637620897964e-12,
+          "dem20_same_radial_grid_horizon_deg": -0.4331409304525058,
+          "dem20_same_radial_grid_range_m": 1500.0,
+          "dem240_horizon_deg": -0.49917209734256424,
+          "dem240_note": null,
+          "difference_deg": 8.444785528683182,
+          "difference_same_radial_grid_deg": 0.06603116689005845
+        },
+        {
+          "azimuth_deg": 318.623526,
+          "dem20_horizon_deg": 4.390990924148782,
+          "dem20_limiting_range_m": 700.0,
+          "dem20_valid_samples": "500/500",
+          "ray_azimuth_error_deg": 2.233946361229755e-11,
+          "dem20_same_radial_grid_horizon_deg": 3.730063398302273,
+          "dem20_same_radial_grid_range_m": 1500.0,
+          "dem240_horizon_deg": 3.463730513216808,
+          "dem240_note": null,
+          "difference_deg": 0.9272604109319738,
+          "difference_same_radial_grid_deg": 0.2663328850854647
+        }
+      ]
+    }
+  },
+  "analytic": {
+    "range_m": 100000.0,
+    "analytic_deg": -1.6488943108404959,
+    "expected_minus_half_theta_deg": -1.648894310840403
+  },
+  "malapert_practice_altitude_probe": {
+    "observer_height_m": 0.0,
+    "azimuth_deg": 0.0,
+    "max_range_m": 2000.0,
+    "max_elevation_deg": 88.81990371292227,
+    "at_range_m": 100.0,
+    "terrain_height_m_there": 4868.0966796875,
+    "reading": "A 0 m observer is inside the DEM here. This is not a usable skyline and is shown only to size the height-reference question."
+  },
+  "checks_ok": true,
+  "note": "Diagnostic cross-check. Differences are reported without a tolerance. Science sets the tolerance and decides whether this is an acceptable independent skyline direction. The frame, vertical reference and radial coverage are not decided here."
+}

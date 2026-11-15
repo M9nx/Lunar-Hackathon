@@ -1,0 +1,5 @@
+from the guide:
+PYTHONPATH=src python3 -m lunar_navigator.cli --revision "$(python3 builder/scripts/record_revision.py --label)" serve --port 8766
+
+run (only deviation: a free port instead of 8766):
+PYTHONPATH=src python3 -m lunar_navigator.cli --revision "$(python3 builder/scripts/record_revision.py --label)" serve --port 37999

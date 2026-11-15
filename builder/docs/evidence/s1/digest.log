@@ -1,0 +1,11 @@
+raw_mismatch_vs_appendix_b=4/4 provenance_broken=0
+Traceback (most recent call last):
+  File "/home/m9nx/Lunar-Hackathon/builder/scripts/horizons_digest_check.py", line 140, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/home/m9nx/Lunar-Hackathon/builder/scripts/horizons_digest_check.py", line 135, in main
+    print(f"wrote {args.md.relative_to(REPO_ROOT)}")
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/usr/lib/python3.14/pathlib/__init__.py", line 490, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: 'builder/docs/evidence/s1/horizons_digest_provenance.md' is not in the subpath of '/home/m9nx/Lunar-Hackathon'

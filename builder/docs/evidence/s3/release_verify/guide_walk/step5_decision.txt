@@ -1,0 +1,7 @@
+{
+  "verdict": "Partly. Only Site04 has a Sun-centre clearance window of 4 h or longer. Malapert has none.A Site04 Why?1 window of 4 h or longer. Longest clear window 48 h. 01-01 00:00Z \u2192 01-03 00:00Z48 hB Malapert Why?No clear window in this range. Clear 0 h \u00b7 Blocked 48 h \u00b7 Unknown 0 h. Closest sampled point to 0\u00b0 margin \u22121.603613\u00b0",
+  "sites": [
+    "A Site04 Why?1 window of 4 h or longer. Longest clear window 48 h. 01-01 00:00Z \u2192 01-03 00:00Z48 h",
+    "B Malapert Why?No clear window in this range. Clear 0 h \u00b7 Blocked 48 h \u00b7 Unknown 0 h. Closest sampled point to 0\u00b0 margin \u22121.603613\u00b0"
+  ]
+}

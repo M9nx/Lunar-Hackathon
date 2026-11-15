@@ -1,0 +1,58 @@
+{
+  "passed": 8,
+  "total": 8,
+  "checks": [
+    {
+      "check": "quick start step 1-2: the guide's command serves the page",
+      "pass": true,
+      "detail": "http://127.0.0.1:37999/review-candidate/"
+    },
+    {
+      "check": "step 3: headline gives Site04 48 h Sun-centre, Malapert 0 h, both centres 0 h",
+      "pass": true,
+      "detail": "Sun-centre clearance Whole window \u00b7 centre-ray against geometric 0\u00b0 A Site0448 hClear 48 hBlocked 0 hUnknown 0 hB Malapert0 hClear 0 hBlocked 48 hUnknown 0 h Site04 had more Sun-centre clearance than Malapert, by 48 h. Both centres clear \u00b7 "
+    },
+    {
+      "check": "step 4: button reads 'Why Malapert 0 h?'",
+      "pass": true,
+      "detail": "Why Malapert 0 h?"
+    },
+    {
+      "check": "step 4: panel gives the rule, 193 samples, nearest sample margin -1.603613 and a source-row table",
+      "pass": true,
+      "detail": "B Malapert \u00b7 Sun-centre clearance \u00b7 0 h Malapert: Sun's centre is on or below the 0\u00b0 horizon at all 193 samples. A margin of 0\u00b0 or less is blocked, including exact contact, so no time counts as clear: 0 h. The sample nearest the horizon is 2025-01-03T00:00Z, margin \u22121.603613\u00b0. Source row UTCBodySave"
+    },
+    {
+      "check": "step 4: UTC range and mode are shown with the answer",
+      "pass": true,
+      "detail": "UTC range 2025-01-01T00:00Z \u2192 2025-01-03T00:00Z \u00b7 48 hMode Geometric 0\u00b0 (centre-ray)Terrain Unknown"
+    },
+    {
+      "check": "step 5: Site04 has one window, Malapert none with a closest-sample button",
+      "pass": true,
+      "detail": {
+        "sites": [
+          "A Site04 Why?1 window of 4 h or longer. Longest clear window 48 h. 01-01 00:00Z \u2192 01-03 00:00Z48 h",
+          "B Malapert Why?No clear window in this range. Clear 0 h \u00b7 Blocked 48 h \u00b7 Unknown 0 h. Closest sampled point to 0\u00b0 margin"
+        ],
+        "closest_buttons": 1
+      }
+    },
+    {
+      "check": "step 6: with 30 days, both sites list Sun-centre windows",
+      "pass": true,
+      "detail": {
+        "sites": [
+          "A Site04 Why?1 window. Longest clear window 720 h. 01-01 00:00Z \u2192 01-31 00:00Z720 h",
+          "B Malapert Why?1 window. Longest clear window 436 h. 01-05 10:00Z \u2192 01-23 14:00Z436 h"
+        ],
+        "buttons": 2
+      }
+    },
+    {
+      "check": "step 6: clicking a window selects it",
+      "pass": true,
+      "detail": 2
+    }
+  ]
+}

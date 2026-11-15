@@ -2,6 +2,15 @@
 
 Record amendments with date, owner, previous/new decision, evidence, and milestone impact (Master Reference §11).
 
+## M6.1 local 0° judging package (2026-11-15)
+
+- **Owner:** Lead (with QA/Science evidence).
+- **Decision:** Built the landing page and documentation set for the local release; packaged the Jan 3–10 practice case; verified from a clean extracted copy (`verify_release_package.py` 24/24 steps passed).
+- **Files:** `web/index.html`, `web/landing.css`, `web/docs/`, `docs/api-reference.md`, `docs/engine-reference.md`, `docs/data-research.md`, `docs/project-progress.md`, updated `docs/user-guide.md` and `docs/operator-manual.md`, `web/review-candidate/cases/practice-jan03-10/`, `builder/scripts/s2_flow_check.py`.
+- **Verified build:** revision `f534f8c-dirty`, code digest `c6817b8fd8484d079cf169070a8415a7dbfc4c445122cc5c8f8229697256feee`, pytest 136 passed.
+- **Open before any submission claim:** Lead L1–L5, Science S1–S5, raw-response identity against Appendix B, M4 terrain review. Terrain clearance remains Unknown.
+- **Witnessed replay:** `web/replay/` at commit `1f3fb06` unchanged.
+
 ## Repository layout (2026-11-14)
 
 - **`builder/`** — agent worker (handoff, harness scripts, skills, task/decision logs). Not submission product code.
@@ -159,6 +168,21 @@ The submission package is prepared around the witnessed replay. Detail: `docs/ev
 - **Narrow screens:** result before chart; Windows stacked below the timeline; the time dock is sticky with a one-line UTC / state / margin readout. The chart is drawn in real pixels so axis text stays 11 px.
 - **Screening filter:** Minimum clear window (any, 15 min, 1 h, 2 h, 4 h, 8 h). It hides clear rows shorter than the minimum, lists qualifying windows per site with a summary line, dims shorter lane segments, and says when none qualify and what the longest clear window is. It reads the same merged engine intervals and never changes totals, headline numbers or the joint line. It resets when the case changes. Practice: 4 h Sun → Site04 1 window, Malapert none; 4 h Both → none at either site.
 - **Unchanged:** Centre-ray vs geometric 0°. Terrain Clear/Blocked waits for M4. Eligibility false. `web/replay` untouched (witness `1f3fb06`). No CDN.
+
+## Delivery sprints 1 and 2 (2026-11-15)
+
+Revision tested: `f534f8c-dirty`, code digest in `docs/evidence/s2/revision_before.json`. Witnessed replay (`1f3fb06`, `web/replay/`) byte-identical before and after.
+
+- **Task accounting.** A skipped task earns no credit and does not satisfy a dependency. M3.4 moved from `passed_with_open_decisions` to `blocked` (its dependency M2.5 is blocked); M5.1 `skipped` → `planned`; M0.3 became conditional. Counts are produced by `builder/scripts/task_counts.py`, which exits 1 on invalid credit. Scope changes are recorded in `scope_changes` in the handoff. **SC-1 (release the 0° scope with terrain open) is `proposed`, with no approver.** It needs Lead and Science (`docs/evidence/s2_scope_decision.md`). It earns nothing until approved.
+- **Failure and Stop.** A failed or stopped run with shared samples shows the delivered-only partial result, the final cutoff and "Not exportable". Stop shows "Stopping…" until the engine reports the cutoff. Events carry `shared_samples`, `cutoff_utc`, `covered_through_utc`.
+- **Atomic JSON.** Completed JSON is published by temp file, `fsync`, `os.replace`, directory `fsync`. A staged set publishes the entry file last. `package` refuses `web/replay` unless `--allow-replay-overwrite` is given.
+- **Raw digests.** Both digest sets stay (Appendix B and on-disk). Raw-file identity stays open. The 30-day exports are labelled `not_in_appendix_b`; they have only their own receipts.
+- **Why this result?** Questions are generated from the result: Why Site04 48 h, Why Malapert 0 h, Why both centres, Why terrain Unknown. Each shows the UTC range, mode, the rule and the saved source rows (Horizons row text, elevation, horizon, margin, state, file#row). Reads engine results only.
+- **Decision panel.** "Is there a clear window?" takes a lane and a minimum window length (15 min to 7 days) and answers per site from engine intervals. A zero result offers the closest sampled point to 0° and Why. Other supported cases are listed from saved results (practice 48 h, practice 30 days). The QA fixture is synthetic and is not listed as a case. This is a screening aid. It adds no new engine result.
+- **Second case.** Practice 30 days, 1 h step, Site04 and Malapert, same observers and altitudes as the 48 h case. Package in `web/review-candidate/cases/practice-30d/`. Live pair `practice-30d` equals the saved package. Site04 Sun 720 h, Malapert Sun 436 h (blocked until 2025-01-05T10:00Z, clear until 2025-01-23T14:00Z). Practice input; not eligible.
+- **Malapert altitude.** Practice 0.0 km is about 4.85 km below the DEM surface there. It is documented, not changed (`docs/evidence/s2_malapert_reference_altitude.md`). The DEM240 profile uses the DEM surface height for Malapert, so the profile and the 0° run do not share an observer.
+- **Independent skyline.** 20 m DEM and a separately written sightline agree with the DEM240 profile within 0.002°–0.27° on the same radial grid, and show near-field terrain (up to +8.5°) inside the profile's 1.5 km first step. This supports keeping terrain Unknown. No tolerance is set; Science sets it.
+- **Unchanged.** Centre-ray against geometric 0°. Terrain Unknown. Eligibility false. No CDN. Open: Lead L1–L5, Science S1–S5, Appendix B raw identity.
 
 ## Educational archive (read-only)
 

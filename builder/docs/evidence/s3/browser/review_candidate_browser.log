@@ -1,0 +1,193 @@
+PASS scenario bar: two sites, UTC range, sample step, Geometric 0° :: SitesA Site04vsB Malapert UTC range2025-01-01T00:00Z → 2025-01-03T00:00Z · 48 h Sample step15 min ModeGeometric 0° Practice evidence. Not an eligible submission claim.
+PASS scenario bar is one compact row
+PASS Sun-centre headline: Site04 48 h and Malapert 0 h, equal footing :: [['A Site04', '48 h'], ['B Malapert', '0 h']]
+PASS both site numbers share one size and width :: ['59.2px/620', '59.2px/620']
+PASS joint line: Both centres clear · 0 h at either site :: Both centres clear · 0 h at either site
+PASS Practice and Terrain clearance unknown visible on the first screen
+PASS header also keeps Practice and Terrain clearance unknown
+PASS first screen holds result and joint line without scrolling
+PASS first screen has no raw seconds, sample counts or reason codes :: Sun-centre clearance
+
+Whole window · centre-ray against geometric 0°
+
+A
+Site04
+48 h
+B
+Malapert
+0 h
+
+Site04 had more Sun-centre clearance than Malapert, by 48 h.
+
+Both centres clear · 0 h at either sit
+PASS Details hold raw seconds, sample counts and terrain_not_reviewed :: DetailsSun-centre clear, saved secondsSite04 172800 s · Malapert 0 s · delta (Malapert − Site04) -172800 sBoth centres clear, saved secondsSite04 0 s · Malapert 0 s · delta (Malapert − Site04) 0 sSamplesSite04 193 · Malapert 193 · shared 193Geometric Unknown durationSite04: Sun 0 h, Earth 0 h, Both 
+PASS zero shows as 0 h, never 0 s
+PASS lane picker sits above the timeline
+PASS Sun chart: two site traces with direct A/B labels :: ['A Site04', 'B Malapert']
+PASS 0° reference is labelled
+PASS selected-time marker is a separate pink line with a time pill :: 13:00Z
+PASS selected-time marker differs from the 0° horizon :: ['rgb(255, 122, 182)', 'rgb(242, 244, 248)', '7px, 5px', 'none']
+PASS short UTC ticks :: ['01-01', '06Z', '12Z', '18Z', '01-02', '06Z', '12Z', '18Z', '01-03']
+PASS dark plot with bright axis labels :: [[7, 10, 16], [213, 219, 232]]
+PASS readout shows selected UTC, each site state and signed margin :: Selected UTC 2025-01-01T13:00:00Z View evidence A Site04 Clear +1.661532° Sun-centre margin B Malapert Blocked −2.216453° Sun-centre margin
+PASS Windows rail: Site04 clear window, Malapert none :: Sun-centre clearance. From engine intervals. Centre-ray against geometric 0° only. Click a window to select it. A Site04 Clear 48 h · Blocked 0 h · Unknown 0 h Clear windows 01-01 00:00Z → 01-03 00:00Z48 h B Malapert Clear 0 h · Blocked 48 h · Unknown 0 h Clea
+PASS Windows rail is compact beside the chart
+PASS click a window: highlight span, select site, playhead to start :: {'chartBand': 1, 'index': 0, 'ro': 'Selected window · A Site04 · Sun-centre clearance · clear · 2025-01-01T00:00Z → 2025-01-03T00:00Z · 48 h', 'row': 1, 'seg': 1, 'sel': {'end': '2025-01-03T00:00:00Z', 'lane': 'sun', 'site': 0, 'start': '2025-01-01T00:00:00Z', 'state': 'clear'}, 'site': 0, 'utc': '2025-01-01T00:00:00Z'}
+PASS selected window line names site, state, span :: Selected window · A Site04 · Sun-centre clearance · clear · 2025-01-01T00:00Z → 2025-01-03T00:00Z · 48 h
+PASS changing the lane clears the window selection and updates chart, lanes and list :: Earth-centre clearance. From engine intervals. Centre-ray against geometric 0° only. Click a window to select it. A Site
+PASS Earth lane: no clear window at either site :: Earth-centre clearance. From engine intervals. Centre-ray against geometric 0° only. Click a window to select it. A Site04 Clear 0 h · Blocked 48 h · Unknown 0 h Clear windows No clear window in this 
+PASS Earth lane offers Closest sampled point to 0° per site
+PASS Both: joint lanes for each site :: A Site04Both centres clear · clear 0 h Blocked B MalapertBoth centres clear · clear 0 h Blocked Clear Blocked Unknown (n
+PASS Both: individual Sun and Earth centre margins at the selected time :: Centre margins at 2025-01-01T13:00Z SiteSun centreEarth centreBoth A Site04clear +1.661532°blocked −6.131524°blockedB Malapertblocked −2.216453°blocked −1.930824°blocked
+PASS Both: chart carries Sun and Earth traces per site :: ['A Sun', 'B Earth', 'B Sun', 'A Earth']
+PASS Both: no Closest offer
+PASS Closest sampled point to 0° jumps to the saved sample :: {'ui': '2025-01-03T00:00:00Z', 'saved': '2025-01-03T00:00:00Z', 'margin': -1.603613}
+PASS final sample says it adds 0 elapsed time :: {'index': 192, 'last': 192, 'notice': 'Closest sampled point to 0° for Malapert: 2025-01-03T00:00:00Z, margin −1.603613°. This is the final sample, so it adds 0 elapsed time.', 'site': 1, 'utc': '2025-01-03T00:00:00Z', 'zero': 'Final sample: it adds 0 elapsed time.'}
+PASS View evidence opens the Horizons row for the selected state :: {'row': '2025-Jan-03 00:00, ,i, 140.746429,    -1.603613,', 'shown': ['2025-Jan-03 00:00, ,i, 140.746429,    -1.603613,', 'horizons/malapert-practice/sun-d10bfb555ec3/angles.csv#row=194']}
+PASS evidence shows run ID, observer, source and export :: B
+Malapert · Sun-centre clearance
+
+Evidence
+−
+100%
++
+✕
+
+2025-01-03T00:00:00Z · follows the playhead
+
+SUN-CENTRE CLEARANCE · AZIMUTH
+140.746429°
+SUN-CENTRE CLEARANCE · ELEVATION, MARGIN
+-1.603613°, -1.
+PASS Esc closes evidence
+PASS Evidence is not on the main flow until opened
+PASS filter defaults to any length
+PASS 4 h Sun filter finds a Site04 window and none at Malapert :: {'engine': [1, 0], 'ui': 'Sun-centre clearance · 4 h or longerA Site04 1 window·B Malapert none'}
+PASS qualifying windows listed per site, from engine intervals :: [1, 0]
+PASS full-window totals stay visible beside the filtered list :: A Site04 Clear 48 h · Blocked 0 h · Unknown 0 h Clear windows 01-01 00:00Z → 01-03 00:00Z48 h
+PASS headline totals unchanged by the filter
+PASS lane header shows the qualifying count :: A Site04Sun-centre clearance · clear 48 h · 1 window of 4 h or longer Clear B MalapertSun-centre clearance · clear 0 h · no windows of 4 h or longer Blocked Clear Blocked Unknown (no usable saved angl
+PASS 4 h Both filter finds no joint window :: {'engine': [0, 0], 'ui': 'Both centres clear · 4 h or longerA Site04 none·B Malapert none'}
+PASS filtered window still selects and moves the playhead
+PASS Any length restores the full list and removes the summary
+PASS filter resets when the case changes
+PASS QA 15 min filter keeps the 15 min clear windows :: Sun-centre clearance · 15 min or longerA QA North 1 window·B QA South 1 window
+PASS QA 1 h filter: no qualifying window, longest clear window named :: Sun-centre clearance. From engine intervals. Centre-ray against geometric 0° only. Click a window to select it. Sun-centre clearance · 1 h or longerA QA North none·B QA South none A QA North Clear 15 min · Blocked 15 min · Unknown 30 min Clear windows No clear window of 1 h or longer. Longest clear 
+PASS lane segments shorter than the minimum are dimmed, labels still readable :: 2
+PASS Unknown spans stay listed under the filter
+PASS reviewer: which site has more Sun-centre clearance :: Site04 had more Sun-centre clearance than Malapert, by 48 h.
+PASS Step 1 hour advances four 15-minute samples
+PASS End jumps to the last shared sample :: {'disabled': True, 'i': 192, 'last': 192}
+PASS Start jumps to the first sample
+PASS clicking the chart moves the shared playhead :: 48
+PASS verdict 13:00 selected UTC :: 2025-01-01T13:00:00Z
+PASS verdict sentence :: 2025-01-01T13:00:00Z
+
+Site04's Sun centre is 1.66° above 0°. Malapert's is 2.22° below 0°. Earth's centre is below 0° at both sites. Neither site has both centres clear.
+
+Centre-ray state against geometric 0°. Terrain clearance unknown. The whole-window totals in the result above are a different measure.
+PASS Malapert Sun Blocked at geometric 0° :: Sun · Blocked at geometric 0°
+Earth · Blocked at geometric 0°
+Both · Blocked
+Terrain clearance unknown
+PASS Site04 Sun Clear at geometric 0° :: Sun · Clear at geometric 0°
+Earth · Blocked at geometric 0°
+Both · Blocked
+Terrain clearance unknown
+PASS terrain diagnostic off by default
+PASS every metric shown under both plots :: sun centre | blocked | azimuth | 158.508524° | elevation | −2.216453° | horizon | 0° | margin | −2.216453° | dem (diagnostic) | −9.371391° | earth centre | blocked | azimuth | 358.496048° | elevation | −1.930824° | horizon | 0° | margin | −1.930824° | dem (diagnostic) | −0.574502° | both centres | blocked | sun margin | −2.216453° | earth margin | −1.930824° | reason | centre_below_or_on_horizon:sun+earth
+PASS body glyphs with state rings (clear solid, blocked dashed) :: {'blockedDash': '3 2.5', 'clearDash': '', 'earthLand': 1, 'sunRays': 8}
+PASS full saved fractions shown by default :: Sun centre | Blocked | AZIMUTH | 158.508524° | ELEVATION | −2.216453° | HORIZON | 0° | MARGIN | −2.216453° | DEM (DIAGNOSTIC) | −9.371391° | Earth centre | Blocked | AZIMUTH | 358.496048° | ELEVATION 
+PASS Decimals 2 shortens metric values
+PASS Decimals 2 shortens the readout margin too :: Selected UTC 2025-01-01T13:00:00Z View evidence A Site04 Clear +1.66° Sun-centre margin B Malapert Blocked −2.22° Sun-centre margin
+PASS every scale keeps both plots identical :: {'5': '37.2,93.0,148.8', '15': '31.0,93.0,155.0', '30': '31.0,62.0,93.0,124.0,155.0', 'full': '55.8,111.6,167.4,186.0'}
+PASS only Full sky calls the centre zenith :: {'5': 'centre +5°', '15': 'centre +15°', '30': 'centre +30°', 'full': 'centre +90° zenith'}
+PASS path across the window drawn :: {'dots': 36, 'paths': 8}
+PASS Grid layer toggles off :: {'data': 'off', 'shown': 'none'}
+PASS Selected-site layout shows one plot :: 1
+PASS pointer readout gives az and el under the cursor :: {'hidden': False, 'text': 'Cursor · az 90.0° · el −2.742000°'}
+PASS Reset view restores defaults :: {'terrain': False, 'v': {'decimals': 6, 'grid': True, 'labels': True, 'layout': 'both', 'peaks': True, 'range': '15', 'shade': True, 'terrain': 'fill', 'trail': 'off'}}
+PASS marker click opens preview with chart :: B
+Malapert · Sun-centre clearance
+
+Sun centre
+Blocked
+−
+100%
++
+✕
+
+2025-01-01T13:00:00Z · follows the playhead
+
+The Sun centre is 2.216453° below the 0° horizon,
+PASS preview follows the playhead
+PASS Play advances the playhead :: {'i': 27, 'label': 'Pause', 'playing': True}
+PASS Pause holds the playhead
+PASS idle: Start enabled, Stop disabled :: {'cancel': True, 'start': False}
+PASS run options tuck away until opened :: {'open': False, 'shown': True}
+PASS terrain style tools hidden while diagnostic is off
+PASS terrain style tools shown when diagnostic is on
+PASS terrain line drawn when toggled
+PASS Malapert Sun vs displayed DEM :: Diagnostic only, diagnostic_unreviewed: Sun −2.22° vs displayed DEM −9.37°. Earth −1.93° vs displayed DEM −0.57°. The state above is still classified against geometric 0°. Terrain stays Unknown.
+PASS verdict unchanged by terrain toggle
+PASS terrain stays Unknown
+PASS silhouette: filled skyline plus above-0° tint per plot
+PASS clip and hatch ids are unique per plot :: ['sky-zero-clip-0', 'sky-zero-clip-1']
+PASS skyline summary chips per plot :: ['High +0.95° at az 30°\nLow −4.52° at az 150°\nAbove 0° over 4% of known azimuths\nNo DEM data 0° of azimuth\n5° bins · out to 50 km', 'High +4.67° at az 60°\nLow −10.63° at az 195°\nAbove 0° over 40% of known azimuths\nNo DEM data 0° of azimuth\n5° bins · out to 50 km']
+PASS Site04 summary matches the saved profile (high 0.95°, low −4.52°) :: High +0.95° at az 30°
+Low −4.52° at az 150°
+Above 0° over 4% of known azimuths
+No DEM data 0° of azimuth
+5° bins · out to 50 km
+PASS peaks: DEM high/low labels and Sun/Earth leaders
+PASS Peaks & leaders toggle removes them
+PASS outline: no fill, smooth curve
+PASS raw bins: one dot per saved DEM bin (72 per plot) :: 144
+PASS terrain styles never change the verdict or pills
+PASS terrain style buttons reflect the active style :: fill:true line:false bins:false
+PASS terrain toggle leaves totals, lanes and windows alone
+PASS Locations tab swaps the rail
+PASS pins labelled A and B :: ['A', 'B']
+PASS pin B selects sky panel, lane, readout, evidence :: {'ev': True, 'lane': 1, 'pin': '1', 'ro': '1', 'sky': '1', 'state': 1}
+PASS QA fixture is labelled synthetic :: Sun-centre clearance Whole window · centre-ray against geometric 0° QA fixture. These hours are synthetic. They are not the January practice result. A QA North15 minB QA South15 min QA North and QA So
+PASS QA windows: clear and Unknown spans with reasons :: A QA North Clear 15 min · Blocked 15 min · Unknown 30 min Clear windows 06-01 00:00Z → 06-01 00:15Z15 min Unknown spans06-01 00:15Z → 06-01 00:45Z30 min · missing_right_endpoint, missing_ephemeris
+PASS QA Sun totals from engine intervals :: A QA North Clear 15 min · Blocked 15 min · Unknown 30 min Clear windows 06-01 00:00Z → 06-01 00:15Z15 min Unknown spans06-01 00:15Z → 06-01 00:45Z30 min · missing_right_endpoint, missing_ephemeris
+PASS QA clear window jumps to its start :: 2024-06-01T00:00:00Z
+PASS QA clear window is highlighted in chart, lane and list
+PASS QA Unknown crosshatched in chart and lanes
+PASS QA Unknown merged into one span :: 1
+PASS Unknown span jumps to an Unknown sample :: unknown
+PASS readout labels Unknown with its reason, not as a clearance :: Selected UTC 2024-06-01T00:15:00Z View evidence A QA North Unknown +0.400000° Unknown, not a clearance: missing_right_endpoint. Any margin shown is the saved sample value. B QA South Clear +1.500000° Sun-centre margin Selected window · A QA North · Sun-centre clearance · unknown · 2024-06-01T00:15Z 
+PASS Unknown with no saved angle shows no margin number :: Selected UTC 2024-06-01T00:30:00Z View evidence A QA North Unknown no saved margin Unknown, not a clearance: missing_ephemeris. Any margin shown is the saved sample value. B QA South Unknown +1.000000° Unknown, not a clearance: missing_right_endpoint. Any margin shown is the saved sample value. Sele
+PASS state names readable without colour :: A QA NorthSun-centre clearance · clear 15 min ClearUnknownBlocked B QA SouthSun-centre clearance · clear 15 min BlockedClearUnknown Clear Blocked Unknown (no us
+PASS Unknown and Clear use different patterns :: ['repeating-linear-gradient(45deg, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 8px, rgba(196, 181, 253, 0.45) 8px, rgba(196, 181, 253, 0.45) 9px), repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 8px, rgba(196, 181, 253, 0.45) 8px, rgba(196, 181, 253, 0.45) 9px)', 'radial-gradient(circle, rgba(62, 160, 114, 0.6) 0.9px, rgba(0, 0, 0, 0) 1.2px)']
+PASS QA Both lane: Unknown and Blocked kept distinct
+PASS QA Both lane order from engine (clear, blocked, unknown, blocked) :: clear,blocked,unknown,blocked
+PASS follow latest on at stream start :: Results through 2025-01-01T00:45:00Z
+PASS streaming: Start disabled, Stop enabled :: {'cancel': False, 'start': True}
+PASS per-site progress shown with pending, not Unknown :: A Site04: 6 of 193 samples · 187 pending, not UnknownB Malapert: 4 of 193 samples · 189 pending, not Unknown
+PASS latest shared resolved UTC is shown :: Results through 2025-01-01T01:15:00Z
+PASS partial totals are labelled with the cutoff ::  Sun-centre clearance Partial window · centre-ray against geometric 0° Partial totals through 2025-01-01T01:15:00Z. Only the shared resolved interval is counted. Pending samples are not Unknown. A Site041 h 30 minB Malapert0 h Site04 has more Sun-centre cleara
+PASS windows rail says only resolved samples are counted :: Sun-centre clearance. From engine intervals. Centre-ray against geometric 0° only. Click a window to select it. A Site04 Clear 1 h 30 min · Blocked 0 h · Unknown 0 h so far Clear windows 01-01 00:00Z 
+PASS pending is dotted and separate from scientific Unknown :: {'chart': 1, 'unknown': 0, 'zones': 2}
+PASS pending zone uses a dotted pattern, not the Unknown crosshatch :: ['radial-gradient(circle, rgba(141, 155, 179, 0.6) 0.9px, rgba(0, 0, 0, 0) 1.2px)', 'dashed']
+PASS playhead stays within the shared available range :: {'max': 5, 'n': 6, 'shared': 5}
+PASS scrubbing pauses Follow latest :: {'checked': False, 'follow': False, 'index': 1, 'max': 19, 'shared': 20}
+PASS playhead max grows with the shared range :: {'checked': False, 'follow': False, 'index': 1, 'max': 19, 'shared': 20}
+PASS Follow latest resumes at newest shared sample :: {'follow': True, 'index': 23, 'shared': 24}
+PASS complete: Start enabled again, Stop disabled :: {'cancel': True, 'start': False}
+PASS complete run drops the partial label and keeps both headline numbers :: Sun-centre clearance Whole window · centre-ray against geometric 0° A Site0448 hB Malapert0 h Site04 had more Sun-centre clearance than Malapert, by 48 h. Both centres clear · 0 h at either site Live calculation · practi
+PASS playback speed leaves engine results unchanged :: {'fast_len': 303343, 'slow_len': 303343}
+PASS Clear + Blocked + Unknown = window per lane :: [[172800, 172800, 172800], [172800, 172800, 172800]]
+PASS desktop: no horizontal overflow :: {'chartW': 964.46875, 'cw': 1425, 'over': 0, 'rail': 344, 'sw': 1425}
+PASS desktop: chart takes most of the width, rail compact :: {'chartW': 964.46875, 'cw': 1425, 'over': 0, 'rail': 344, 'sw': 1425}
+PASS 390 px: no horizontal overflow, plots stack :: {'chart': 2997.15625, 'chartBottom': 3267.5, 'cols': 1, 'cw': 375, 'dock': 'sticky', 'joint': 979.578125, 'lanesTop': 3338.6875, 'nums': [877.59375, 877.59375], 'over': [], 'sw': 375, 'windows': 3723.328125}
+PASS 390 px: both headline numbers and the joint result come before the chart :: {'chart': 2997.15625, 'chartBottom': 3267.5, 'cols': 1, 'cw': 375, 'dock': 'sticky', 'joint': 979.578125, 'lanesTop': 3338.6875, 'nums': [877.59375, 877.59375], 'over': [], 'sw': 375, 'windows': 3723.328125}
+PASS 390 px: Windows stacked below the timeline :: {'chart': 2997.15625, 'chartBottom': 3267.5, 'cols': 1, 'cw': 375, 'dock': 'sticky', 'joint': 979.578125, 'lanesTop': 3338.6875, 'nums': [877.59375, 877.59375], 'over': [], 'sw': 375, 'windows': 3723.328125}
+PASS 390 px: both headline numbers share one row :: [877.59375, 877.59375]
+PASS 390 px: shared time controls stay in view (sticky dock) :: {'bottom': 701, 'play': True, 'position': 'sticky', 'prev': True, 'slider': True, 'text': '2025-01-01T13:00Z · A Clear +1.661532° · B Blocked −2.216453°', 'vh': 701}
+PASS 390 px: dock carries the selected UTC, state and margin :: 2025-01-01T13:00Z · A Clear +1.661532° · B Blocked −2.216453°
+PASS 390 px: chart drawn at real size with readable axis text :: [315.40625, 270.34375, 11]
+PASS identical angular scaling on both plots :: ['31.0,93.0,155.0', '31.0,93.0,155.0']
+PASS 390 px QA fixture: no overflow, Unknown span selectable :: {'cw': 375, 'sw': 375, 'utc': '2024-06-01T00:15:00Z'}
+139 passed, 0 failed

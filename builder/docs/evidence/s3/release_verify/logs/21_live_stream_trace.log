@@ -1,0 +1,29 @@
+PASS batch reference: Sun-centre clear 48 h vs 0 h, both clear 0 h at either site
+PASS batch overlap equals the witnessed replay overlap
+PASS first results arrive before completion
+PASS complete run offers the export
+PASS screen headline shows 48 h and 0 h
+PASS screen details equal the export seconds
+PASS export overlap equals batch and saved overlap
+PASS export is the complete comparison (not partial)
+PASS export run ids equal batch run ids
+PASS failure before a shared sample says so, with per-site delivery
+PASS failure shows no waiting line
+PASS failure offers no export and says why
+PASS failure re-enables Start and disables Stop
+PASS failure with shared samples shows the partial result and cutoff
+PASS failure with shared samples says covered-through and not exportable
+PASS failed run is not labelled complete
+PASS Stop shows Stopping with a disabled Stop button until the engine reports
+PASS Stopping headline says totals are not final
+PASS Stopped status reports the final cutoff and shared count
+PASS final cutoff is at or after the shared count seen at the click
+PASS screen headline shows the same cutoff
+PASS progress strip shows per-site delivery at or above the shared count
+PASS through line agrees with the cutoff
+PASS stopped run offers no export
+PASS Stop ended with Start enabled and chip Live stopped
+PASS restart after Stop completes, drops the stopped label and offers the export
+PASS restart export overlap equals the saved overlap
+PASS restart is a new comparison id
+28 passed, 0 failed

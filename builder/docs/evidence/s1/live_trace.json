@@ -1,0 +1,330 @@
+{
+  "revision": {
+    "head": "f534f8c9447b2935bb9687e6f89fa146b6d79d52",
+    "head_short": "f534f8c",
+    "branch": "main",
+    "dirty": true,
+    "label": "f534f8c-dirty",
+    "witnessed_replay_revision": "1f3fb06",
+    "code_digest_sha256": "222bce15095b1ad37b7d6781c92500134c293d045f504fc8448109958882c6a3",
+    "code_paths": [
+      "src/",
+      "tests/",
+      "web/",
+      "builder/scripts/",
+      "Master-Reference/"
+    ],
+    "changed_files": [
+      "builder/agent_handoff.json",
+      "builder/docs/evidence/review_candidate_sky_trace.md",
+      "builder/docs/task-log.md",
+      "builder/scripts/_harness.py",
+      "builder/scripts/review_candidate_browser_check.py",
+      "builder/scripts/validate_handoff.py",
+      "src/lunar_navigator/cli.py",
+      "src/lunar_navigator/engine.py",
+      "src/lunar_navigator/terrain.py",
+      "tests/test_stream.py",
+      "web/review-candidate/app.js",
+      "builder/docs/evidence/horizons_digest_provenance.json",
+      "builder/docs/evidence/horizons_digest_provenance.md",
+      "builder/docs/evidence/s1/",
+      "builder/docs/evidence/s1_browser/",
+      "builder/docs/evidence/s1_complete.png",
+      "builder/docs/evidence/s1_failed_no_shared.png",
+      "builder/docs/evidence/s1_failed_shared.png",
+      "builder/docs/evidence/s1_live_trace.json",
+      "builder/docs/evidence/s1_stopped.png",
+      "builder/scripts/horizons_digest_check.py",
+      "builder/scripts/live_stream_trace.py",
+      "builder/scripts/record_revision.py",
+      "builder/scripts/run_sprint_evidence.sh",
+      "builder/scripts/task_counts.py",
+      "src/lunar_navigator/fsio.py",
+      "tests/test_atomic_io.py",
+      "tests/test_harness_accounting.py"
+    ]
+  },
+  "url": "http://127.0.0.1:8797/review-candidate/",
+  "steps": {
+    "complete": {
+      "status": "Complete. Comparison e9d88a66ea97. Results site04-p02-practice-q4-centre-0deg-a24325ba50c4 / malapert-practice-q4-centre-0deg-88b9b3cfef57.",
+      "export_keys": [
+        "code_revision",
+        "comparable",
+        "definition",
+        "eligible_for_submission_claim",
+        "labels",
+        "limitations",
+        "overlap",
+        "practice",
+        "runs",
+        "schema_version"
+      ],
+      "export_sha256": "39d0a95b0f5814b1b036a8ede4faabc6b1240402f48f060d0aca965fdc8bcc1d"
+    },
+    "failed_before_shared": {
+      "answers": "Sun-centre clearance\n    Failed before any shared sample was delivered. Site04 delivered 3, Malapert delivered 0. There is no partial result and no export.",
+      "banner": "Run failed before any shared sample. Nothing to show.",
+      "chip": "Live failed",
+      "exportHref": null,
+      "exportText": "No export: the run did not complete.",
+      "progress": "A Site04: 3 of 193 samples \u00b7 190 pending, not UnknownB Malapert: 0 of 193 samples \u00b7 193 pending, not Unknown",
+      "start": false,
+      "status": "Failed. Comparison 759e6dd121b3. calculation failed after batch 0 on site_a. No shared sample was delivered, so there is no partial result. Delivered: Site04 3, Malapert 0. No export: the run did not complete.",
+      "stop": true,
+      "stopLabel": "Stop",
+      "through": "Results through \u2014 \u00b7 waiting for the first shared sample"
+    },
+    "failed_with_shared": {
+      "answers": "\n    Sun-centre clearance\n    Partial window \u00b7 centre-ray against geometric 0\u00b0\n    Failed. Incomplete run. Partial result through 2025-01-01T00:45:00Z (4 shared samples; totals cover through 2025-01-01T01:00:00Z). Only the shared resolved interval is counted. Not exportable. calculation failed after batch 1 on site_a.\n    A Site041 hB Malapert0 h\n    Site04 has more Sun-centre clearance than Malapert, by 1 h.\n    Both centres clear \u00b7 0 h at either site\n    Live calculation \u00b7 practiceTerrain clearance unknown",
+      "banner": "Failed run. Incomplete. Totals cover only the shared resolved interval.",
+      "chip": "Live failed",
+      "exportHref": null,
+      "exportText": "No export: the run did not complete.",
+      "progress": "A Site04: 6 of 193 samples \u00b7 187 pending, not UnknownB Malapert: 4 of 193 samples \u00b7 189 pending, not Unknown",
+      "start": false,
+      "status": "Failed. Comparison 05f32c144dff. calculation failed after batch 1 on site_a. Final cutoff 2025-01-01T00:45:00Z (4 of 193 shared samples). Totals cover through 2025-01-01T01:00:00Z. Delivered: Site04 6, Malapert 4. No export: the run did not complete.",
+      "stop": true,
+      "stopLabel": "Stop",
+      "through": "Results through 2025-01-01T00:45:00Z"
+    },
+    "stop": {
+      "shared_at_click": 20,
+      "timeline": [
+        {
+          "t": 0.01,
+          "chip": "Stopping",
+          "stop": "Stopping\u2026",
+          "status": "Stopping. Comparison ce12ed07bcc3. Waiting for the engine to report the final cutoff."
+        },
+        {
+          "t": 0.14,
+          "chip": "Stopping",
+          "stop": "Stopping\u2026",
+          "status": "Stopping. Comparison ce12ed07bcc3. Waiting for the engine to report the final cutoff."
+        },
+        {
+          "t": 0.19,
+          "chip": "Live stopped",
+          "stop": "Stop",
+          "status": "Stopped. Comparison ce12ed07bcc3. Final cutoff 2025-01-01T08:45:00Z (36 of 193 shared samp"
+        }
+      ],
+      "final": {
+        "answers": "\n    Sun-centre clearance\n    Partial window \u00b7 centre-ray against geometric 0\u00b0\n    Stopped. Incomplete run. Partial result through 2025-01-01T08:45:00Z (36 shared samples; totals cover through 2025-01-01T09:00:00Z). Only the shared resolved interval is counted. Not exportable.\n    A Site049 hB Malapert0 h\n    Site04 has more Sun-centre clearance than Malapert, by 9 h.\n    Both centres clear \u00b7 0 h at either site\n    Live calculation \u00b7 practiceTerrain clearance unknown",
+        "banner": "Stopped run. Incomplete. Totals cover only the shared resolved interval.",
+        "chip": "Live stopped",
+        "exportHref": null,
+        "exportText": "No export: the run did not complete.",
+        "progress": "A Site04: 36 of 193 samples \u00b7 157 pending, not UnknownB Malapert: 36 of 193 samples \u00b7 157 pending, not Unknown",
+        "start": false,
+        "status": "Stopped. Comparison ce12ed07bcc3. Final cutoff 2025-01-01T08:45:00Z (36 of 193 shared samples). Totals cover through 2025-01-01T09:00:00Z. Delivered: Site04 36, Malapert 36. No export: the run did not complete.",
+        "stop": true,
+        "stopLabel": "Stop",
+        "through": "Results through 2025-01-01T08:45:00Z"
+      }
+    },
+    "restart": {
+      "status": "Complete. Comparison 72e72d428d55. Results site04-p02-practice-q4-centre-0deg-a24325ba50c4 / malapert-practice-q4-centre-0deg-88b9b3cfef57."
+    }
+  },
+  "batch_reference": {
+    "run_id_a": "site04-p02-practice-q4-centre-0deg-a24325ba50c4",
+    "run_id_b": "malapert-practice-q4-centre-0deg-88b9b3cfef57",
+    "sun_clear_s": [
+      172800,
+      0
+    ],
+    "both_clear_s": [
+      0,
+      0
+    ]
+  },
+  "results": [
+    {
+      "check": "batch reference: Sun-centre clear 48 h vs 0 h, both clear 0 h at either site",
+      "pass": true,
+      "detail": {
+        "run_id_a": "site04-p02-practice-q4-centre-0deg-a24325ba50c4",
+        "run_id_b": "malapert-practice-q4-centre-0deg-88b9b3cfef57",
+        "sun_clear_s": [
+          172800,
+          0
+        ],
+        "both_clear_s": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "check": "batch overlap equals the witnessed replay overlap",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "first results arrive before completion",
+      "pass": true,
+      "detail": "Calculating. Comparison e9d88a66ea97. Site04 6, Malapert 4, shared 4."
+    },
+    {
+      "check": "complete run offers the export",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "screen headline shows 48 h and 0 h",
+      "pass": true,
+      "detail": "\n    Sun-centre clearance\n    Whole window \u00b7 centre-ray against geometric 0\u00b0\n    \n    A Site0448 hB Malapert0 h\n    Site04 had more Sun-centre clearance than Malapert, by 48 h.\n    Both centres clear "
+    },
+    {
+      "check": "screen details equal the export seconds",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "export overlap equals batch and saved overlap",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "export is the complete comparison (not partial)",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "export run ids equal batch run ids",
+      "pass": true,
+      "detail": [
+        "malapert-practice-q4-centre-0deg-88b9b3cfef57",
+        "site04-p02-practice-q4-centre-0deg-a24325ba50c4"
+      ]
+    },
+    {
+      "check": "failure before a shared sample says so, with per-site delivery",
+      "pass": true,
+      "detail": "Sun-centre clearance\n    Failed before any shared sample was delivered. Site04 delivered 3, Malapert delivered 0. There is no partial result and no export."
+    },
+    {
+      "check": "failure shows no waiting line",
+      "pass": true,
+      "detail": "Sun-centre clearance\n    Failed before any shared sample was delivered. Site04 delivered 3, Malapert delivered 0. There is no partial result and no export."
+    },
+    {
+      "check": "failure offers no export and says why",
+      "pass": true,
+      "detail": "No export: the run did not complete."
+    },
+    {
+      "check": "failure re-enables Start and disables Stop",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "failure with shared samples shows the partial result and cutoff",
+      "pass": true,
+      "detail": [
+        "Failed. Comparison 05f32c144dff. calculation failed after batch 1 on site_a. Final cutoff 2025-01-01T00:45:00Z (4 of 193 shared samples). Totals cover through 2025-01-01T01:00:00Z. Delivered: Site04 6, Malapert 4. No export: the run did not complete.",
+        "\n    Sun-centre clearance\n    Partial window \u00b7 centre-ray against geometric 0\u00b0\n    Failed. Incomplete run. Partial result through 2025-01-01T00:45:00Z (4 shared samples; totals cover through 2025-01-01T01:00:00Z). Only the shared resolved interval is counted. Not exportable. calculation failed after"
+      ]
+    },
+    {
+      "check": "failure with shared samples says covered-through and not exportable",
+      "pass": true,
+      "detail": "Failed. Comparison 05f32c144dff. calculation failed after batch 1 on site_a. Final cutoff 2025-01-01T00:45:00Z (4 of 193 shared samples). Totals cover through 2025-01-01T01:00:00Z. Delivered: Site04 6, Malapert 4. No export: the run did not complete."
+    },
+    {
+      "check": "failed run is not labelled complete",
+      "pass": true,
+      "detail": "Live failed"
+    },
+    {
+      "check": "Stop shows Stopping with a disabled Stop button until the engine reports",
+      "pass": true,
+      "detail": {
+        "answers": "\n    Sun-centre clearance\n    Partial window \u00b7 centre-ray against geometric 0\u00b0\n    Stopping. These totals are not final until the engine reports the final cutoff.\n    A Site045 hB Malapert0 h\n    Site04 has more Sun-centre clearance than Malapert, by 5 h.\n    Both centres clear \u00b7 0 h at either site\n    Live calculation \u00b7 practiceTerrain clearance unknown",
+        "banner": "Stopping. Totals are not final until the engine reports the cutoff.",
+        "chip": "Stopping",
+        "exportHref": null,
+        "exportText": "",
+        "progress": "A Site04: 21 of 193 samples \u00b7 172 pending, not UnknownB Malapert: 20 of 193 samples \u00b7 173 pending, not Unknown",
+        "start": true,
+        "status": "Stopping. Comparison ce12ed07bcc3. Waiting for the engine to report the final cutoff.",
+        "stop": true,
+        "stopLabel": "Stopping\u2026",
+        "through": "Results through 2025-01-01T04:45:00Z"
+      }
+    },
+    {
+      "check": "Stopping headline says totals are not final",
+      "pass": true,
+      "detail": "\n    Sun-centre clearance\n    Partial window \u00b7 centre-ray against geometric 0\u00b0\n    Stopping. These totals are not final until the engine reports the final cutoff.\n    A Site045 hB Malapert0 h\n    Site"
+    },
+    {
+      "check": "Stopped status reports the final cutoff and shared count",
+      "pass": true,
+      "detail": "Stopped. Comparison ce12ed07bcc3. Final cutoff 2025-01-01T08:45:00Z (36 of 193 shared samples). Totals cover through 2025-01-01T09:00:00Z. Delivered: Site04 36, Malapert 36. No export: the run did not complete."
+    },
+    {
+      "check": "final cutoff is at or after the shared count seen at the click",
+      "pass": true,
+      "detail": [
+        "36",
+        20
+      ]
+    },
+    {
+      "check": "screen headline shows the same cutoff",
+      "pass": true,
+      "detail": "\n    Sun-centre clearance\n    Partial window \u00b7 centre-ray against geometric 0\u00b0\n    Stopped. Incomplete run. Partial result through 2025-01-01T08:45:00Z (36 shared samples; totals cover through 2025-01-01T09:00:00Z). Only the shared resolved interval is counted"
+    },
+    {
+      "check": "progress strip shows per-site delivery at or above the shared count",
+      "pass": true,
+      "detail": [
+        [
+          36,
+          36
+        ],
+        "36"
+      ]
+    },
+    {
+      "check": "through line agrees with the cutoff",
+      "pass": true,
+      "detail": "Results through 2025-01-01T08:45:00Z"
+    },
+    {
+      "check": "stopped run offers no export",
+      "pass": true,
+      "detail": "No export: the run did not complete."
+    },
+    {
+      "check": "Stop ended with Start enabled and chip Live stopped",
+      "pass": true,
+      "detail": [
+        false,
+        "Live stopped"
+      ]
+    },
+    {
+      "check": "restart after Stop completes, drops the stopped label and offers the export",
+      "pass": true,
+      "detail": "Live complete"
+    },
+    {
+      "check": "restart export overlap equals the saved overlap",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "restart is a new comparison id",
+      "pass": true,
+      "detail": [
+        "ce12ed07bcc3",
+        "72e72d428d55"
+      ]
+    }
+  ]
+}

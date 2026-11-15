@@ -1,0 +1,259 @@
+[
+  {
+    "check": "result screen offers Why Site04 48 h, Why Malapert 0 h, both-centres and terrain questions",
+    "pass": true,
+    "detail": [
+      "Why Site04 48 h?",
+      "Why Malapert 0 h?",
+      "Why both centres 0 h?",
+      "Why terrain Unknown?"
+    ]
+  },
+  {
+    "check": "scope line shows the UTC range, duration, mode and terrain state",
+    "pass": true,
+    "detail": "UTC range 2025-01-01T00:00Z \u2192 2025-01-03T00:00Z \u00b7 48 hMode Geometric 0\u00b0 (centre-ray)Terrain Unknown"
+  },
+  {
+    "check": "Why Site04 48 h: states 193 samples above 0\u00b0 and 192 intervals of 15 min",
+    "pass": true,
+    "detail": "A Site04 \u00b7 Sun-centre clearance \u00b7 48 h Site04: Sun's centre is above the 0\u00b0 horizon at all 193 samples, with a smallest margin of +1.591981\u00b0. Each sample counts for its own 15 min interval, and the final sample adds 0 s. 192 intervals of 15 min give 48 h. Sour"
+  },
+  {
+    "check": "Why Site04 48 h: source row carries the nearest sample's UTC, saved Horizons row, elevation and state",
+    "pass": true,
+    "detail": {
+      "utc": "2025-01-03T00:00:00Z",
+      "row": "2025-Jan-03 00:00,*, , 294.251857,     1.591981,"
+    }
+  },
+  {
+    "check": "Why Malapert 0 h: all 193 samples on or below 0\u00b0, blocked rule, 0 h",
+    "pass": true,
+    "detail": "B Malapert \u00b7 Sun-centre clearance \u00b7 0 h Malapert: Sun's centre is on or below the 0\u00b0 horizon at all 193 samples. A margin of 0\u00b0 or less is blocked, including exact contact, so no time counts as clear: 0 h. The sample nearest the horizon is 2025-01-03T00:00Z, m"
+  },
+  {
+    "check": "Why Malapert 0 h: source row is the sample nearest the horizon with its margin",
+    "pass": true,
+    "detail": {
+      "utc": "2025-01-03T00:00:00Z",
+      "elev": -1.603613
+    }
+  },
+  {
+    "check": "Why both centres 0 h: states both-above-same-sample rule and the blocked-beats-unknown order",
+    "pass": true,
+    "detail": "A Site04 \u00b7 Both centres clear \u00b7 0 h Site04: the Sun centre is clear at 193 of 193 samples and the Earth centre at 0. Both centres clear needs both above the horizon in the same sample, so it is clear at 0. Each sample counts for its own 15 min interval, and the final sample adds 0 s. That is 0 h.Blo"
+  },
+  {
+    "check": "Why terrain Unknown: reason code, M4 requirements, diagnostic not a result, observer altitudes",
+    "pass": true,
+    "detail": "Terrain clearance \u00b7 Unknown Terrain clearance is Unknown because no reviewed skyline is accepted. The reason code is terrain_not_reviewed. Every result on this screen uses the labelled geometric 0\u00b0 baseline (geometric_0deg), not terrain. A terrain result needs a reviewed lunar frame, a reviewed vert"
+  },
+  {
+    "check": "a second click on the open question closes it",
+    "pass": true,
+    "detail": "Choose a question to see the range, the rule, and the saved rows behind it."
+  },
+  {
+    "check": "decision: Sun-centre, any length -> Partly, only Site04",
+    "pass": true,
+    "detail": "Partly. Only Site04 has a Sun-centre clearance window. Malapert has none."
+  },
+  {
+    "check": "decision: Both centres clear -> No, neither site",
+    "pass": true,
+    "detail": "No. Neither site has a Both centres clear window."
+  },
+  {
+    "check": "decision: zero result offers the closest sampled point to 0\u00b0 for each site",
+    "pass": true,
+    "detail": 2
+  },
+  {
+    "check": "decision: closest-point button lands on the saved sample (Malapert, both lane)",
+    "pass": true,
+    "detail": {
+      "landed": {
+        "lane": "both",
+        "site": 1,
+        "utc": "2025-01-03T00:00:00Z"
+      },
+      "want": "2025-01-03T00:00:00Z"
+    }
+  },
+  {
+    "check": "decision: Why? opens the same why panel with the joint rule",
+    "pass": true,
+    "detail": "both"
+  },
+  {
+    "check": "decision: other supported case lists the 30-day pair with its own answer and an open button",
+    "pass": true,
+    "detail": "Other supported casesPractice, 30 days 2025-01-01T00:00Z \u2192 2025-01-31T00:00Z, step 1 hBoth centres clear: Site04 yes, 1 window, longest 303 h \u00b7 Malapert yes, 1 window, longest 398 hOpen this casePractice, Jan 3\u201310 2025-01-03T00:00Z \u2192 2025-01-10T00:00Z, step 15 minBoth centres clear: Malapert yes, 1 "
+  },
+  {
+    "check": "30-day case loads from the saved package, not the witnessed replay",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "30-day case is labelled practice and not an eligible claim",
+    "pass": true,
+    "detail": "Practice \u00b7 30 daysTerrain clearance unknown"
+  },
+  {
+    "check": "30-day scope line: 2025-01-01 \u2192 2025-01-31, 720 h",
+    "pass": true,
+    "detail": "UTC range 2025-01-01T00:00Z \u2192 2025-01-31T00:00Z \u00b7 720 hMode Geometric 0\u00b0 (centre-ray)Terrain Unknown"
+  },
+  {
+    "check": "30-day totals equal the engine result (Site04 720 h, Malapert 436 h)",
+    "pass": true,
+    "detail": [
+      2592000,
+      1569600
+    ]
+  },
+  {
+    "check": "30-day decision: Sun-centre any length -> Yes, both sites",
+    "pass": true,
+    "detail": "Yes. Both sites have a Sun-centre clearance window."
+  },
+  {
+    "check": "30-day decision: 7 days or longer still has both sites (Malapert window 2025-01-05T10:00Z \u2192 2025-01-23T14:00Z)",
+    "pass": true,
+    "detail": {
+      "verdict": "Yes. Both sites have a Sun-centre clearance window of 7 days or longer.",
+      "answer": "Yes. Both sites have a Sun-centre clearance window of 7 days or longer.A Site04 Why?1 window of 7 days or longer. Longest clear window 720 h. 01-01 00:00Z \u2192 01-31 00:00Z720 hB Malapert Why?1 window of 7 days or longer. Longest clear window "
+    }
+  },
+  {
+    "check": "30-day decision: Earth centre 24 h -> Yes, both",
+    "pass": true,
+    "detail": "Yes. Both sites have a Earth-centre clearance window of 24 h or longer."
+  },
+  {
+    "check": "30-day decision: Earth centre 7 days -> Yes (Site04 and Malapert each have one window longer than 7 days)",
+    "pass": true,
+    "detail": "Yes. Both sites have a Earth-centre clearance window of 7 days or longer."
+  },
+  {
+    "check": "Why Malapert (30 d): shows the sample before and at the 2025-01-05T10:00Z change",
+    "pass": true,
+    "detail": "B Malapert \u00b7 Sun-centre clearance \u00b7 436 h Malapert: Sun's centre is clear at 436 of 721 samples (436 h), blocked at 285 and unknown at 0. Each sample counts for its own 1 h interval, and the final sample adds 0 s.Changes: blocked from 2025-01-01T00:00Z, then clear from 2025-01-05T10:00Z, then blocked from 2025-01-23T14"
+  },
+  {
+    "check": "transition rows: margin \u2264 0 is blocked at 09:00 and > 0 is clear at 10:00 in the saved samples",
+    "pass": true,
+    "detail": {
+      "09:00": -0.011369,
+      "10:00": 0.021266
+    }
+  },
+  {
+    "check": "transition rows equal the raw Horizons response lines (read from data/, not from the page)",
+    "pass": true,
+    "detail": {
+      "raw_09": "2025-Jan-05 09:00,*,i, 111.880820,    -0.011369,",
+      "raw_10": "2025-Jan-05 10:00,*,i, 111.375064,     0.021266,"
+    }
+  },
+  {
+    "check": "Show this sample in the timeline moves the shared playhead to 10:00Z",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "48 h button still loads the witnessed replay files",
+    "pass": true,
+    "detail": [
+      "runs/site04-p02-practice.json",
+      "runs/malapert-practice.json"
+    ]
+  },
+  {
+    "check": "QA Why (Sun, QA North): mixed result with changes, Unknown separate from clear and blocked, saved reason",
+    "pass": true,
+    "detail": "A QA North \u00b7 Sun-centre clearance \u00b7 15 min QA North: Sun's centre is clear at 1 of 5 samples (15 min), blocked at 2 and unknown at 2. Each sample counts for its own 15 min interval, and the final sample adds 0 s.Changes: clear from 2024-06-01T00:00Z, then unknown from 2024-06-01T00:15Z, then blocked from 2024-06-01T00:45Z.Unknown is not clear and not blocked. It is counted separately (30 min). Saved reasons: missing_"
+  },
+  {
+    "check": "QA fixture is labelled synthetic on screen and is not offered as a decision case",
+    "pass": true,
+    "detail": [
+      "Practice, 48 h",
+      "Practice, 30 days",
+      "Practice, Jan 3\u201310"
+    ]
+  },
+  {
+    "check": "QA decision: both centres 1 h -> No (transitions are 15 min long)",
+    "pass": true,
+    "detail": "No. Neither site has a Both centres clear window of 1 h or longer."
+  },
+  {
+    "check": "QA decision: both centres 15 min -> Yes (the 15 min clear sample)",
+    "pass": true,
+    "detail": "Yes. Both sites have a Both centres clear window of 15 min or longer."
+  },
+  {
+    "check": "QA Why (Both): Unknown reason is listed, not hidden",
+    "pass": true,
+    "detail": "A QA North \u00b7 Both centres clear \u00b7 15 min QA North: the Sun centre is clear at 1 of 5 samples and the Earth centre at 2. Both centres clear needs both above the horizon in the same sample, so it is clear at 1. Each sample counts for its own 15 min interval, and the final sample adds 0 s. That is 15 m"
+  },
+  {
+    "check": "QA fixture Unknown seconds are non-zero and shown separately",
+    "pass": true,
+    "detail": [
+      900,
+      900
+    ]
+  },
+  {
+    "check": "390 px: why and decision panels cause no page overflow; the source table scrolls inside its own box",
+    "pass": true,
+    "detail": {
+      "cw": 375,
+      "over": [],
+      "sw": 375,
+      "table": [
+        760,
+        283
+      ]
+    }
+  },
+  {
+    "check": "live 30-day stream: overlap equals the saved package",
+    "pass": true,
+    "detail": {
+      "live": {
+        "site_a": 2592000,
+        "site_b": 1569600,
+        "delta_b_minus_a": -1022400
+      },
+      "saved": {
+        "site_a": 2592000,
+        "site_b": 1569600,
+        "delta_b_minus_a": -1022400
+      }
+    }
+  },
+  {
+    "check": "live 30-day stream: per-site totals, sample counts and intervals equal the saved runs",
+    "pass": true,
+    "detail": [
+      721,
+      721
+    ]
+  },
+  {
+    "check": "live run: Why panel reads the same result as the saved one",
+    "pass": true,
+    "detail": "B Malapert \u00b7 Sun-centre clearance \u00b7 436 h Malapert: Sun's centre is clear at 436 of 721 samples (436 h), blocked at 285 and unknown at 0. Each sample counts for its own 1 h interval, and the final sam"
+  },
+  {
+    "check": "live run: decision verdict matches the saved case (Yes, both sites)",
+    "pass": true,
+    "detail": "Yes. Both sites have a Sun-centre clearance window."
+  }
+]

@@ -1,0 +1,986 @@
+[
+  {
+    "check": "scenario bar: two sites, UTC range, sample step, Geometric 0\u00b0",
+    "pass": true,
+    "detail": "SitesA Site04vsB Malapert UTC range2025-01-01T00:00Z \u2192 2025-01-03T00:00Z \u00b7 48 h Sample step15 min ModeGeometric 0\u00b0 Practice evidence. Not an eligible submission claim."
+  },
+  {
+    "check": "scenario bar is one compact row",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "Sun-centre headline: Site04 48 h and Malapert 0 h, equal footing",
+    "pass": true,
+    "detail": [
+      [
+        "A Site04",
+        "48 h"
+      ],
+      [
+        "B Malapert",
+        "0 h"
+      ]
+    ]
+  },
+  {
+    "check": "both site numbers share one size and width",
+    "pass": true,
+    "detail": [
+      "59.2px/620",
+      "59.2px/620"
+    ]
+  },
+  {
+    "check": "joint line: Both centres clear \u00b7 0 h at either site",
+    "pass": true,
+    "detail": "Both centres clear \u00b7 0 h at either site"
+  },
+  {
+    "check": "Practice and Terrain clearance unknown visible on the first screen",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "header also keeps Practice and Terrain clearance unknown",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "first screen holds result and joint line without scrolling",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "first screen has no raw seconds, sample counts or reason codes",
+    "pass": true,
+    "detail": "Sun-centre clearance\n\nWhole window \u00b7 centre-ray against geometric 0\u00b0\n\nA\nSite04\n48 h\nB\nMalapert\n0 h\n\nSite04 had more Sun-centre clearance than Malapert, by 48 h.\n\nBoth centres clear \u00b7 0 h at either sit"
+  },
+  {
+    "check": "Details hold raw seconds, sample counts and terrain_not_reviewed",
+    "pass": true,
+    "detail": "DetailsSun-centre clear, saved secondsSite04 172800 s \u00b7 Malapert 0 s \u00b7 delta (Malapert \u2212 Site04) -172800 sBoth centres clear, saved secondsSite04 0 s \u00b7 Malapert 0 s \u00b7 delta (Malapert \u2212 Site04) 0 sSamplesSite04 193 \u00b7 Malapert 193 \u00b7 shared 193Geometric Unknown durationSite04: Sun 0 h, Earth 0 h, Both "
+  },
+  {
+    "check": "zero shows as 0 h, never 0 s",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "lane picker sits above the timeline",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "Sun chart: two site traces with direct A/B labels",
+    "pass": true,
+    "detail": [
+      "A Site04",
+      "B Malapert"
+    ]
+  },
+  {
+    "check": "0\u00b0 reference is labelled",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "selected-time marker is a separate pink line with a time pill",
+    "pass": true,
+    "detail": "13:00Z"
+  },
+  {
+    "check": "selected-time marker differs from the 0\u00b0 horizon",
+    "pass": true,
+    "detail": [
+      "rgb(255, 122, 182)",
+      "rgb(242, 244, 248)",
+      "7px, 5px",
+      "none"
+    ]
+  },
+  {
+    "check": "short UTC ticks",
+    "pass": true,
+    "detail": [
+      "01-01",
+      "06Z",
+      "12Z",
+      "18Z",
+      "01-02",
+      "06Z",
+      "12Z",
+      "18Z",
+      "01-03"
+    ]
+  },
+  {
+    "check": "dark plot with bright axis labels",
+    "pass": true,
+    "detail": [
+      [
+        7,
+        10,
+        16
+      ],
+      [
+        213,
+        219,
+        232
+      ]
+    ]
+  },
+  {
+    "check": "readout shows selected UTC, each site state and signed margin",
+    "pass": true,
+    "detail": "Selected UTC 2025-01-01T13:00:00Z View evidence A Site04 Clear +1.661532\u00b0 Sun-centre margin B Malapert Blocked \u22122.216453\u00b0 Sun-centre margin"
+  },
+  {
+    "check": "Windows rail: Site04 clear window, Malapert none",
+    "pass": true,
+    "detail": "Sun-centre clearance. From engine intervals. Centre-ray against geometric 0\u00b0 only. Click a window to select it. A Site04 Clear 48 h \u00b7 Blocked 0 h \u00b7 Unknown 0 h Clear windows 01-01 00:00Z \u2192 01-03 00:00Z48 h B Malapert Clear 0 h \u00b7 Blocked 48 h \u00b7 Unknown 0 h Clea"
+  },
+  {
+    "check": "Windows rail is compact beside the chart",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "click a window: highlight span, select site, playhead to start",
+    "pass": true,
+    "detail": {
+      "chartBand": 1,
+      "index": 0,
+      "ro": "Selected window \u00b7 A Site04 \u00b7 Sun-centre clearance \u00b7 clear \u00b7 2025-01-01T00:00Z \u2192 2025-01-03T00:00Z \u00b7 48 h",
+      "row": 1,
+      "seg": 1,
+      "sel": {
+        "end": "2025-01-03T00:00:00Z",
+        "lane": "sun",
+        "site": 0,
+        "start": "2025-01-01T00:00:00Z",
+        "state": "clear"
+      },
+      "site": 0,
+      "utc": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "check": "selected window line names site, state, span",
+    "pass": true,
+    "detail": "Selected window \u00b7 A Site04 \u00b7 Sun-centre clearance \u00b7 clear \u00b7 2025-01-01T00:00Z \u2192 2025-01-03T00:00Z \u00b7 48 h"
+  },
+  {
+    "check": "changing the lane clears the window selection and updates chart, lanes and list",
+    "pass": true,
+    "detail": "Earth-centre clearance. From engine intervals. Centre-ray against geometric 0\u00b0 only. Click a window to select it. A Site"
+  },
+  {
+    "check": "Earth lane: no clear window at either site",
+    "pass": true,
+    "detail": "Earth-centre clearance. From engine intervals. Centre-ray against geometric 0\u00b0 only. Click a window to select it. A Site04 Clear 0 h \u00b7 Blocked 48 h \u00b7 Unknown 0 h Clear windows No clear window in this "
+  },
+  {
+    "check": "Earth lane offers Closest sampled point to 0\u00b0 per site",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "Both: joint lanes for each site",
+    "pass": true,
+    "detail": "A Site04Both centres clear \u00b7 clear 0 h Blocked B MalapertBoth centres clear \u00b7 clear 0 h Blocked Clear Blocked Unknown (n"
+  },
+  {
+    "check": "Both: individual Sun and Earth centre margins at the selected time",
+    "pass": true,
+    "detail": "Centre margins at 2025-01-01T13:00Z SiteSun centreEarth centreBoth A Site04clear +1.661532\u00b0blocked \u22126.131524\u00b0blockedB Malapertblocked \u22122.216453\u00b0blocked \u22121.930824\u00b0blocked"
+  },
+  {
+    "check": "Both: chart carries Sun and Earth traces per site",
+    "pass": true,
+    "detail": [
+      "A Sun",
+      "B Earth",
+      "B Sun",
+      "A Earth"
+    ]
+  },
+  {
+    "check": "Both: no Closest offer",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "Closest sampled point to 0\u00b0 jumps to the saved sample",
+    "pass": true,
+    "detail": {
+      "ui": "2025-01-03T00:00:00Z",
+      "saved": "2025-01-03T00:00:00Z",
+      "margin": -1.603613
+    }
+  },
+  {
+    "check": "final sample says it adds 0 elapsed time",
+    "pass": true,
+    "detail": {
+      "index": 192,
+      "last": 192,
+      "notice": "Closest sampled point to 0\u00b0 for Malapert: 2025-01-03T00:00:00Z, margin \u22121.603613\u00b0. This is the final sample, so it adds 0 elapsed time.",
+      "site": 1,
+      "utc": "2025-01-03T00:00:00Z",
+      "zero": "Final sample: it adds 0 elapsed time."
+    }
+  },
+  {
+    "check": "View evidence opens the Horizons row for the selected state",
+    "pass": true,
+    "detail": {
+      "row": "2025-Jan-03 00:00, ,i, 140.746429,    -1.603613,",
+      "shown": [
+        "2025-Jan-03 00:00, ,i, 140.746429,    -1.603613,",
+        "horizons/malapert-practice/sun-d10bfb555ec3/angles.csv#row=194"
+      ]
+    }
+  },
+  {
+    "check": "evidence shows run ID, observer, source and export",
+    "pass": true,
+    "detail": "B\nMalapert \u00b7 Sun-centre clearance\n\nEvidence\n\u2212\n100%\n+\n\u2715\n\n2025-01-03T00:00:00Z \u00b7 follows the playhead\n\nSUN-CENTRE CLEARANCE \u00b7 AZIMUTH\n140.746429\u00b0\nSUN-CENTRE CLEARANCE \u00b7 ELEVATION, MARGIN\n-1.603613\u00b0, -1."
+  },
+  {
+    "check": "Esc closes evidence",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "Evidence is not on the main flow until opened",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "filter defaults to any length",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "4 h Sun filter finds a Site04 window and none at Malapert",
+    "pass": true,
+    "detail": {
+      "engine": [
+        1,
+        0
+      ],
+      "ui": "Sun-centre clearance \u00b7 4 h or longerA Site04 1 window\u00b7B Malapert none"
+    }
+  },
+  {
+    "check": "qualifying windows listed per site, from engine intervals",
+    "pass": true,
+    "detail": [
+      1,
+      0
+    ]
+  },
+  {
+    "check": "full-window totals stay visible beside the filtered list",
+    "pass": true,
+    "detail": "A Site04 Clear 48 h \u00b7 Blocked 0 h \u00b7 Unknown 0 h Clear windows 01-01 00:00Z \u2192 01-03 00:00Z48 h"
+  },
+  {
+    "check": "headline totals unchanged by the filter",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "lane header shows the qualifying count",
+    "pass": true,
+    "detail": "A Site04Sun-centre clearance \u00b7 clear 48 h \u00b7 1 window of 4 h or longer Clear B MalapertSun-centre clearance \u00b7 clear 0 h \u00b7 no windows of 4 h or longer Blocked Clear Blocked Unknown (no usable saved angl"
+  },
+  {
+    "check": "4 h Both filter finds no joint window",
+    "pass": true,
+    "detail": {
+      "engine": [
+        0,
+        0
+      ],
+      "ui": "Both centres clear \u00b7 4 h or longerA Site04 none\u00b7B Malapert none"
+    }
+  },
+  {
+    "check": "filtered window still selects and moves the playhead",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "Any length restores the full list and removes the summary",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "filter resets when the case changes",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "QA 15 min filter keeps the 15 min clear windows",
+    "pass": true,
+    "detail": "Sun-centre clearance \u00b7 15 min or longerA QA North 1 window\u00b7B QA South 1 window"
+  },
+  {
+    "check": "QA 1 h filter: no qualifying window, longest clear window named",
+    "pass": true,
+    "detail": "Sun-centre clearance. From engine intervals. Centre-ray against geometric 0\u00b0 only. Click a window to select it. Sun-centre clearance \u00b7 1 h or longerA QA North none\u00b7B QA South none A QA North Clear 15 min \u00b7 Blocked 15 min \u00b7 Unknown 30 min Clear windows No clear window of 1 h or longer. Longest clear "
+  },
+  {
+    "check": "lane segments shorter than the minimum are dimmed, labels still readable",
+    "pass": true,
+    "detail": 2
+  },
+  {
+    "check": "Unknown spans stay listed under the filter",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "reviewer: which site has more Sun-centre clearance",
+    "pass": true,
+    "detail": "Site04 had more Sun-centre clearance than Malapert, by 48 h."
+  },
+  {
+    "check": "Step 1 hour advances four 15-minute samples",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "End jumps to the last shared sample",
+    "pass": true,
+    "detail": {
+      "disabled": true,
+      "i": 192,
+      "last": 192
+    }
+  },
+  {
+    "check": "Start jumps to the first sample",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "clicking the chart moves the shared playhead",
+    "pass": true,
+    "detail": 48
+  },
+  {
+    "check": "verdict 13:00 selected UTC",
+    "pass": true,
+    "detail": "2025-01-01T13:00:00Z"
+  },
+  {
+    "check": "verdict sentence",
+    "pass": true,
+    "detail": "2025-01-01T13:00:00Z\n\nSite04's Sun centre is 1.66\u00b0 above 0\u00b0. Malapert's is 2.22\u00b0 below 0\u00b0. Earth's centre is below 0\u00b0 at both sites. Neither site has both centres clear.\n\nCentre-ray state against geometric 0\u00b0. Terrain clearance unknown. The whole-window totals in the result above are a different measure."
+  },
+  {
+    "check": "Malapert Sun Blocked at geometric 0\u00b0",
+    "pass": true,
+    "detail": "Sun \u00b7 Blocked at geometric 0\u00b0\nEarth \u00b7 Blocked at geometric 0\u00b0\nBoth \u00b7 Blocked\nTerrain clearance unknown"
+  },
+  {
+    "check": "Site04 Sun Clear at geometric 0\u00b0",
+    "pass": true,
+    "detail": "Sun \u00b7 Clear at geometric 0\u00b0\nEarth \u00b7 Blocked at geometric 0\u00b0\nBoth \u00b7 Blocked\nTerrain clearance unknown"
+  },
+  {
+    "check": "terrain diagnostic off by default",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "every metric shown under both plots",
+    "pass": true,
+    "detail": "sun centre | blocked | azimuth | 158.508524\u00b0 | elevation | \u22122.216453\u00b0 | horizon | 0\u00b0 | margin | \u22122.216453\u00b0 | dem (diagnostic) | \u22129.371391\u00b0 | earth centre | blocked | azimuth | 358.496048\u00b0 | elevation | \u22121.930824\u00b0 | horizon | 0\u00b0 | margin | \u22121.930824\u00b0 | dem (diagnostic) | \u22120.574502\u00b0 | both centres | blocked | sun margin | \u22122.216453\u00b0 | earth margin | \u22121.930824\u00b0 | reason | centre_below_or_on_horizon:sun+earth"
+  },
+  {
+    "check": "body glyphs with state rings (clear solid, blocked dashed)",
+    "pass": true,
+    "detail": {
+      "blockedDash": "3 2.5",
+      "clearDash": "",
+      "earthLand": 1,
+      "sunRays": 8
+    }
+  },
+  {
+    "check": "full saved fractions shown by default",
+    "pass": true,
+    "detail": "Sun centre | Blocked | AZIMUTH | 158.508524\u00b0 | ELEVATION | \u22122.216453\u00b0 | HORIZON | 0\u00b0 | MARGIN | \u22122.216453\u00b0 | DEM (DIAGNOSTIC) | \u22129.371391\u00b0 | Earth centre | Blocked | AZIMUTH | 358.496048\u00b0 | ELEVATION "
+  },
+  {
+    "check": "Decimals 2 shortens metric values",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "Decimals 2 shortens the readout margin too",
+    "pass": true,
+    "detail": "Selected UTC 2025-01-01T13:00:00Z View evidence A Site04 Clear +1.66\u00b0 Sun-centre margin B Malapert Blocked \u22122.22\u00b0 Sun-centre margin"
+  },
+  {
+    "check": "every scale keeps both plots identical",
+    "pass": true,
+    "detail": {
+      "5": "37.2,93.0,148.8",
+      "15": "31.0,93.0,155.0",
+      "30": "31.0,62.0,93.0,124.0,155.0",
+      "full": "55.8,111.6,167.4,186.0"
+    }
+  },
+  {
+    "check": "only Full sky calls the centre zenith",
+    "pass": true,
+    "detail": {
+      "5": "centre +5\u00b0",
+      "15": "centre +15\u00b0",
+      "30": "centre +30\u00b0",
+      "full": "centre +90\u00b0 zenith"
+    }
+  },
+  {
+    "check": "path across the window drawn",
+    "pass": true,
+    "detail": {
+      "dots": 36,
+      "paths": 8
+    }
+  },
+  {
+    "check": "Grid layer toggles off",
+    "pass": true,
+    "detail": {
+      "data": "off",
+      "shown": "none"
+    }
+  },
+  {
+    "check": "Selected-site layout shows one plot",
+    "pass": true,
+    "detail": 1
+  },
+  {
+    "check": "pointer readout gives az and el under the cursor",
+    "pass": true,
+    "detail": {
+      "hidden": false,
+      "text": "Cursor \u00b7 az 90.0\u00b0 \u00b7 el \u22122.742000\u00b0"
+    }
+  },
+  {
+    "check": "Reset view restores defaults",
+    "pass": true,
+    "detail": {
+      "terrain": false,
+      "v": {
+        "decimals": 6,
+        "grid": true,
+        "labels": true,
+        "layout": "both",
+        "peaks": true,
+        "range": "15",
+        "shade": true,
+        "terrain": "fill",
+        "trail": "off"
+      }
+    }
+  },
+  {
+    "check": "marker click opens preview with chart",
+    "pass": true,
+    "detail": "B\nMalapert \u00b7 Sun-centre clearance\n\nSun centre\nBlocked\n\u2212\n100%\n+\n\u2715\n\n2025-01-01T13:00:00Z \u00b7 follows the playhead\n\nThe Sun centre is 2.216453\u00b0 below the 0\u00b0 horizon,"
+  },
+  {
+    "check": "preview follows the playhead",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "Play advances the playhead",
+    "pass": true,
+    "detail": {
+      "i": 27,
+      "label": "Pause",
+      "playing": true
+    }
+  },
+  {
+    "check": "Pause holds the playhead",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "idle: Start enabled, Stop disabled",
+    "pass": true,
+    "detail": {
+      "cancel": true,
+      "start": false
+    }
+  },
+  {
+    "check": "run options tuck away until opened",
+    "pass": true,
+    "detail": {
+      "open": false,
+      "shown": true
+    }
+  },
+  {
+    "check": "terrain style tools hidden while diagnostic is off",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "terrain style tools shown when diagnostic is on",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "terrain line drawn when toggled",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "Malapert Sun vs displayed DEM",
+    "pass": true,
+    "detail": "Diagnostic only, diagnostic_unreviewed: Sun \u22122.22\u00b0 vs displayed DEM \u22129.37\u00b0. Earth \u22121.93\u00b0 vs displayed DEM \u22120.57\u00b0. The state above is still classified against geometric 0\u00b0. Terrain stays Unknown."
+  },
+  {
+    "check": "verdict unchanged by terrain toggle",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "terrain stays Unknown",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "silhouette: filled skyline plus above-0\u00b0 tint per plot",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "clip and hatch ids are unique per plot",
+    "pass": true,
+    "detail": [
+      "sky-zero-clip-0",
+      "sky-zero-clip-1"
+    ]
+  },
+  {
+    "check": "skyline summary chips per plot",
+    "pass": true,
+    "detail": [
+      "High +0.95\u00b0 at az 30\u00b0\nLow \u22124.52\u00b0 at az 150\u00b0\nAbove 0\u00b0 over 4% of known azimuths\nNo DEM data 0\u00b0 of azimuth\n5\u00b0 bins \u00b7 out to 50 km",
+      "High +4.67\u00b0 at az 60\u00b0\nLow \u221210.63\u00b0 at az 195\u00b0\nAbove 0\u00b0 over 40% of known azimuths\nNo DEM data 0\u00b0 of azimuth\n5\u00b0 bins \u00b7 out to 50 km"
+    ]
+  },
+  {
+    "check": "Site04 summary matches the saved profile (high 0.95\u00b0, low \u22124.52\u00b0)",
+    "pass": true,
+    "detail": "High +0.95\u00b0 at az 30\u00b0\nLow \u22124.52\u00b0 at az 150\u00b0\nAbove 0\u00b0 over 4% of known azimuths\nNo DEM data 0\u00b0 of azimuth\n5\u00b0 bins \u00b7 out to 50 km"
+  },
+  {
+    "check": "peaks: DEM high/low labels and Sun/Earth leaders",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "Peaks & leaders toggle removes them",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "outline: no fill, smooth curve",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "raw bins: one dot per saved DEM bin (72 per plot)",
+    "pass": true,
+    "detail": 144
+  },
+  {
+    "check": "terrain styles never change the verdict or pills",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "terrain style buttons reflect the active style",
+    "pass": true,
+    "detail": "fill:true line:false bins:false"
+  },
+  {
+    "check": "terrain toggle leaves totals, lanes and windows alone",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "Locations tab swaps the rail",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "pins labelled A and B",
+    "pass": true,
+    "detail": [
+      "A",
+      "B"
+    ]
+  },
+  {
+    "check": "pin B selects sky panel, lane, readout, evidence",
+    "pass": true,
+    "detail": {
+      "ev": true,
+      "lane": 1,
+      "pin": "1",
+      "ro": "1",
+      "sky": "1",
+      "state": 1
+    }
+  },
+  {
+    "check": "QA fixture is labelled synthetic",
+    "pass": true,
+    "detail": "Sun-centre clearance Whole window \u00b7 centre-ray against geometric 0\u00b0 QA fixture. These hours are synthetic. They are not the January practice result. A QA North15 minB QA South15 min QA North and QA So"
+  },
+  {
+    "check": "QA windows: clear and Unknown spans with reasons",
+    "pass": true,
+    "detail": "A QA North Clear 15 min \u00b7 Blocked 15 min \u00b7 Unknown 30 min Clear windows 06-01 00:00Z \u2192 06-01 00:15Z15 min Unknown spans06-01 00:15Z \u2192 06-01 00:45Z30 min \u00b7 missing_right_endpoint, missing_ephemeris"
+  },
+  {
+    "check": "QA Sun totals from engine intervals",
+    "pass": true,
+    "detail": "A QA North Clear 15 min \u00b7 Blocked 15 min \u00b7 Unknown 30 min Clear windows 06-01 00:00Z \u2192 06-01 00:15Z15 min Unknown spans06-01 00:15Z \u2192 06-01 00:45Z30 min \u00b7 missing_right_endpoint, missing_ephemeris"
+  },
+  {
+    "check": "QA clear window jumps to its start",
+    "pass": true,
+    "detail": "2024-06-01T00:00:00Z"
+  },
+  {
+    "check": "QA clear window is highlighted in chart, lane and list",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "QA Unknown crosshatched in chart and lanes",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "QA Unknown merged into one span",
+    "pass": true,
+    "detail": 1
+  },
+  {
+    "check": "Unknown span jumps to an Unknown sample",
+    "pass": true,
+    "detail": "unknown"
+  },
+  {
+    "check": "readout labels Unknown with its reason, not as a clearance",
+    "pass": true,
+    "detail": "Selected UTC 2024-06-01T00:15:00Z View evidence A QA North Unknown +0.400000\u00b0 Unknown, not a clearance: missing_right_endpoint. Any margin shown is the saved sample value. B QA South Clear +1.500000\u00b0 Sun-centre margin Selected window \u00b7 A QA North \u00b7 Sun-centre clearance \u00b7 unknown \u00b7 2024-06-01T00:15Z "
+  },
+  {
+    "check": "Unknown with no saved angle shows no margin number",
+    "pass": true,
+    "detail": "Selected UTC 2024-06-01T00:30:00Z View evidence A QA North Unknown no saved margin Unknown, not a clearance: missing_ephemeris. Any margin shown is the saved sample value. B QA South Unknown +1.000000\u00b0 Unknown, not a clearance: missing_right_endpoint. Any margin shown is the saved sample value. Sele"
+  },
+  {
+    "check": "state names readable without colour",
+    "pass": true,
+    "detail": "A QA NorthSun-centre clearance \u00b7 clear 15 min ClearUnknownBlocked B QA SouthSun-centre clearance \u00b7 clear 15 min BlockedClearUnknown Clear Blocked Unknown (no us"
+  },
+  {
+    "check": "Unknown and Clear use different patterns",
+    "pass": true,
+    "detail": [
+      "repeating-linear-gradient(45deg, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 8px, rgba(196, 181, 253, 0.45) 8px, rgba(196, 181, 253, 0.45) 9px), repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 8px, rgba(196, 181, 253, 0.45) 8px, rgba(196, 181, 253, 0.45) 9px)",
+      "radial-gradient(circle, rgba(62, 160, 114, 0.6) 0.9px, rgba(0, 0, 0, 0) 1.2px)"
+    ]
+  },
+  {
+    "check": "QA Both lane: Unknown and Blocked kept distinct",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "check": "QA Both lane order from engine (clear, blocked, unknown, blocked)",
+    "pass": true,
+    "detail": "clear,blocked,unknown,blocked"
+  },
+  {
+    "check": "follow latest on at stream start",
+    "pass": true,
+    "detail": "Results through 2025-01-01T00:45:00Z"
+  },
+  {
+    "check": "streaming: Start disabled, Stop enabled",
+    "pass": true,
+    "detail": {
+      "cancel": false,
+      "start": true
+    }
+  },
+  {
+    "check": "per-site progress shown with pending, not Unknown",
+    "pass": true,
+    "detail": "A Site04: 6 of 193 samples \u00b7 187 pending, not UnknownB Malapert: 4 of 193 samples \u00b7 189 pending, not Unknown"
+  },
+  {
+    "check": "latest shared resolved UTC is shown",
+    "pass": true,
+    "detail": "Results through 2025-01-01T01:15:00Z"
+  },
+  {
+    "check": "partial totals are labelled with the cutoff",
+    "pass": true,
+    "detail": " Sun-centre clearance Partial window \u00b7 centre-ray against geometric 0\u00b0 Partial totals through 2025-01-01T01:15:00Z. Only the shared resolved interval is counted. Pending samples are not Unknown. A Site041 h 30 minB Malapert0 h Site04 has more Sun-centre cleara"
+  },
+  {
+    "check": "windows rail says only resolved samples are counted",
+    "pass": true,
+    "detail": "Sun-centre clearance. From engine intervals. Centre-ray against geometric 0\u00b0 only. Click a window to select it. A Site04 Clear 1 h 30 min \u00b7 Blocked 0 h \u00b7 Unknown 0 h so far Clear windows 01-01 00:00Z "
+  },
+  {
+    "check": "pending is dotted and separate from scientific Unknown",
+    "pass": true,
+    "detail": {
+      "chart": 1,
+      "unknown": 0,
+      "zones": 2
+    }
+  },
+  {
+    "check": "pending zone uses a dotted pattern, not the Unknown crosshatch",
+    "pass": true,
+    "detail": [
+      "radial-gradient(circle, rgba(141, 155, 179, 0.6) 0.9px, rgba(0, 0, 0, 0) 1.2px)",
+      "dashed"
+    ]
+  },
+  {
+    "check": "playhead stays within the shared available range",
+    "pass": true,
+    "detail": {
+      "max": 5,
+      "n": 6,
+      "shared": 5
+    }
+  },
+  {
+    "check": "scrubbing pauses Follow latest",
+    "pass": true,
+    "detail": {
+      "checked": false,
+      "follow": false,
+      "index": 1,
+      "max": 19,
+      "shared": 20
+    }
+  },
+  {
+    "check": "playhead max grows with the shared range",
+    "pass": true,
+    "detail": {
+      "checked": false,
+      "follow": false,
+      "index": 1,
+      "max": 19,
+      "shared": 20
+    }
+  },
+  {
+    "check": "Follow latest resumes at newest shared sample",
+    "pass": true,
+    "detail": {
+      "follow": true,
+      "index": 23,
+      "shared": 24
+    }
+  },
+  {
+    "check": "complete: Start enabled again, Stop disabled",
+    "pass": true,
+    "detail": {
+      "cancel": true,
+      "start": false
+    }
+  },
+  {
+    "check": "complete run drops the partial label and keeps both headline numbers",
+    "pass": true,
+    "detail": "Sun-centre clearance Whole window \u00b7 centre-ray against geometric 0\u00b0 A Site0448 hB Malapert0 h Site04 had more Sun-centre clearance than Malapert, by 48 h. Both centres clear \u00b7 0 h at either site Live calculation \u00b7 practi"
+  },
+  {
+    "check": "playback speed leaves engine results unchanged",
+    "pass": true,
+    "detail": {
+      "fast_len": 303343,
+      "slow_len": 303343
+    }
+  },
+  {
+    "check": "Clear + Blocked + Unknown = window per lane",
+    "pass": true,
+    "detail": [
+      [
+        172800,
+        172800,
+        172800
+      ],
+      [
+        172800,
+        172800,
+        172800
+      ]
+    ]
+  },
+  {
+    "check": "desktop: no horizontal overflow",
+    "pass": true,
+    "detail": {
+      "chartW": 964.46875,
+      "cw": 1425,
+      "over": 0,
+      "rail": 344,
+      "sw": 1425
+    }
+  },
+  {
+    "check": "desktop: chart takes most of the width, rail compact",
+    "pass": true,
+    "detail": {
+      "chartW": 964.46875,
+      "cw": 1425,
+      "over": 0,
+      "rail": 344,
+      "sw": 1425
+    }
+  },
+  {
+    "check": "390 px: no horizontal overflow, plots stack",
+    "pass": true,
+    "detail": {
+      "chart": 2997.15625,
+      "chartBottom": 3267.5,
+      "cols": 1,
+      "cw": 375,
+      "dock": "sticky",
+      "joint": 979.578125,
+      "lanesTop": 3338.6875,
+      "nums": [
+        877.59375,
+        877.59375
+      ],
+      "over": [],
+      "sw": 375,
+      "windows": 3723.328125
+    }
+  },
+  {
+    "check": "390 px: both headline numbers and the joint result come before the chart",
+    "pass": true,
+    "detail": {
+      "chart": 2997.15625,
+      "chartBottom": 3267.5,
+      "cols": 1,
+      "cw": 375,
+      "dock": "sticky",
+      "joint": 979.578125,
+      "lanesTop": 3338.6875,
+      "nums": [
+        877.59375,
+        877.59375
+      ],
+      "over": [],
+      "sw": 375,
+      "windows": 3723.328125
+    }
+  },
+  {
+    "check": "390 px: Windows stacked below the timeline",
+    "pass": true,
+    "detail": {
+      "chart": 2997.15625,
+      "chartBottom": 3267.5,
+      "cols": 1,
+      "cw": 375,
+      "dock": "sticky",
+      "joint": 979.578125,
+      "lanesTop": 3338.6875,
+      "nums": [
+        877.59375,
+        877.59375
+      ],
+      "over": [],
+      "sw": 375,
+      "windows": 3723.328125
+    }
+  },
+  {
+    "check": "390 px: both headline numbers share one row",
+    "pass": true,
+    "detail": [
+      877.59375,
+      877.59375
+    ]
+  },
+  {
+    "check": "390 px: shared time controls stay in view (sticky dock)",
+    "pass": true,
+    "detail": {
+      "bottom": 701,
+      "play": true,
+      "position": "sticky",
+      "prev": true,
+      "slider": true,
+      "text": "2025-01-01T13:00Z \u00b7 A Clear +1.661532\u00b0 \u00b7 B Blocked \u22122.216453\u00b0",
+      "vh": 701
+    }
+  },
+  {
+    "check": "390 px: dock carries the selected UTC, state and margin",
+    "pass": true,
+    "detail": "2025-01-01T13:00Z \u00b7 A Clear +1.661532\u00b0 \u00b7 B Blocked \u22122.216453\u00b0"
+  },
+  {
+    "check": "390 px: chart drawn at real size with readable axis text",
+    "pass": true,
+    "detail": [
+      315.40625,
+      270.34375,
+      11
+    ]
+  },
+  {
+    "check": "identical angular scaling on both plots",
+    "pass": true,
+    "detail": [
+      "31.0,93.0,155.0",
+      "31.0,93.0,155.0"
+    ]
+  },
+  {
+    "check": "390 px QA fixture: no overflow, Unknown span selectable",
+    "pass": true,
+    "detail": {
+      "cw": 375,
+      "sw": 375,
+      "utc": "2024-06-01T00:15:00Z"
+    }
+  }
+]

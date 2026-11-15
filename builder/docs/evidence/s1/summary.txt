@@ -1,0 +1,7 @@
+revision=f534f8c-dirty
+code_unchanged_during_run=yes
+witnessed_replay_unchanged=yes
+pytest_exit=0 (57 passed in 1.92s)
+live_trace_exit=0 (28 passed, 0 failed)
+browser_exit=0 (139 passed, 0 failed)
+task_counts_exit=0 handoff_exit=0
