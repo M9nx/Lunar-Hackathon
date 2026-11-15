@@ -73,7 +73,7 @@ def main() -> int:
             continue
         prior = (handoff.get("prior_tasks") or {}).get(dep, {})
         st = (prior.get("status") or "").lower()
-        if st not in ("passed", "passed_with_open_decisions", "complete", "skipped") and dep not in (
+        if st not in ("passed", "passed_with_open_decisions", "complete") and dep not in (
             handoff.get("parallel_completed") or []
         ):
             fail(f"task {tid} depends on {dep} but prior_tasks does not show complete", errors)

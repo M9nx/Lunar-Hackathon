@@ -13,7 +13,14 @@ MASTER_REF = REPO_ROOT / "Master-Reference" / "MASTER_REFERENCE.json"
 HANDOFF_PATH = BUILDER_ROOT / "agent_handoff.json"
 TASK_LOG = BUILDER_ROOT / "docs" / "task-log.md"
 
-COMPLETE_STATUSES = frozenset({"passed", "passed_with_open_decisions", "complete", "skipped"})
+# Evidence-backed pass. Only these earn verified-pass credit.
+CREDIT_STATUSES = frozenset({"passed", "complete"})
+# Work done, a decision still open. Satisfies dependencies; counted separately.
+CONDITIONAL_STATUSES = frozenset({"passed_with_open_decisions"})
+COMPLETE_STATUSES = CREDIT_STATUSES | CONDITIONAL_STATUSES
+# "skipped" earns no credit and does not satisfy a dependency. Only an approved
+# scope change in handoff["scope_changes"] can release a dependency.
+_RANK = {"credit": 3, "conditional": 2, "other": 0}
 CHECK_STATUS = frozenset({"pass", "fail", "pending"})
 HANDOFF_REQUIRED_KEYS = (
     "handoff_version",
@@ -58,16 +65,83 @@ def parse_task_log_statuses() -> dict[str, str]:
     return out
 
 
-def completed_tasks(handoff: dict[str, Any] | None = None) -> set[str]:
+def approved_descopes(handoff: dict[str, Any] | None = None) -> set[str]:
+    """Task IDs released by an explicit approved scope change (no completion credit)."""
     handoff = handoff or load_handoff()
-    done: set[str] = {"Kickoff"}  # harness implies kickoff started
-    for tid, meta in (handoff.get("prior_tasks") or {}).items():
-        if (meta.get("status") or "").lower() in COMPLETE_STATUSES:
-            done.add(tid)
-    for tid, status in parse_task_log_statuses().items():
-        if status in COMPLETE_STATUSES:
-            done.add(tid)
-    return done
+    out: set[str] = set()
+    for change in handoff.get("scope_changes") or []:
+        if (
+            (change.get("status") or "").lower() == "approved"
+            and change.get("approved_by")
+            and change.get("approved_utc")
+        ):
+            out.update(change.get("tasks") or [])
+    return out
+
+
+def _class_of(status: str) -> str:
+    status = (status or "").lower()
+    if status in CREDIT_STATUSES:
+        return "credit"
+    if status in CONDITIONAL_STATUSES:
+        return "conditional"
+    return "other"
+
+
+def recorded_statuses(handoff: dict[str, Any] | None = None) -> dict[str, str]:
+    """Recorded status per task. If handoff and task log disagree, keep the less complete one."""
+    handoff = handoff or load_handoff()
+    recorded: dict[str, str] = {}
+    sources = [
+        {tid: (m.get("status") or "").lower() for tid, m in (handoff.get("prior_tasks") or {}).items()},
+        parse_task_log_statuses(),
+    ]
+    for source in sources:
+        for tid, status in source.items():
+            if tid not in recorded or _RANK[_class_of(status)] < _RANK[_class_of(recorded[tid])]:
+                recorded[tid] = status
+    return recorded
+
+
+def effective_statuses(handoff: dict[str, Any] | None = None) -> dict[str, dict[str, Any]]:
+    """Per scheduled task: recorded status, effective class and dependency check.
+
+    class is one of: verified | conditional | invalid_credit | descoped | blocked |
+    in_progress | skipped | planned. invalid_credit means the task was recorded as done
+    while a prerequisite is not satisfied; it earns no credit.
+    """
+    handoff = handoff or load_handoff()
+    recorded = recorded_statuses(handoff)
+    descoped = approved_descopes(handoff)
+    out: dict[str, dict[str, Any]] = {}
+    satisfied: set[str] = {"Kickoff"}
+    for task in schedule_tasks():
+        tid = task["task_id"]
+        status = recorded.get(tid, "planned")
+        cls = _class_of(status)
+        unmet = [d for d in task.get("depends_on") or [] if d not in satisfied]
+        if tid in descoped:
+            kind = "descoped"
+        elif cls != "other" and unmet:
+            kind = "invalid_credit"
+        elif cls == "credit":
+            kind = "verified"
+        elif cls == "conditional":
+            kind = "conditional"
+        elif status in ("blocked", "in_progress", "skipped"):
+            kind = status
+        else:
+            kind = "planned"
+        if kind in ("verified", "conditional", "descoped"):
+            satisfied.add(tid)
+        out[tid] = {"recorded": status, "class": kind, "unmet": unmet}
+    return out
+
+
+def completed_tasks(handoff: dict[str, Any] | None = None) -> set[str]:
+    """Tasks that satisfy dependencies (verified, conditional, or approved descope)."""
+    eff = effective_statuses(handoff)
+    return {"Kickoff"} | {t for t, v in eff.items() if v["class"] in ("verified", "conditional", "descoped")}
 
 
 def deps_satisfied(task: dict[str, Any], done: set[str]) -> bool:
