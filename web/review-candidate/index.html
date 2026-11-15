@@ -6,6 +6,7 @@
   <meta name="description" content="Local centre-ray comparison of two lunar landing sites from saved Horizons inputs.">
   <title>Compare sites · Lunar Landing Site Navigator</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tour.css">
 </head>
 <body data-page="review-candidate">
   <canvas id="starfield" class="starfield" aria-hidden="true"></canvas>
@@ -14,66 +15,88 @@
 
   <header class="site-header">
     <div class="bleed header-inner">
-      <a class="brand" href="./">
+      <a class="brand" href="../" aria-label="Lunar Landing Site Navigator, overview">
         <span class="brand-kicker">NASA Space Apps 2026</span>
         <span class="brand-name">Lunar Landing Site Navigator</span>
       </a>
-      <div class="header-chips" aria-label="Run labels">
-        <span class="demo-chip">Practice</span>
-        <span class="demo-chip soft">Centre ray</span>
-        <span class="demo-chip soft">Terrain clearance unknown</span>
+      <nav class="header-nav" aria-label="Site">
+        <a href="../">Overview</a>
+        <button type="button" class="header-guide" id="tour-start">Guide</button>
+        <a href="../documents.html?doc=operator-manual.md">Manual</a>
+        <a href="../documents.html?doc=engine-reference.md">Reference</a>
+        <a href="../replay/">Replay</a>
+      </nav>
+      <div class="header-chips" aria-label="Run mode">
         <span id="live-chip" class="demo-chip soft">Replay</span>
-        <a class="header-link" href="../replay/">Witnessed 0° replay</a>
       </div>
     </div>
   </header>
 
-  <!-- 1. Choose the case -->
   <section class="control-bar" aria-label="Choose the case">
     <div class="bleed control-inner">
-      <div class="ctl-group">
-        <span class="ctl-label" id="ctl-data">1 · Case</span>
+      <div class="ctl-group ctl-cases">
+        <span class="ctl-label" id="ctl-data">Case</span>
         <div class="seg-group" role="group" aria-labelledby="ctl-data">
           <button type="button" class="seg-btn" id="show-practice" aria-pressed="true">Practice replay</button>
+          <button type="button" class="seg-btn" id="show-practice30" aria-pressed="false">Practice, 30 days</button>
+          <button type="button" class="seg-btn" id="show-jan03-10" aria-pressed="false">Practice, Jan 3–10</button>
           <button type="button" class="seg-btn" id="show-qa" aria-pressed="false">QA fixture</button>
         </div>
       </div>
 
-      <div class="ctl-group ctl-run">
-        <label class="ctl-label" for="scenario">Or calculate live</label>
-        <div class="ctl-row">
-          <select id="scenario">
-            <option value="practice-48h">Practice pair, 48 h (Site04 vs Malapert)</option>
-            <option value="site04-48h">Site04 practice, 48 h</option>
-            <option value="site04-6h">Site04 practice, first 6 h</option>
-            <option value="malapert-48h">Malapert practice, 48 h</option>
-          </select>
-          <button type="button" id="start-run" class="btn-primary"><span class="btn-icon" aria-hidden="true">▶</span><span class="btn-label">Start stream</span></button>
-          <button type="button" id="cancel-run" class="btn-quiet" disabled>Stop</button>
-        </div>
-      </div>
-
       <details class="run-more" id="run-more">
-        <summary>Run options</summary>
+        <summary>Live run &amp; options</summary>
         <div class="run-more-body">
+          <div class="ctl-group ctl-run">
+            <label class="ctl-label" for="scenario">Live run</label>
+            <div class="ctl-row">
+              <select id="scenario">
+                <option value="practice-48h">Practice pair, 48 h (Site04 vs Malapert)</option>
+                <option value="site04-48h">Site04 practice, 48 h</option>
+                <option value="site04-6h">Site04 practice, first 6 h</option>
+                <option value="malapert-48h">Malapert practice, 48 h</option>
+                <option value="practice-30d">Practice pair, 30 days (Site04 vs Malapert)</option>
+                <option value="site04-30d">Site04 practice, 30 days</option>
+                <option value="malapert-30d">Malapert practice, 30 days</option>
+              </select>
+              <button type="button" id="start-run" class="btn-primary"><span class="btn-icon" aria-hidden="true">▶</span><span class="btn-label">Start stream</span></button>
+              <button type="button" id="cancel-run" class="btn-quiet" disabled>Stop</button>
+            </div>
+            <p class="ctl-hint">Classifies saved Horizons files on this machine. Does not contact JPL.</p>
+          </div>
+          <div class="ctl-group ctl-catalog" id="catalog-box">
+            <span class="ctl-label">Saved data catalog</span>
+            <span id="cat-info" class="ctl-hint">Pick a catalog entry under Live run to choose a UTC range. Named scenarios use their own range.</span>
+            <div class="cat-range">
+              <label class="ctl-label" for="cat-start">From (UTC)</label>
+              <input id="cat-start" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="2025-01-01T00:00:00Z" disabled>
+              <label class="ctl-label" for="cat-end">To (UTC)</label>
+              <input id="cat-end" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="2025-01-03T00:00:00Z" disabled>
+            </div>
+            <label class="ctl-label" for="horizon-mode">Horizon</label>
+            <select id="horizon-mode">
+              <option value="geometric_0deg">Geometric 0° baseline</option>
+              <option value="terrain">Terrain (Unknown until a reviewed skyline exists)</option>
+            </select>
+          </div>
           <div class="ctl-group ctl-speed">
             <label class="ctl-label" for="playback-speed">Playback speed <output id="playback-speed-label" for="playback-speed">Normal</output></label>
             <input id="playback-speed" type="range" min="0" max="100" value="55" aria-valuetext="Normal" aria-describedby="speed-hint">
             <span id="speed-hint" class="ctl-hint">Paces streaming and Play. Never changes results.</span>
           </div>
-          <ol class="pipe" id="calc-pipe" aria-label="Calculation stages">
+          <ol class="pipe" id="calc-pipe" aria-label="Calculation stages" hidden>
             <li data-stage="idle" class="is-focus">1 Idle</li>
             <li data-stage="loading">2 Load</li>
             <li data-stage="calculating">3 Classify</li>
             <li data-stage="shared">4 Shared</li>
             <li data-stage="complete">5 Complete</li>
           </ol>
-          <label class="fail-toggle"><input type="checkbox" id="fail-test"> Test: fail after first batch</label>
+          <label class="fail-toggle" hidden><input type="checkbox" id="fail-test"> Test: fail after first batch</label>
         </div>
       </details>
     </div>
     <div class="bleed control-status">
-      <p id="run-status" class="note" role="status">Idle. Start uses saved Horizons files and does not contact JPL.</p>
+      <p id="run-status" class="note" role="status">Idle. Cases above are saved replays. Open Live run &amp; options to stream.</p>
       <p id="live-export"></p>
     </div>
   </section>
@@ -85,10 +108,34 @@
       <p id="banner" class="sc-banner"></p>
     </section>
 
-    <!-- 2. Read the result -->
+    <!-- What to look at: the one place for the clearance lane and the minimum window length. -->
+    <section class="ask-bar" aria-label="What to look at">
+      <div class="lane-pick" id="lane-tools" role="group" aria-label="Clearance to look at">
+        <span class="tool-label" id="lane-label">Clearance</span>
+        <div class="seg-group" aria-labelledby="lane-label">
+          <button type="button" class="seg-btn tool" data-key="lane" data-value="sun" aria-pressed="true" title="Sun-centre clearance">Sun centre</button>
+          <button type="button" class="seg-btn tool" data-key="lane" data-value="earth" aria-pressed="false" title="Earth-centre clearance">Earth centre</button>
+          <button type="button" class="seg-btn tool" data-key="lane" data-value="both" aria-pressed="false" title="Both centres clear">Both centres</button>
+        </div>
+      </div>
+      <label class="min-filter" for="min-duration"><span class="tool-label">Window length</span>
+        <select id="min-duration">
+          <option value="0" selected>Any length</option>
+          <option value="0.25">15 min or longer</option>
+          <option value="1">1 h or longer</option>
+          <option value="2">2 h or longer</option>
+          <option value="4">4 h or longer</option>
+          <option value="8">8 h or longer</option>
+          <option value="24">24 h or longer</option>
+          <option value="168">7 days or longer</option>
+        </select>
+      </label>
+    </section>
+
+    <!-- Result -->
     <section class="panel result" aria-label="Result">
       <div id="answers" class="answers-host"></div>
-      <div class="stage-live" id="stage-live">
+      <div class="stage-live" id="stage-live" data-live="false">
         <div class="live-top">
           <p id="results-through" class="results-through" aria-live="polite">Results through —</p>
           <label class="follow-toggle" for="follow-latest">
@@ -98,20 +145,20 @@
         <div id="site-progress" class="site-progress"></div>
       </div>
       <div id="answers-details"></div>
+      <div id="why-result"></div>
     </section>
 
-    <!-- 3. Select a window -->
+    <!-- Is there a clear window? -->
+    <section class="panel decision" id="decision" aria-labelledby="decision-heading" hidden>
+      <h2 id="decision-heading">Is there a clear window?</h2>
+      <div id="dec-answer"></div>
+      <div id="dec-cases"></div>
+    </section>
+
+    <!-- Timeline and windows -->
     <section class="panel explore" id="explore" aria-labelledby="explore-heading">
       <div class="explore-head">
         <h2 id="explore-heading">Timeline and windows</h2>
-        <div class="lane-pick" id="lane-tools" role="group" aria-label="Show lane">
-          <span class="tool-label">Show</span>
-          <div class="seg-group">
-            <button type="button" class="seg-btn tool" data-key="lane" data-value="sun" aria-pressed="true" title="Sun-centre clearance">Sun</button>
-            <button type="button" class="seg-btn tool" data-key="lane" data-value="earth" aria-pressed="false" title="Earth-centre clearance">Earth</button>
-            <button type="button" class="seg-btn tool" data-key="lane" data-value="both" aria-pressed="false" title="Both centres clear">Both</button>
-          </div>
-        </div>
       </div>
 
       <div id="readout" class="readout" aria-live="polite"></div>
@@ -120,7 +167,6 @@
         <div class="explore-main" id="explore-main">
           <div id="chart" class="chart-host"></div>
           <div id="legend" class="legend"></div>
-          <div id="margins"></div>
           <div id="lanes"></div>
         </div>
 
@@ -131,17 +177,6 @@
           </div>
 
           <div role="tabpanel" id="panel-windows" aria-labelledby="tab-windows" class="tab-panel">
-            <div class="min-filter">
-              <label for="min-duration">Minimum clear window</label>
-              <select id="min-duration">
-                <option value="0" selected>Any length</option>
-                <option value="0.25">15 min or longer</option>
-                <option value="1">1 h or longer</option>
-                <option value="2">2 h or longer</option>
-                <option value="4">4 h or longer</option>
-                <option value="8">8 h or longer</option>
-              </select>
-            </div>
             <div id="windows"></div>
           </div>
 
@@ -192,7 +227,7 @@
       </div>
     </section>
 
-    <!-- 4. Inspect why -->
+    <!-- Why this state? -->
     <section class="panel stage" id="inspect" aria-labelledby="inspect-heading">
       <div class="inspect-head">
         <h2 id="inspect-heading">Why this state?</h2>
@@ -223,46 +258,43 @@
             <button type="button" class="seg-btn tool" data-key="range" data-value="full" aria-pressed="false">Full sky</button>
           </div>
         </div>
-        <div class="tool-group" role="group" aria-label="Path across the window">
-          <span class="tool-label">Path</span>
-          <div class="seg-group">
-            <button type="button" class="seg-btn tool" data-key="trail" data-value="off" aria-pressed="true">Off</button>
-            <button type="button" class="seg-btn tool" data-key="trail" data-value="window" aria-pressed="false">±6 h</button>
-            <button type="button" class="seg-btn tool" data-key="trail" data-value="full" aria-pressed="false">Full window</button>
+        <details class="sky-more">
+          <summary>More view options</summary>
+          <div class="sky-more-body">
+            <div class="tool-group" role="group" aria-label="Path across the window">
+              <span class="tool-label">Path</span>
+              <div class="seg-group">
+                <button type="button" class="seg-btn tool" data-key="trail" data-value="off" aria-pressed="true">Off</button>
+                <button type="button" class="seg-btn tool" data-key="trail" data-value="window" aria-pressed="false">±6 h</button>
+                <button type="button" class="seg-btn tool" data-key="trail" data-value="full" aria-pressed="false">Full window</button>
+              </div>
+            </div>
+            <div class="tool-group" role="group" aria-label="Sites shown">
+              <span class="tool-label">Sites</span>
+              <div class="seg-group">
+                <button type="button" class="seg-btn tool" data-key="layout" data-value="both" aria-pressed="true">Both</button>
+                <button type="button" class="seg-btn tool" data-key="layout" data-value="single" aria-pressed="false">Selected</button>
+              </div>
+            </div>
+            <div class="tool-group" role="group" aria-label="Decimals shown">
+              <span class="tool-label">Decimals</span>
+              <div class="seg-group">
+                <button type="button" class="seg-btn tool" data-key="decimals" data-value="2" aria-pressed="false">2</button>
+                <button type="button" class="seg-btn tool" data-key="decimals" data-value="3" aria-pressed="false">3</button>
+                <button type="button" class="seg-btn tool" data-key="decimals" data-value="6" aria-pressed="true">6</button>
+              </div>
+            </div>
+            <div class="tool-group terrain-only" role="group" aria-label="Terrain diagnostic style">
+              <span class="tool-label">Terrain</span>
+              <div class="seg-group">
+                <button type="button" class="seg-btn tool" data-key="terrain" data-value="fill" aria-pressed="true" title="Filled skyline with a smooth outline">Silhouette</button>
+                <button type="button" class="seg-btn tool" data-key="terrain" data-value="line" aria-pressed="false" title="Smooth outline only">Outline</button>
+                <button type="button" class="seg-btn tool" data-key="terrain" data-value="bins" aria-pressed="false" title="Saved DEM bins joined by straight lines, one dot per bin">Raw bins</button>
+                <button type="button" class="seg-btn tool" data-toggle="peaks" aria-pressed="true" title="Mark the highest and lowest skyline points and draw Sun and Earth leaders to the skyline">Peaks &amp; leaders</button>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="tool-group" role="group" aria-label="Layers">
-          <span class="tool-label">Layers</span>
-          <div class="seg-group">
-            <button type="button" class="seg-btn tool" data-toggle="grid" aria-pressed="true">Grid</button>
-            <button type="button" class="seg-btn tool" data-toggle="shade" aria-pressed="true">Shading</button>
-            <button type="button" class="seg-btn tool" data-toggle="labels" aria-pressed="true">Labels</button>
-          </div>
-        </div>
-        <div class="tool-group terrain-only" role="group" aria-label="Terrain diagnostic style">
-          <span class="tool-label">Terrain</span>
-          <div class="seg-group">
-            <button type="button" class="seg-btn tool" data-key="terrain" data-value="fill" aria-pressed="true" title="Filled skyline with a smooth outline">Silhouette</button>
-            <button type="button" class="seg-btn tool" data-key="terrain" data-value="line" aria-pressed="false" title="Smooth outline only">Outline</button>
-            <button type="button" class="seg-btn tool" data-key="terrain" data-value="bins" aria-pressed="false" title="Saved DEM bins joined by straight lines, one dot per bin">Raw bins</button>
-            <button type="button" class="seg-btn tool" data-toggle="peaks" aria-pressed="true" title="Mark the highest and lowest skyline points and draw Sun and Earth leaders to the skyline">Peaks &amp; leaders</button>
-          </div>
-        </div>
-        <div class="tool-group" role="group" aria-label="Sites shown">
-          <span class="tool-label">Sites</span>
-          <div class="seg-group">
-            <button type="button" class="seg-btn tool" data-key="layout" data-value="both" aria-pressed="true">Both</button>
-            <button type="button" class="seg-btn tool" data-key="layout" data-value="single" aria-pressed="false">Selected</button>
-          </div>
-        </div>
-        <div class="tool-group" role="group" aria-label="Decimals shown">
-          <span class="tool-label">Decimals</span>
-          <div class="seg-group">
-            <button type="button" class="seg-btn tool" data-key="decimals" data-value="2" aria-pressed="false">2</button>
-            <button type="button" class="seg-btn tool" data-key="decimals" data-value="3" aria-pressed="false">3</button>
-            <button type="button" class="seg-btn tool" data-key="decimals" data-value="6" aria-pressed="true">6</button>
-          </div>
-        </div>
+        </details>
         <button type="button" class="tool-btn" id="view-reset" title="Restore the default view">Reset view</button>
       </div>
 
@@ -279,7 +311,6 @@
       </div>
       <p id="scale-note" class="scale-note">Both plots use the same angular scale. The dashed ring is 0°. The outer edge is −15°. The centre is +15°, not zenith.</p>
 
-      <div id="why"></div>
     </section>
   </main>
 
@@ -291,5 +322,6 @@
     <p class="credit-line">NASA chrome and starfield adapted from the educational console. Offline assets only.</p>
   </footer>
   <script src="app.js"></script>
+  <script src="tour.js"></script>
 </body>
 </html>

@@ -2,7 +2,17 @@
 
 const PRACTICE_URL = "../replay/comparison.json";
 const QA_URL = "qa-comparison.json";
+const PRACTICE30_URL = "cases/practice-30d/comparison.json";
+const PRACTICE_JAN_URL = "cases/practice-jan03-10/comparison.json";
+/** Real saved-input cases the decision panel can compare. The QA fixture is synthetic and is not offered here. */
+const CASES = [
+  { id: "practice", url: PRACTICE_URL, label: "Practice, 48 h", button: "show-practice" },
+  { id: "practice30", url: PRACTICE30_URL, label: "Practice, 30 days", button: "show-practice30" },
+  { id: "jan03-10", url: PRACTICE_JAN_URL, label: "Practice, Jan 3–10", button: "show-jan03-10" },
+];
 const SITE_NAMES = {
+  "site04-p02-practice-30d": "Site04",
+  "malapert-practice-30d": "Malapert",
   "site04-p02-practice": "Site04",
   "site04-p02-practice-6h": "Site04, first 6 h",
   "malapert-practice": "Malapert",
@@ -16,6 +26,8 @@ const DEFAULT_CONTEXT_SITES = [
 ];
 
 const TERRAIN_PROFILE_URLS = {
+  "site04-p02-practice-30d": "terrain/site04-p02-practice-dem240-horizon-diagnostic.json",
+  "malapert-practice-30d": "terrain/malapert-practice-dem240-horizon-diagnostic.json",
   "site04-p02-practice": "terrain/site04-p02-practice-dem240-horizon-diagnostic.json",
   "site04-p02-practice-6h": "terrain/site04-p02-practice-dem240-horizon-diagnostic.json",
   "malapert-practice": "terrain/malapert-practice-dem240-horizon-diagnostic.json",
@@ -31,6 +43,10 @@ const state = {
   live: false,
   liveMode: null,
   partial: false,
+  /** True from the Stop click until the engine reports the final cutoff. */
+  stopping: false,
+  /** How a live run ended early: { kind: "cancelled" | "failed", message, shared, cutoff, covered, delivered }. */
+  runEnd: null,
   liveRunId: null,
   liveComparisonId: null,
   liveAbort: null,
@@ -50,6 +66,10 @@ const state = {
   sel: null,
   /** Minimum clear-window length in hours for the screening filter. 0 means any length. */
   minHours: 0,
+  /** Open "Why" question: "sun:0", "sun:1", "earth:0", "both" or "terrain". Null when closed. */
+  why: null,
+  /** Saved cases loaded for the decision panel: { [caseId]: { runs } }. */
+  caseData: {},
   notice: "",
   pendingNotice: "",
 };
@@ -128,6 +148,26 @@ function sampleAt(runIndex) {
   return state.runs[runIndex].payload.samples[state.index];
 }
 
+const TERRAIN_REASON_TEXT = {
+  terrain_not_reviewed: "no reviewed skyline is saved for any observer",
+  terrain_no_skyline_for_observer: "reviewed skylines exist, but none for this observer",
+  terrain_review_incomplete: "the skyline for this observer has not completed review",
+  terrain_gap_in_azimuth_bracket: "the reviewed skyline has a gap at this azimuth",
+  terrain_insufficient_bins: "the reviewed skyline has too few azimuth bins",
+};
+
+function terrainMode() {
+  return state.runs.length > 0 && state.runs[0].payload.scenario.horizon_mode === "terrain";
+}
+
+function isTerrainReason(reason) {
+  return typeof reason === "string" && reason.startsWith("terrain_");
+}
+
+function terrainReasonText(reason) {
+  return TERRAIN_REASON_TEXT[reason] || "terrain coverage or review is missing";
+}
+
 function explain(sample, lane) {
   if (lane === "both") {
     const reason = sample.both.reason;
@@ -138,12 +178,17 @@ function explain(sample, lane) {
       if (reason === "centre_below_or_on_horizon:sun+earth") return "The Sun centre and the Earth centre are each on or below the horizon.";
       return "At least one centre is on or below the horizon, so both centres are not clear.";
     }
+    if (isTerrainReason(reason)) return "Terrain mode: Both is Unknown because " + terrainReasonText(reason) + ". The elevations are the saved Horizons values; no horizon or margin is shown.";
     if (reason === "missing_ephemeris") return "A saved elevation is missing, and neither centre is blocked, so both is Unknown.";
     if (reason === "missing_right_endpoint") return "The next sample has no usable angle, so this span is Unknown for both.";
     return "Both is Unknown. Saved reason: " + (reason || "not stated") + ".";
   }
   const item = sample[lane];
   const name = lane === "sun" ? "Sun centre" : "Earth centre";
+  if (item.state === "unknown" && isTerrainReason(item.reason)) {
+    return "The " + name + " elevation is " + show(item.elevation_deg) + "° (saved). No horizon is available because " + terrainReasonText(item.reason)
+      + ". The state is Unknown; no horizon or margin is shown, and the 0° baseline is not substituted.";
+  }
   if (item.state === "unknown") {
     const numbers = item.elevation_deg === null || item.elevation_deg === undefined
       ? "The saved table has no elevation for the " + name + "."
@@ -165,6 +210,8 @@ function explain(sample, lane) {
 function caseLabel() {
   if (state.comparison && state.comparison.qa_fixture) return "QA fixture · synthetic";
   if (state.live) return "Live calculation · practice";
+  if (state.source === "practice30") return "Practice · 30 days";
+  if (state.source === "jan03-10") return "Practice · Jan 3–10";
   return "Practice";
 }
 
@@ -182,7 +229,12 @@ function scenarioBarHtml() {
   const names = state.runs
     .map((run, i) => `<span class="sc-site">${slotBadge(i)} <strong>${esc(siteName(run))}</strong></span>`)
     .join('<span class="sc-vs" aria-hidden="true">vs</span>');
-  const mode = win.mode === "geometric_0deg" ? "Geometric 0°" : String(win.mode);
+  const terrainInfo = state.runs[0].payload.terrain;
+  const mode = win.mode === "geometric_0deg"
+    ? "Geometric 0°"
+    : win.mode === "terrain"
+      ? "Terrain · " + (terrainInfo && terrainInfo.status === "reviewed" ? "reviewed skyline" : "Unknown (" + ((terrainInfo && terrainInfo.reason) || "not reviewed") + ")")
+      : String(win.mode);
   const span = (win.end - win.start) / 1000;
   return `
     <div class="sc-item sc-sites"><span class="sc-k">Sites</span><span class="sc-v">${names}</span></div>
@@ -206,6 +258,63 @@ function headlineSeconds() {
   return { sun: [e.sun.clear], both: [e.both.clear], sunDelta: null, bothDelta: null };
 }
 
+const SHORT_LANE = { sun: "Sun", earth: "Earth", both: "Both" };
+
+/** One lane's whole-window split. Unknown stays its own part: it is never folded into clear or blocked. */
+function splitHtml(e, label) {
+  const total = e.clear + e.blocked + e.unknown;
+  if (!total) return "";
+  const parts = [["clear", "Clear", e.clear], ["blocked", "Blocked", e.blocked], ["unknown", "Unknown", e.unknown]];
+  const aria = `${label}: ${parts.map(([, word, v]) => word + " " + fmtDuration(v)).join(", ")}`;
+  const bar = parts
+    .filter(([, , v]) => v > 0)
+    .map(([cls, word, v]) => `<span class="split-seg chip ${cls}" style="width:${((v / total) * 100).toFixed(3)}%" title="${esc(word + " " + fmtDuration(v))}"></span>`)
+    .join("");
+  const legend = parts.map(([cls, word, v]) => `<span class="sl ${cls}${v ? "" : " is-zero"}">${word} ${esc(fmtDuration(v))}</span>`).join("");
+  return `<div class="split" role="img" aria-label="${esc(aria)}">${bar}</div><p class="split-legend">${legend}</p>`;
+}
+
+/** Sun, Earth and Both for every site: clear, blocked and Unknown side by side. */
+function breakdownHtml() {
+  const two = state.runs.length >= 2;
+  const rows = state.runs.map((run, i) => ["sun", "earth", "both"].map((lane) => {
+    const e = run.payload.elapsed_seconds[lane];
+    return `<tr class="${e.unknown ? "has-unknown" : ""}">${two ? `<th scope="row">${slotBadge(i)} ${esc(siteName(run))}</th>` : ""}<td>${esc(SHORT_LANE[lane])}</td>
+      <td>${esc(fmtDuration(e.clear))}</td><td>${esc(fmtDuration(e.blocked))}</td><td class="${e.unknown ? "unk-val" : ""}">${esc(fmtDuration(e.unknown))}</td></tr>`;
+  }).join("")).join("");
+  return `<table class="res-break"><caption>${state.partial ? "So far, by lane" : "Whole window, by lane"} · Clear + Blocked + Unknown = the requested time</caption>
+    <thead><tr>${two ? '<th scope="col">Site</th>' : ""}<th scope="col">Lane</th><th scope="col">Clear</th><th scope="col">Blocked</th><th scope="col">Unknown</th></tr></thead>
+    <tbody>${rows}</tbody></table>`;
+}
+
+/** Callout shown only when some lane has Unknown time. Names the amount per lane and jumps to the first Unknown span. */
+function unknownNoticeHtml(terrainUnknown) {
+  const per = state.runs.map((run) => {
+    const e = run.payload.elapsed_seconds;
+    return { run, e, total: e.sun.unknown + e.earth.unknown + e.both.unknown };
+  });
+  if (!per.some((p) => p.total > 0)) return "";
+  const names = state.runs.map(siteName);
+  const lines = per
+    .map((p, i) => `${names[i]}: Sun ${fmtDuration(p.e.sun.unknown)} · Earth ${fmtDuration(p.e.earth.unknown)} · Both ${fmtDuration(p.e.both.unknown)}`)
+    .join(" | ");
+  let buttons = "";
+  if (!terrainUnknown) {
+    buttons = per.map((p, i) => {
+      const lane = ["sun", "earth", "both"].find((l) => p.e[l].unknown > 0);
+      if (!lane) return "";
+      const span = mergedStates(p.run, lane).find((m) => m.state === "unknown");
+      if (!span) return "";
+      const why = span.reasons.length ? ` (${span.reasons.join(", ")})` : "";
+      return `<button type="button" class="mini win-open win-scroll" data-site="${i}" data-lane="${lane}" data-utc="${esc(span.start)}" data-end="${esc(span.end)}" data-state="unknown">Show ${SHORT_LANE[lane]} Unknown on the timeline${state.runs.length > 1 ? " · " + esc(names[i]) : ""}: ${esc(compactUtc(span.start))} → ${esc(compactUtc(span.end))}${esc(why)}</button>`;
+    }).join("");
+  }
+  const lead = terrainUnknown
+    ? "Terrain mode: no reviewed skyline, so the whole window is Unknown."
+    : `Unknown time${state.partial ? " so far" : " in this window"}, counted separately.`;
+  return `<div class="res-unknown" role="note"><p><strong>${esc(lead)}</strong> ${esc(lines)}. Unknown is not counted as clear or blocked.</p>${buttons ? `<p class="res-unknown-go">${buttons}</p>` : ""}</div>`;
+}
+
 function answerHtml() {
   if (!state.comparison || !state.runs.length) return "";
   const two = state.runs.length >= 2;
@@ -222,26 +331,41 @@ function answerHtml() {
     const more = sun[0] > sun[1] ? 0 : 1;
     lead = `${names[more]} ${partial ? "has" : "had"} more Sun-centre clearance than ${names[1 - more]}, by ${fmtDuration(Math.abs(sun[0] - sun[1]))}.`;
   }
+  const terrainUnknown = terrainMode() && state.runs.every((run) => !run.payload.terrain || run.payload.terrain.status !== "reviewed");
+  if (terrainUnknown) {
+    lead = `Terrain mode: every state is Unknown (${(state.runs[0].payload.terrain && state.runs[0].payload.terrain.reason) || "terrain_not_reviewed"}). No clear or blocked time is reported.`;
+  }
+  const unknownSun = state.runs.map((run) => run.payload.elapsed_seconds.sun.unknown);
   const cards = names
-    .map((name, i) => `<article class="site-num"><span class="sn-name">${slotBadge(i)} ${esc(name)}</span><strong class="sn-val">${esc(fmtDuration(sun[i]))}</strong></article>`)
+    .map((name, i) => `<article class="site-num"><span class="sn-name">${slotBadge(i)} ${esc(name)}</span><strong class="sn-val">${esc(terrainUnknown ? "Unknown" : fmtDuration(sun[i]))}</strong>${terrainUnknown ? `<span class="sn-sub">${esc(fmtDuration(unknownSun[i]))} Unknown</span>` : ""}${splitHtml(state.runs[i].payload.elapsed_seconds.sun, name + " Sun centre")}</article>`)
     .join("");
-  const joint = two && both.every((v) => v === 0)
+  const joint = terrainUnknown
+    ? "Both centres clear · Unknown (terrain)"
+    : two && both.every((v) => v === 0)
     ? "Both centres clear · 0 h at either site"
     : "Both centres clear · " + names.map((name, i) => `${name} ${fmtDuration(both[i])}`).join(" · ");
   let status = "";
-  if (partial) {
+  if (partial && state.runEnd) {
+    const end = state.runEnd;
+    const verb = end.kind === "failed" ? "Failed" : "Stopped";
+    status = `<p class="qa-banner res-status" role="status"><strong>${verb}. Incomplete run.</strong> Partial result through <strong>${esc(end.cutoff || "—")}</strong> (${esc(end.shared)} shared samples; totals cover through ${esc(end.covered || end.cutoff || "—")}). Only the shared resolved interval is counted. Not exportable.${end.kind === "failed" && end.message ? " " + esc(end.message) + "." : ""}</p>`;
+  } else if (partial && state.stopping) {
+    status = `<p class="qa-banner res-status" role="status"><strong>Stopping.</strong> These totals are not final until the engine reports the final cutoff.</p>`;
+  } else if (partial) {
     status = `<p class="qa-banner res-status">Partial totals through <strong>${esc(cutoff || "—")}</strong>. Only the shared resolved interval is counted. Pending samples are not Unknown.</p>`;
   } else if (state.comparison.qa_fixture) {
     status = '<p class="qa-banner res-status">QA fixture. These hours are synthetic. They are not the January practice result.</p>';
   }
   return `
     <h1 id="result-heading" class="result-title">Sun-centre clearance</h1>
-    <p class="result-sub">${partial ? "Partial window" : "Whole window"} · centre-ray against geometric 0°</p>
+    <p class="result-sub">${partial ? "Partial window" : "Whole window"} · ${terrainMode() ? "centre-ray against a reviewed terrain skyline (none available)" : "centre-ray against geometric 0°"}</p>
     ${status}
     <div class="result-pair${two ? "" : " is-single"}">${cards}</div>
     <p class="result-lead">${esc(lead)}</p>
     <p class="result-joint">${esc(joint)}</p>
-    <p class="result-tags"><span class="demo-chip">${esc(caseLabel())}</span><span class="demo-chip soft">Terrain clearance unknown</span></p>`;
+    ${unknownNoticeHtml(terrainUnknown)}
+    ${breakdownHtml()}
+    <p class="result-tags"><span class="demo-chip">${esc(caseLabel())}</span><span class="demo-chip soft">${terrainMode() ? "Terrain mode · Unknown" : "Terrain clearance unknown"}</span></p>`;
 }
 
 /** Raw seconds, sample counts, Unknown durations and the terrain reason code live behind Details. */
@@ -266,8 +390,10 @@ function answerDetailsHtml(open) {
     row("Sun-centre clear, saved seconds", secs(sun) + (two ? ` · delta (${names[1]} − ${names[0]}) ${sunDelta} s` : "")),
     row("Both centres clear, saved seconds", secs(both) + (two ? ` · delta (${names[1]} − ${names[0]}) ${bothDelta} s` : "")),
     row("Samples", counts + (two ? ` · shared ${sharedSampleCount()}` : "")),
-    row("Geometric Unknown duration", unknown),
-    row("Terrain", "Unknown · terrain_not_reviewed. No reviewed skyline is available. This is not the geometric Unknown duration."),
+    row(terrainMode() ? "Unknown duration, terrain mode" : "Geometric Unknown duration", unknown),
+    row("Terrain", terrainMode()
+      ? "Terrain mode · " + (state.runs[0].payload.terrain ? state.runs[0].payload.terrain.reason + (state.runs[0].payload.terrain.detail ? " · " + state.runs[0].payload.terrain.detail : "") : "Unknown")
+      : "Unknown · terrain_not_reviewed. No reviewed skyline is available. This is not the geometric Unknown duration."),
     row("Runs", state.runs.map((run, i) => `${names[i]} ${run.payload.run_id} (${run.payload.code_revision})`).join(" · ")),
   ].join("");
   return `<details class="result-details"${open ? " open" : ""}><summary>Details</summary><dl class="rd-grid">${rows}</dl></details>`;
@@ -443,7 +569,8 @@ function chartHtml() {
   const pillW = 56;
   const pillX = Math.min(left + plotW - pillW / 2, Math.max(left + pillW / 2, px));
   const zeroLabelY = zeroY - 7 > top + 12 ? zeroY - 7 : zeroY + 15;
-  const zeroLabel = narrow ? "0° horizon" : "0° horizon (classifies)";
+  const terrainOn = terrainMode();
+  const zeroLabel = terrainOn ? (narrow ? "0° reference" : "0° reference (not the horizon in terrain mode)") : narrow ? "0° horizon" : "0° horizon (classifies)";
 
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Elevation of the ${esc(laneBodies().join(" and "))} centre at each site against UTC. The dashed horizontal line is the 0 degree horizon. The pink vertical line is the selected UTC.">
     <defs>
@@ -515,7 +642,7 @@ function lanesHtml() {
     const nKeep = mergedStates(run, lane).filter((s) => s.state === "clear" && qualifies(s)).length;
     const screen = state.minHours ? ` · ${nKeep || "no"} window${nKeep === 1 ? "" : "s"} of ${minLabel()} or longer` : "";
     return `<div class="lane-site${runIndex === state.site ? " is-selected" : ""}">
-      <div class="lane-head"><span class="lane-name">${slotBadge(runIndex)} <strong>${esc(siteName(run))}</strong></span><span class="lane-sum">${esc(laneName(lane))} · clear ${esc(fmtDuration(e.clear))}${state.partial ? " so far" : ""}${esc(screen)}</span></div>
+      <div class="lane-head"><span class="lane-name">${slotBadge(runIndex)} <strong>${esc(siteName(run))}</strong></span><span class="lane-sum">${esc(laneName(lane))} · clear ${esc(fmtDuration(e.clear))}${state.partial ? " so far" : ""}${e.unknown ? " · Unknown " + esc(fmtDuration(e.unknown)) : ""}${esc(screen)}</span></div>
       <div class="lane-track" data-site="${runIndex}">${segments}${pending}<span class="play-mark" style="left:${play}%"></span></div>
     </div>`;
   }).join("");
@@ -529,6 +656,7 @@ function lanesHtml() {
 }
 
 function marginText(item) {
+  if (item && typeof item.margin_deg !== "number" && typeof item.elevation_deg === "number" && isTerrainReason(item.reason)) return "no horizon, no margin";
   if (!item || typeof item.margin_deg !== "number") return "no saved margin";
   return signedDeg(item.margin_deg) + "°";
 }
@@ -570,11 +698,13 @@ function readoutHtml() {
     let sub = lane === "both"
       ? `smaller of two · Sun ${marginText(sample.sun)} · Earth ${marginText(sample.earth)}`
       : `${lane === "sun" ? "Sun" : "Earth"}-centre margin`;
-    if (item.state === "unknown") sub = `Unknown, not a clearance: ${item.reason || "no usable saved angle"}. Any margin shown is the saved sample value.`;
+    if (item.state === "unknown") sub = isTerrainReason(item.reason)
+      ? `Unknown in terrain mode: ${item.reason}. The elevation is the saved value; there is no horizon or margin.`
+      : `Unknown, not a clearance: ${item.reason || "no usable saved angle"}. Any margin shown is the saved sample value.`;
     return `<button type="button" class="ro-site${i === state.site ? " is-selected" : ""}" data-site="${i}" aria-pressed="${i === state.site}">
       <span class="ro-name">${slotBadge(i)} ${esc(siteName(run))}</span>
       <span class="status-pill status-${esc(item.state)}">${esc(titleCase(item.state))}</span>
-      <span class="ro-margin">${esc(margin === null ? "no saved margin" : signedDeg(margin) + "°")}</span>
+      <span class="ro-margin">${esc(margin === null ? (isTerrainReason(item.reason) ? "no horizon, no margin" : "no saved margin") : signedDeg(margin) + "°")}</span>
       <span class="ro-sub">${esc(sub)}</span>
     </button>`;
   }).join("");
@@ -585,7 +715,6 @@ function readoutHtml() {
       : "";
   return `<div class="ro-top">
       <p class="ro-time"><span class="kicker">Selected UTC</span> <strong id="utc" class="utc">${esc(samples[0].timestamp_utc)}</strong></p>
-      <button type="button" id="open-evidence" class="tool-btn" data-evidence title="Horizons row, observer, run ID and JSON export for this sample">View evidence</button>
     </div>
     <div class="ro-sites">${chips}</div>
     ${selectionLine()}
@@ -605,35 +734,6 @@ function dockReadoutText() {
     return `${SLOT_LABELS[i]} ${titleCase(item.state)} ${margin === null ? "—" : signedDeg(margin) + "°"}`;
   });
   return `${shortUtc(samples[0].timestamp_utc)} · ${parts.join(" · ")}`;
-}
-
-function fact(label, value) {
-  const shown = show(value);
-  const text = shown === "null" ? "null" : shown + "°";
-  return `<div><span>${esc(label)}</span><strong>${esc(text)}</strong></div>`;
-}
-
-function bodyFacts(item) {
-  return `<div class="facts">${fact("Elevation", item.elevation_deg)}${fact("Horizon", item.horizon_deg)}${fact("Margin", item.margin_deg)}</div>`;
-}
-
-function whyHtml() {
-  const cards = state.runs.map((run, runIndex) => {
-    const sample = sampleAt(runIndex);
-    const selected = runIndex === state.site;
-    const item = sample[state.lane];
-    const extra = state.lane === "both"
-      ? "<p>Sun centre</p>" + bodyFacts(sample.sun) + "<p>Earth centre</p>" + bodyFacts(sample.earth)
-      : bodyFacts(item);
-    return `<article class="card why-card${selected ? " selected" : ""}">
-      <h3>${slotBadge(runIndex)} ${esc(siteName(run))}</h3>
-      <p>${esc(item.label || "Both centres clear")} · <span class="state-word ${esc(item.state)}">${esc(item.state)}</span></p>
-      ${extra}
-      <p>${esc(explain(sample, state.lane))}</p>
-      <button type="button" class="tool-btn" data-evidence data-site="${runIndex}">View evidence</button>
-    </article>`;
-  }).join("");
-  return `<div class="why-cards">${cards}</div>`;
 }
 
 /* Sky plots: one linear elevation scale for every plot. Centre = +15°, 0° ring, edge = -15°. */
@@ -1019,7 +1119,9 @@ function verdictHtml() {
   const live = state.live && state.partial;
   return `<p class="verdict-time"><strong>${esc(sample.timestamp_utc)}</strong>${live ? " · selected sample, not the whole run" : ""}</p>
     <p class="verdict-text">${esc(parts.join(" "))} ${esc(bothText)}</p>
-    <p class="verdict-basis">Centre-ray state against geometric 0°. Terrain clearance unknown. The whole-window totals in the result above are a different measure.</p>`;
+    <p class="verdict-basis">${terrainMode()
+      ? "Terrain mode. Every state is Unknown until a reviewed skyline exists for the observer. Elevations are the saved Horizons values. No 0° baseline is substituted. The whole-window totals in the result above are a different measure."
+      : "Centre-ray state against geometric 0°. Terrain clearance unknown. The whole-window totals in the result above are a different measure."}</p>`;
 }
 
 /** Merge adjacent intervals with the same state. Reasons can differ inside one state. */
@@ -1097,9 +1199,6 @@ function resolvedEndUtc(run) {
 function lookNextHtml(run, runIndex, sample) {
   const rows = ["sun", "earth"].map((lane) => {
     const item = sample[lane];
-    const where = typeof item.azimuth_deg === "number"
-      ? `toward azimuth ${item.azimuth_deg.toFixed(Math.min(dp(), 3))}° (clockwise from north), elevation ${signedDeg(item.elevation_deg)}°`
-      : "no saved direction";
     const change = nextChange(run, lane, sample.timestamp_utc);
     let tail;
     if (change) {
@@ -1112,7 +1211,7 @@ function lookNextHtml(run, runIndex, sample) {
         tail += ` <button type="button" class="mini win-closest" data-site="${runIndex}" data-lane="${lane}">Closest to 0°</button>`;
       }
     }
-    return `<li><strong>${lane === "sun" ? "Sun" : "Earth"}:</strong> ${esc(where)}. ${tail}</li>`;
+    return `<li><strong>${lane === "sun" ? "Sun" : "Earth"}:</strong> ${tail}</li>`;
   }).join("");
   return `<ul class="look-next" aria-label="Where to look next at ${esc(siteName(run))}">${rows}</ul>`;
 }
@@ -1234,7 +1333,7 @@ function metricsHtml(runIndex, sample, profile) {
         ${metricRow("Elevation", typeof item.elevation_deg === "number" ? fmt3(item.elevation_deg) : "null", "°")}
         ${metricRow("Horizon", show(item.horizon_deg), "°")}
         ${metricRow("Margin", fmt3(item.margin_deg), "°")}
-        ${metricRow("DEM (diagnostic)", dem, dem === "no data" ? "" : "°")}
+        ${state.showTerrain ? metricRow("DEM (diagnostic)", dem, dem === "no data" ? "" : "°") : ""}
       </dl>
     </button>`;
   });
@@ -1316,12 +1415,6 @@ function skyPlot(run, runIndex) {
       </g>`
     : "";
 
-  const pills = `
-    <span class="status-pill status-${esc(sun.state)}">Sun · ${esc(titleCase(sun.state))} at geometric 0°</span>
-    <span class="status-pill status-${esc(earth.state)}">Earth · ${esc(titleCase(earth.state))} at geometric 0°</span>
-    <span class="status-pill status-${esc(sample.both.state)}">Both · ${esc(titleCase(sample.both.state))}</span>
-    <span class="status-pill status-unknown">Terrain clearance unknown</span>`;
-
   let terrainNote = "";
   let terrainLayers = "";
   let terrainDefs = "";
@@ -1351,7 +1444,6 @@ function skyPlot(run, runIndex) {
   return `<article class="sky-panel${selected ? " is-selected" : ""}" data-site="${runIndex}">
     <div class="sky-panel-head">
       <h3>${slotBadge(runIndex)} ${esc(siteName(run))}${selected ? ' <span class="sel-tag">selected</span>' : ""}</h3>
-      <div class="sky-pills">${pills}</div>
     </div>
     ${liveMeterHtml(runIndex)}
     <svg class="sky-svg" viewBox="0 0 440 440" role="img" aria-label="Polar sky for ${esc(siteName(run))}. Centre is ${rangeDef.centre} degrees elevation, the dashed ring is 0 degrees, the edge is ${rangeDef.edge} degrees.">
@@ -1557,7 +1649,10 @@ function syncControls() {
     start.disabled = state.running;
     start.querySelector(".btn-label").textContent = state.running ? "Streaming…" : "Start stream";
   }
-  if (cancel) cancel.disabled = !state.running;
+  if (cancel) {
+    cancel.disabled = !state.running || state.stopping;
+    cancel.textContent = state.stopping ? "Stopping…" : "Stop";
+  }
   if (play) {
     play.setAttribute("aria-pressed", String(state.playing));
     play.querySelector(".btn-label").textContent = state.playing ? "Pause" : "Play";
@@ -1568,6 +1663,8 @@ function syncControls() {
 
 function setRunning(value) {
   state.running = value;
+  const more = document.getElementById("run-more");
+  if (value && more) more.open = true;
   syncControls();
 }
 
@@ -1685,7 +1782,7 @@ function windowsHtml() {
       ${unknown.length ? `<h4>Unknown spans</h4><ul class="win-list">${unknown.map(row).join("")}</ul>` : ""}
     </article>`;
   }).join("");
-  return `<p class="rail-sub">${esc(laneName(lane))}. From engine intervals. Centre-ray against geometric 0° only. Click a window to select it.</p>
+  return `<p class="rail-sub">${esc(laneName(lane))}. From engine intervals. ${terrainMode() ? "Terrain mode: no reviewed skyline, so no window is named." : "Centre-ray against geometric 0° only."} Click a window to select it.</p>
     ${screenSummaryHtml()}
     ${sites}`;
 }
@@ -1695,8 +1792,14 @@ function qualifies(span) {
   return !state.minHours || (span.endMs - span.startMs) / 1000 >= state.minHours * 3600;
 }
 
+/** 0.25 → "15 min", 8 → "8 h", 168 → "7 days". */
+function minText(hours) {
+  if (hours >= 48 && hours % 24 === 0) return `${hours / 24} days`;
+  return hours >= 1 ? `${hours} h` : `${Math.round(hours * 60)} min`;
+}
+
 function minLabel() {
-  return state.minHours >= 1 ? `${state.minHours} h` : `${Math.round(state.minHours * 60)} min`;
+  return minText(state.minHours);
 }
 
 function screenSummaryHtml() {
@@ -1848,6 +1951,8 @@ function setPipeStage(stage) {
   if (!pipe) return;
   const order = ["idle", "loading", "calculating", "shared", "complete"];
   const current = order.indexOf(stage);
+  // Stage strip is for live runs only. Saved replays leave it hidden.
+  pipe.hidden = !(state.live || state.running);
   pipe.querySelectorAll("li").forEach((item) => {
     const index = order.indexOf(item.dataset.stage);
     item.classList.toggle("is-focus", item.dataset.stage === stage);
@@ -1894,7 +1999,13 @@ function currentSamples() {
 function setLiveChip() {
   const chip = document.getElementById("live-chip");
   if (!chip) return;
-  if (state.live && state.partial) {
+  if (state.live && state.runEnd) {
+    chip.textContent = state.runEnd.kind === "failed" ? "Live failed" : "Live stopped";
+    chip.classList.remove("soft");
+  } else if (state.live && state.stopping) {
+    chip.textContent = "Stopping";
+    chip.classList.remove("soft");
+  } else if (state.live && state.partial) {
     chip.textContent = "Live stream";
     chip.classList.remove("soft");
   } else if (state.live) {
@@ -2187,6 +2298,7 @@ function emptyRunPayload(siteMeta) {
     eligible_for_submission_claim: siteMeta.eligible_for_submission_claim,
     labels: siteMeta.labels,
     scenario: siteMeta.scenario,
+    terrain: siteMeta.terrain,
     samples: [],
     intervals: [],
     elapsed_seconds: emptyElapsed(),
@@ -2194,6 +2306,13 @@ function emptyRunPayload(siteMeta) {
 }
 
 function abortLiveConsumer() {
+  if (state.running && (state.liveComparisonId || state.liveRunId)) {
+    const target = state.liveMode === "comparison" && state.liveComparisonId
+      ? "/api/comparisons/" + state.liveComparisonId + "/cancel"
+      : "/api/runs/" + state.liveRunId + "/cancel";
+    fetch(target, { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }).catch(() => {});
+  }
+  state.stopping = false;
   setRunning(false);
   stopPlayback();
   if (state.liveAbort) {
@@ -2216,7 +2335,10 @@ function applyLiveEvent(event) {
     return;
   }
   if (state.liveRunId && event.run_id && event.run_id !== state.liveRunId) return;
-  if (["complete", "cancelled", "error"].includes(event.event)) setRunning(false);
+  if (["complete", "cancelled", "error"].includes(event.event)) {
+    state.stopping = false;
+    setRunning(false);
+  }
   if (event.event === "stage") {
     setPipeStage("loading");
     setRunStatus("Loading inputs. Run " + event.run_id + ".");
@@ -2227,6 +2349,7 @@ function applyLiveEvent(event) {
     state.live = true;
     state.liveMode = "single";
     state.partial = true;
+    state.runEnd = null;
     state.source = "live";
     state.comparison = {
       practice: event.practice,
@@ -2247,6 +2370,7 @@ function applyLiveEvent(event) {
         eligible_for_submission_claim: event.eligible_for_submission_claim,
         labels: event.labels,
         scenario: event.scenario,
+        terrain: event.terrain,
       }),
     }];
     state.index = 0;
@@ -2281,37 +2405,39 @@ function applyLiveEvent(event) {
     state.runs[0].payload = event.result;
     state.runs[0].sourceUrl = "#";
     state.siteProgress = [event.result.samples.length];
+    state.runEnd = null;
     setLiveExport(event.result);
     setRunStatus("Complete. Run " + event.run_id + ". Result " + event.result_run_id + ".");
     render();
     return;
   }
-  if (event.event === "cancelled") {
+  if (event.event === "cancelled" || event.event === "error") {
     setPipeStage("shared");
     state.partial = true;
     if (state.runs[0]) {
       state.runs[0].payload.elapsed_seconds = event.elapsed_seconds || state.runs[0].payload.elapsed_seconds;
       state.runs[0].payload.intervals = event.intervals || state.runs[0].payload.intervals;
     }
-    setRunStatus("Cancelled. Run " + event.run_id + ". Partial samples " + event.samples_emitted + ".");
-    render();
-    return;
-  }
-  if (event.event === "error") {
-    setPipeStage("shared");
-    state.partial = true;
-    if (state.runs[0] && event.elapsed_seconds) {
-      state.runs[0].payload.elapsed_seconds = event.elapsed_seconds;
-      state.runs[0].payload.intervals = event.intervals || state.runs[0].payload.intervals;
-    }
-    setRunStatus("Failed. Run " + event.run_id + ". " + (event.message || "error"));
+    state.runEnd = {
+      kind: event.event === "cancelled" ? "cancelled" : "failed",
+      message: event.message || "",
+      shared: event.samples_emitted || 0,
+      cutoff: event.cutoff_utc || null,
+      covered: event.covered_through_utc || null,
+      delivered: [event.samples_emitted || 0],
+    };
+    setLiveExportUnavailable();
+    setRunStatus(runEndStatus("Run " + event.run_id));
     render();
   }
 }
 
 function applyLiveComparisonEvent(event) {
   if (state.liveComparisonId && event.comparison_id && event.comparison_id !== state.liveComparisonId) return;
-  if (["complete", "cancelled", "error"].includes(event.event)) setRunning(false);
+  if (["complete", "cancelled", "error"].includes(event.event)) {
+    state.stopping = false;
+    setRunning(false);
+  }
   if (event.event === "stage") {
     setPipeStage("loading");
     setRunStatus("Loading inputs. Comparison " + event.comparison_id + ". Runs " + event.run_id_a + " / " + event.run_id_b + ".");
@@ -2322,6 +2448,7 @@ function applyLiveComparisonEvent(event) {
     state.live = true;
     state.liveMode = "comparison";
     state.partial = true;
+    state.runEnd = null;
     state.source = "live";
     state.comparison = {
       practice: event.practice,
@@ -2396,6 +2523,7 @@ function applyLiveComparisonEvent(event) {
     ]);
     state.siteProgress = [event.result_a.samples.length, event.result_b.samples.length];
     if (state.follow) state.index = Math.max(0, sharedSampleCount() - 1);
+    state.runEnd = null;
     setLiveExport(event.comparison, event.comparison_id + "-comparison.json");
     setRunStatus(
       "Complete. Comparison " + event.comparison_id
@@ -2421,15 +2549,40 @@ function applyLiveComparisonEvent(event) {
       state.runs[1].payload.intervals = event.intervals_b || state.runs[1].payload.intervals;
     }
     if (event.overlap) state.comparison.overlap = event.overlap;
-    state.siteProgress = [event.samples_emitted_a || state.siteProgress[0] || 0, event.samples_emitted_b || state.siteProgress[1] || 0];
-    setLiveExport(null);
-    const kind = event.event === "cancelled" ? "Cancelled" : "Failed";
-    setRunStatus(
-      kind + ". Comparison " + event.comparison_id + ". "
-      + (event.message || "") + " Shared samples " + (event.shared_samples || 0) + "."
-    );
+    state.siteProgress = [event.samples_emitted_a || 0, event.samples_emitted_b || 0];
+    state.runEnd = {
+      kind: event.event === "cancelled" ? "cancelled" : "failed",
+      message: event.message || "",
+      shared: event.shared_samples || 0,
+      cutoff: event.cutoff_utc || null,
+      covered: event.covered_through_utc || null,
+      delivered: [event.samples_emitted_a || 0, event.samples_emitted_b || 0],
+    };
+    setLiveExportUnavailable();
+    setRunStatus(runEndStatus("Comparison " + event.comparison_id));
     render();
   }
+}
+
+/** Status sentence for a run that ended early. It names the final cutoff and says no export exists. */
+function runEndStatus(label) {
+  const end = state.runEnd;
+  const lead = end.kind === "failed" ? "Failed" : "Stopped";
+  const reason = end.kind === "failed" && end.message ? " " + end.message + "." : "";
+  const total = state.runs.length ? Math.max(...state.runs.map(expectedSamples)) : 0;
+  const cut = end.cutoff
+    ? " Final cutoff " + end.cutoff + " (" + end.shared + " of " + total + " shared samples). Totals cover through "
+      + (end.covered || end.cutoff) + "."
+    : " No shared sample was delivered, so there is no partial result.";
+  const per = end.delivered.length > 1
+    ? " Delivered: " + state.runs.map((run, i) => siteName(run) + " " + end.delivered[i]).join(", ") + "."
+    : "";
+  return lead + ". " + label + "." + reason + cut + per + " No export: the run did not complete.";
+}
+
+function setLiveExportUnavailable() {
+  const holder = document.getElementById("live-export");
+  if (holder) holder.innerHTML = '<span class="note">No export: the run did not complete.</span>';
 }
 
 async function readNdjson(response, onEvent) {
@@ -2448,7 +2601,7 @@ async function readNdjson(response, onEvent) {
         const event = JSON.parse(line);
         onEvent(event);
         const delay = playbackPace().client_delay_ms;
-        if (delay > 0 && (event.event === "batch" || event.event === "site_batch")) {
+        if (delay > 0 && !state.stopping && (event.event === "batch" || event.event === "site_batch")) {
           await sleep(delay);
         }
       }
@@ -2459,20 +2612,138 @@ async function readNdjson(response, onEvent) {
   if (trailing) onEvent(JSON.parse(trailing));
 }
 
+/* ---------- Saved data catalog ---------- */
+
+const catalogState = { data: null };
+
+function catalogEntry(id) {
+  return catalogState.data && catalogState.data.entries.find((e) => e.id === id);
+}
+
+function catalogWindow(id) {
+  return catalogState.data && catalogState.data.comparisons.find((w) => w.id === id);
+}
+
+function shortSha(value) {
+  return value ? String(value).slice(0, 12) : "none";
+}
+
+function catalogEntryInfo(entry) {
+  const o = entry.observer;
+  const cov = entry.coverage;
+  const gaps = entry.angles.sun.missing + entry.angles.earth.missing;
+  return `${entry.site_id}${entry.synthetic ? " · SYNTHETIC QA, not JPL output" : ""} · observer ${o.longitude_east_deg}°E, ${o.latitude_deg}°, ${o.reference_altitude_km} km`
+    + ` · ${cov.start_utc} → ${cov.end_utc} · every ${fmtDuration(cov.step_seconds)} · ${cov.samples} rows`
+    + ` · missing angles: Sun ${entry.angles.sun.missing}, Earth ${entry.angles.earth.missing}${gaps ? " (kept as Unknown)" : ""}`
+    + ` · SHA-256 Sun ${shortSha(entry.sources.sun.raw_sha256)}, Earth ${shortSha(entry.sources.earth.raw_sha256)}`;
+}
+
+function syncCatalogInputs(reset) {
+  const value = document.getElementById("scenario").value;
+  const start = document.getElementById("cat-start");
+  const end = document.getElementById("cat-end");
+  const info = document.getElementById("cat-info");
+  if (!start || !end || !info) return;
+  let range = null;
+  let text = "A named scenario uses its own saved range. Pick a catalog entry to choose your own.";
+  if (value.startsWith("catalog:")) {
+    const entry = catalogEntry(value.slice(8));
+    if (entry) {
+      range = entry.coverage;
+      text = catalogEntryInfo(entry);
+    }
+  } else if (value.startsWith("window:")) {
+    const win = catalogWindow(value.slice(7));
+    if (win) {
+      range = win;
+      const a = catalogEntry(win.a);
+      const b = catalogEntry(win.b);
+      text = `Shared UTC grid: ${win.start_utc} → ${win.end_utc} · every ${fmtDuration(win.step_seconds)} · ${win.samples} rows. A: ${a ? catalogEntryInfo(a) : win.a}. B: ${b ? catalogEntryInfo(b) : win.b}.`;
+    }
+  }
+  info.textContent = text;
+  start.disabled = end.disabled = !range;
+  start.classList.remove("is-bad");
+  end.classList.remove("is-bad");
+  if (!range) {
+    start.value = "";
+    end.value = "";
+  } else if (reset) {
+    start.value = range.start_utc;
+    end.value = range.end_utc;
+    document.getElementById("run-more").open = true;
+  }
+}
+
+async function loadCatalog() {
+  let data;
+  try {
+    const response = await fetch("/api/catalog");
+    if (!response.ok) return;
+    data = await response.json();
+  } catch (error) {
+    return;
+  }
+  catalogState.data = data;
+  const select = document.getElementById("scenario");
+  const group = (label, items) => {
+    if (!items.length) return;
+    const g = document.createElement("optgroup");
+    g.label = label;
+    items.forEach(([value, text]) => {
+      const o = document.createElement("option");
+      o.value = value;
+      o.textContent = text;
+      g.appendChild(o);
+    });
+    select.appendChild(g);
+  };
+  const entryLabel = (e) => e.label + (e.angles.sun.missing + e.angles.earth.missing ? " · has gaps" : "");
+  group("Saved catalog · one site", data.entries.filter((e) => !e.synthetic).map((e) => ["catalog:" + e.id, entryLabel(e)]));
+  const isSynthetic = (w) => [w.a, w.b].some((id) => (catalogEntry(id) || {}).synthetic);
+  group("Saved catalog · shared two-site window", data.comparisons.filter((w) => !isSynthetic(w)).map((w) => ["window:" + w.id, w.label]));
+  group("Synthetic QA cases · not JPL output", [
+    ...data.entries.filter((e) => e.synthetic).map((e) => ["catalog:" + e.id, "SYNTHETIC · " + entryLabel(e)]),
+    ...data.comparisons.filter(isSynthetic).map((w) => ["window:" + w.id, "SYNTHETIC · " + w.label]),
+  ]);
+  syncCatalogInputs(false);
+}
+
+/** Request fields for the chosen catalog range and horizon, or an error message. */
+function catalogRequest(kind) {
+  const body = {};
+  if (kind) {
+    const start = document.getElementById("cat-start");
+    const end = document.getElementById("cat-end");
+    body.start_utc = start.value.trim();
+    body.end_utc = end.value.trim();
+  }
+  const mode = document.getElementById("horizon-mode").value;
+  if (mode !== "geometric_0deg") body.horizon_mode = mode;
+  return body;
+}
+
 async function startLiveRun() {
   abortLiveConsumer();
+  state.why = null;
+  state.runEnd = null;
+  state.stopping = false;
   setRunning(true);
   const scenario = document.getElementById("scenario").value;
   const fail = document.getElementById("fail-test").checked;
   setLiveExport(null);
-  if (scenario === "practice-48h") {
-    await startLiveComparison(fail);
+  if (scenario.startsWith("window:")) {
+    await startLiveComparison(fail, null, { catalog_window: scenario.slice(7), ...catalogRequest(true) });
+    return;
+  }
+  if (scenario === "practice-48h" || scenario === "practice-30d") {
+    await startLiveComparison(fail, scenario, catalogRequest(false));
     return;
   }
   const body = {
-    scenario,
     batch_size: LIVE_SERVER.batch_size,
     pause_seconds: LIVE_SERVER.pause_seconds,
+    ...(scenario.startsWith("catalog:") ? { catalog: scenario.slice(8), ...catalogRequest(true) } : { scenario, ...catalogRequest(false) }),
   };
   if (fail) body.fail_after_batches = 1;
   setRunStatus("Starting " + scenario + ".");
@@ -2493,15 +2764,16 @@ async function startLiveRun() {
   await readNdjson(response, applyLiveEvent);
 }
 
-async function startLiveComparison(fail) {
+async function startLiveComparison(fail, pair = "practice-48h", extra = {}) {
   const body = {
-    pair: "practice-48h",
+    ...(pair ? { pair } : {}),
+    ...extra,
     batch_size_a: 3,
     batch_size_b: LIVE_SERVER.batch_size,
     pause_seconds: LIVE_SERVER.pause_seconds,
   };
   if (fail) body.fail_after_batches_a = 1;
-  setRunStatus("Starting practice-48h comparison.");
+  setRunStatus("Starting " + (pair || extra.catalog_window) + " comparison.");
   state.liveMode = "comparison";
   state.liveRunId = null;
   const started = await (await fetch("/api/comparisons", {
@@ -2531,37 +2803,367 @@ async function cancelLiveRun() {
     setRunStatus("No active run to cancel.");
     return;
   }
-  if (state.liveMode === "comparison" && state.liveComparisonId) {
-    await fetch("/api/comparisons/" + state.liveComparisonId + "/cancel", {
+  if (!state.running || state.stopping) return;
+  const comparison = state.liveMode === "comparison" && state.liveComparisonId;
+  const id = comparison ? state.liveComparisonId : state.liveRunId;
+  // Stopping holds until the engine sends the cancelled event with its final cutoff.
+  state.stopping = true;
+  syncControls();
+  setLiveChip();
+  setRunStatus("Stopping. " + (comparison ? "Comparison " : "Run ") + id + ". Waiting for the engine to report the final cutoff.");
+  if (state.runs.length && sharedSampleCount() > 0) render();
+  try {
+    const response = await fetch((comparison ? "/api/comparisons/" : "/api/runs/") + id + "/cancel", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: "{}",
     });
-    setRunStatus("Cancel requested for comparison " + state.liveComparisonId + ".");
-    return;
+    if (!response.ok) throw new Error("HTTP " + response.status);
+  } catch (error) {
+    state.stopping = false;
+    syncControls();
+    setLiveChip();
+    setRunStatus("Stop failed. " + error + ". The run is still going.");
   }
-  await fetch("/api/runs/" + state.liveRunId + "/cancel", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: "{}",
-  });
-  setRunStatus("Cancel requested for run " + state.liveRunId + ".");
 }
 
 /** Live run started but no shared sample yet: show the scenario, the progress, and an honest waiting line. */
 function renderWaiting() {
   document.getElementById("scenario-info").innerHTML = scenarioBarHtml();
-  document.getElementById("banner").textContent = "Calculating from saved Horizons inputs. Pending is not Unknown.";
+  const end = state.runEnd;
+  document.getElementById("banner").textContent = end
+    ? (end.kind === "failed" ? "Run failed before any shared sample. Nothing to show." : "Run stopped before any shared sample. Nothing to show.")
+    : "Calculating from saved Horizons inputs. Pending is not Unknown.";
+  const detail = end
+    ? `${end.kind === "failed" ? "Failed" : "Stopped"} before any shared sample was delivered. ${state.runs.map((run, i) => `${esc(siteName(run))} delivered ${esc(end.delivered[i] ?? 0)}`).join(", ")}. There is no partial result and no export.`
+    : state.stopping
+      ? "Stopping. Waiting for the engine to report the final cutoff."
+      : "Waiting for the first shared sample. Pending is not Unknown.";
   document.getElementById("answers").innerHTML = `<h1 id="result-heading" class="result-title">Sun-centre clearance</h1>
-    <p class="result-sub">Waiting for the first shared sample. Pending is not Unknown.</p>`;
+    <p class="result-sub">${detail}</p>`;
   document.getElementById("answers-details").innerHTML = "";
+  setLiveChip();
   updateStageStatus();
+}
+
+
+/* ---------- Why this result? ---------- */
+
+/** Samples that count toward the result now. A partial run counts only the shared resolved samples. */
+function resolvedCount(run) {
+  return Math.min(run.payload.samples.length, state.partial ? sharedSampleCount() : run.payload.samples.length);
+}
+
+/** Counts per state for one lane, the sample closest to the horizon, and the Unknown reasons. */
+function laneStats(run, lane, count) {
+  const samples = run.payload.samples.slice(0, count);
+  const out = { n: samples.length, clear: 0, blocked: 0, unknown: 0, reasons: [], near: null };
+  samples.forEach((sample, index) => {
+    const item = sample[lane];
+    out[item.state] += 1;
+    if (item.state === "unknown" && item.reason && !out.reasons.includes(item.reason)) out.reasons.push(item.reason);
+    const margin = laneMargin(sample, lane);
+    if (margin !== null && (out.near === null || Math.abs(margin) < Math.abs(out.near.margin))) out.near = { index, margin };
+  });
+  return out;
+}
+
+function stateTransitions(run, lane, limit) {
+  const spans = mergedStates(run, lane);
+  const shown = spans.slice(0, limit).map((span) => `${span.state} from ${shortUtc(span.start)}`);
+  return shown.join(", then ") + (spans.length > limit ? ", …" : "");
+}
+
+/** Saved rows for the chosen samples: Horizons row text, elevation, horizon, margin and state. */
+function sourceRowsHtml(run, runIndex, lane, indices, caption) {
+  const bodies = lane === "both" ? ["sun", "earth"] : [lane];
+  const rows = [];
+  indices.forEach((index) => {
+    const sample = run.payload.samples[index];
+    if (!sample) return;
+    bodies.forEach((body) => {
+      const item = sample[body];
+      rows.push(`<tr>
+        <td class="mono">${esc(sample.timestamp_utc)}</td>
+        <td>${body === "sun" ? "Sun centre" : "Earth centre"}</td>
+        <td class="mono">${esc(item.response_line || "no saved row")}</td>
+        <td class="num">${esc(signedDeg(item.elevation_deg))}°</td>
+        <td class="num">${esc(show(item.horizon_deg))}°</td>
+        <td class="num">${esc(signedDeg(item.margin_deg))}°</td>
+        <td><span class="state-word ${esc(item.state)}">${esc(item.state)}</span></td>
+        <td class="mono">${esc(item.source_ref || "")}</td>
+      </tr>`);
+    });
+    if (lane === "both") {
+      rows.push(`<tr class="src-joint"><td class="mono">${esc(sample.timestamp_utc)}</td><td>Both centres</td><td colspan="4">${esc(sample.both.reason ? "reason " + sample.both.reason : "no blocking or unknown reason")}</td><td><span class="state-word ${esc(sample.both.state)}">${esc(sample.both.state)}</span></td><td></td></tr>`);
+    }
+  });
+  const jump = indices.length
+    ? `<button type="button" class="mini why-jump" data-site="${runIndex}" data-lane="${lane}" data-index="${indices[indices.length - 1]}">Show this sample in the timeline</button>`
+    : "";
+  return `<div class="src-wrap"><table class="src-table"><caption>${esc(caption)}</caption>
+    <thead><tr><th>UTC</th><th>Body</th><th>Saved Horizons row</th><th>Elevation</th><th>Horizon</th><th>Margin</th><th>State</th><th>Source</th></tr></thead>
+    <tbody>${rows.join("")}</tbody></table></div>${jump}`;
+}
+
+/** Which saved samples show the answer: the nearest to the horizon, or the sample before and at the first transition. */
+function evidenceIndices(run, lane, stats) {
+  if (stats.n === 0) return [];
+  const mixed = stats.clear > 0 && stats.clear < stats.n;
+  if (mixed) {
+    const first = run.payload.samples.findIndex((sample) => sample[lane].state === "clear");
+    const at = first <= 0 ? 0 : first;
+    return at > 0 ? [at - 1, at] : [at];
+  }
+  return stats.near ? [stats.near.index] : [0];
+}
+
+function whyLaneHtml(runIndex, lane) {
+  const run = state.runs[runIndex];
+  if (!run) return "";
+  const count = resolvedCount(run);
+  const stats = laneStats(run, lane, count);
+  const name = siteName(run);
+  const elapsed = run.payload.elapsed_seconds[lane];
+  const step = run.payload.scenario.step_seconds;
+  const total = fmtDuration(elapsed.clear);
+  const partial = state.partial ? " so far" : "";
+  const body = lane === "sun" ? "Sun's centre" : lane === "earth" ? "Earth's centre" : "the Sun's or Earth's centre";
+  const near = stats.near ? ` The sample nearest the horizon is ${shortUtc(run.payload.samples[stats.near.index].timestamp_utc)}, margin ${signedDeg(stats.near.margin)}°.` : "";
+  const interval = `Each sample counts for its own ${fmtDuration(step)} interval, and the final sample adds 0 s.`;
+  const paragraphs = [];
+  if (stats.n === 0) {
+    paragraphs.push("No sample has been resolved yet. Pending is not Unknown.");
+  } else if (lane === "both") {
+    const sun = laneStats(run, "sun", count);
+    const earth = laneStats(run, "earth", count);
+    paragraphs.push(`${name}: the Sun centre is clear at ${sun.clear} of ${stats.n} samples and the Earth centre at ${earth.clear}. Both centres clear needs both above the horizon in the same sample, so it is clear at ${stats.clear}${partial}. ${interval} That is ${total}.`);
+    paragraphs.push("Blocked beats Unknown, and Unknown beats Clear: if either centre is blocked the joint state is blocked.");
+    if (stats.clear === 0) {
+      const limiting = sun.clear <= earth.clear ? "Sun" : "Earth";
+      paragraphs.push(`The ${limiting} centre is the limit here. It is clear at ${Math.min(sun.clear, earth.clear)} samples.${near}`);
+    }
+  } else if (stats.clear === stats.n) {
+    paragraphs.push(`${name}: ${body} is above the 0° horizon at all ${stats.n} samples${stats.near ? ", with a smallest margin of " + signedDeg(stats.near.margin) + "°" : ""}. ${interval} ${stats.n - 1} intervals of ${fmtDuration(step)} give ${total}${partial}.`);
+  } else if (stats.blocked === stats.n) {
+    paragraphs.push(`${name}: ${body} is on or below the 0° horizon at all ${stats.n} samples. A margin of 0° or less is blocked, including exact contact, so no time counts as clear: ${total}${partial}.${near}`);
+  } else {
+    paragraphs.push(`${name}: ${body} is clear at ${stats.clear} of ${stats.n} samples (${total}${partial}), blocked at ${stats.blocked} and unknown at ${stats.unknown}. ${interval}`);
+    paragraphs.push(`Changes: ${stateTransitions(run, lane, 4)}.`);
+  }
+  if (stats.unknown) {
+    paragraphs.push(`Unknown is not clear and not blocked. It is counted separately (${fmtDuration(elapsed.unknown)}). Saved reasons: ${stats.reasons.join(", ") || "not stated"}.`);
+  }
+  const indices = evidenceIndices(run, lane, stats);
+  const caption = indices.length > 1 ? "Source rows: the last sample before the change and the first after it" : "Source row";
+  const label = lane === "both" ? "Both centres clear" : laneName(lane);
+  return `<div class="why-body-in"><h3>${slotBadge(runIndex)} ${esc(name)} · ${esc(label)} · ${esc(total)}${esc(partial)}</h3>
+    ${paragraphs.map((text) => `<p>${esc(text)}</p>`).join("")}
+    ${indices.length ? sourceRowsHtml(run, runIndex, lane, indices, caption) : ""}</div>`;
+}
+
+function whyTerrainHtml() {
+  const heights = state.runs.map((run) => {
+    const observer = run.payload.scenario.observer;
+    return `${siteName(run)} ${show(observer.reference_altitude_km)} km`;
+  }).join(" · ");
+  const modes = state.runs.map((run) => run.payload.scenario.horizon_mode).filter((v, i, a) => a.indexOf(v) === i).join(", ");
+  const tinfo = state.runs[0] && state.runs[0].payload.terrain;
+  const lead = terrainMode()
+    ? `<p>This is a terrain-mode run. Terrain clearance is Unknown because ${esc(terrainReasonText(tinfo && tinfo.reason))}. The reason code is ${esc((tinfo && tinfo.reason) || "terrain_not_reviewed")}${tinfo && tinfo.detail ? " (" + esc(tinfo.detail) + ")" : ""}. Each sample keeps the saved Horizons elevation and has no horizon or margin. The 0° baseline is not substituted. Unknown is not Pending: it is a finished answer.</p>`
+    : `<p>Terrain clearance is Unknown because no reviewed skyline is accepted. The reason code is terrain_not_reviewed. Every result on this screen uses the labelled geometric 0° baseline (${esc(modes)}), not terrain.</p>`;
+  return `<div class="why-body-in"><h3>Terrain clearance · Unknown</h3>
+    ${lead}
+    <p>A terrain result needs a reviewed lunar frame, a reviewed vertical reference, radial coverage in the direction and range used, and one independently checked skyline direction. Until the M4 review passes, terrain is shown as Unknown and no terrain-mode total is produced.</p>
+    <p>The DEM240 profile on the Locations tab is a diagnostic. It does not change any state or any total. It is not the geometric Unknown duration, which is the 0 h or other value in Details.</p>
+    <p>Observer reference altitude in the saved inputs: ${esc(heights)}. These are the practice request values and not a reviewed surface height.</p></div>`;
+}
+
+function whyKey(lane, runIndex) {
+  return lane === "both" ? "both" : `${lane}:${runIndex}`;
+}
+
+function whyBodyHtml() {
+  const key = state.why;
+  if (!key) return '<p class="why-hint">Choose a question to see the range, the rule, and the saved rows behind it.</p>';
+  if (key === "terrain") return whyTerrainHtml();
+  if (key === "both") return state.runs.map((run, i) => whyLaneHtml(i, "both")).join("");
+  const [lane, site] = key.split(":");
+  return whyLaneHtml(Number(site), lane);
+}
+
+function whyResultHtml() {
+  if (!state.runs.length || !sharedSampleCount()) return "";
+  const { sun, both } = headlineSeconds();
+  const names = state.runs.map(siteName);
+  const buttons = [];
+  names.forEach((name, i) => buttons.push({ key: whyKey("sun", i), text: `Why ${name} ${terrainMode() ? "Unknown" : fmtDuration(sun[i])}?` }));
+  const bothLabel = both.every((v) => v === both[0]) ? fmtDuration(both[0]) : both.map(fmtDuration).join(" / ");
+  buttons.push({ key: "both", text: `Why both centres ${bothLabel}?` });
+  buttons.push({ key: "terrain", text: "Why terrain Unknown?" });
+  if (state.why && !buttons.some((b) => b.key === state.why)) {
+    const [lane, site] = state.why.split(":");
+    buttons.push({ key: state.why, text: `Why ${siteName(state.runs[Number(site)] || state.runs[0])} ${laneName(lane)}?` });
+  }
+  const chips = buttons
+    .map((b) => `<button type="button" class="why-q" data-why="${esc(b.key)}" aria-pressed="${state.why === b.key}">${esc(b.text)}</button>`)
+    .join("");
+  return `<section class="why-result" aria-label="Why this result?"><h2 class="why-h">Why this result?</h2>
+    <div class="why-qs" role="group" aria-label="Questions">${chips}</div>
+    <div class="why-body" id="why-body" aria-live="polite">${whyBodyHtml()}</div></section>`;
+}
+
+function renderWhy() {
+  const host = document.getElementById("why-result");
+  if (host) host.innerHTML = whyResultHtml();
+}
+
+/* ---------- Decision: is there a clear window? ---------- */
+
+/** Clear-window facts for one run, lane and minimum length. Reads the engine intervals only. */
+function windowSummary(run, lane, minHours, count) {
+  const spans = mergedStates(run, lane);
+  const clear = spans.filter((span) => span.state === "clear");
+  const keep = clear.filter((span) => !minHours || (span.endMs - span.startMs) / 1000 >= minHours * 3600);
+  const longest = clear.length ? Math.max(...clear.map((span) => span.endMs - span.startMs)) / 1000 : 0;
+  const elapsed = run.payload.elapsed_seconds[lane];
+  return { clear, keep, longest, elapsed, count };
+}
+
+function minPhrase(minHours) {
+  if (!minHours) return "";
+  return ` of ${minText(minHours)} or longer`;
+}
+
+function decisionSiteHtml(run, runIndex, sum, lane) {
+  const name = siteName(run);
+  const min = state.minHours;
+  let body;
+  if (sum.keep.length) {
+    const first = sum.keep[0];
+    body = `<p><strong>${sum.keep.length} ${sum.keep.length === 1 ? "window" : "windows"}</strong>${esc(minPhrase(min))}. Longest ${esc(fmtDuration(sum.longest))}.</p>
+      <p class="win-hint">Open the Windows list below for every interval. First matching window:
+        <button type="button" class="mini win-open" data-site="${runIndex}" data-lane="${lane}" data-utc="${esc(first.start)}" data-end="${esc(first.end)}" data-state="clear">${esc(compactUtc(first.start))} → ${esc(compactUtc(first.end))}</button></p>`;
+  } else if (sum.clear.length) {
+    body = `<p><strong>No clear window${esc(minPhrase(min))}.</strong> Longest clear window ${esc(fmtDuration(sum.longest))}. Choose a shorter minimum in <b>Window length</b> above.</p>`;
+  } else if (sum.elapsed.clear === 0 && sum.elapsed.blocked === 0 && sum.elapsed.unknown > 0) {
+    body = `<p><strong>Unknown.</strong> Every sample is Unknown (${esc(fmtDuration(sum.elapsed.unknown))}). No clear window can be named, and none is ruled out.</p>`;
+  } else {
+    const closest = closestToZero(run, lane);
+    body = `<p><strong>No clear window.</strong> Clear 0 h · Blocked ${esc(fmtDuration(sum.elapsed.blocked))} · Unknown ${esc(fmtDuration(sum.elapsed.unknown))}.</p>
+      ${closest ? `<button type="button" class="mini win-closest" data-site="${runIndex}" data-lane="${lane}">Closest sampled point to 0°</button> <span class="win-hint">margin ${esc(signedDeg(closest.margin))}°</span>` : ""}`;
+  }
+  const why = `<button type="button" class="mini why-open" data-why="${esc(whyKey(lane, runIndex))}">Why?</button>`;
+  return `<article class="dec-site"><h3>${slotBadge(runIndex)} ${esc(name)} ${why}</h3>${body}</article>`;
+}
+
+function decisionHtml() {
+  const lane = state.lane;
+  const min = state.minHours;
+  const sums = state.runs.map((run) => windowSummary(run, lane, min, resolvedCount(run)));
+  const names = state.runs.map(siteName);
+  const ok = sums.map((sum) => sum.keep.length > 0);
+  const what = `${laneName(lane)} window${minPhrase(min)}`;
+  const lead = state.partial ? "So far, " : "";
+  let verdict;
+  if (ok.every(Boolean)) verdict = `${lead}Yes. ${names.length > 1 ? "Both sites have" : names[0] + " has"} a ${what}.`;
+  else if (ok.some(Boolean)) verdict = `${lead}Partly. Only ${names.filter((_, i) => ok[i]).join(" and ")} has a ${what}. ${names.filter((_, i) => !ok[i]).join(" and ")} has none.`;
+  else if (sums.every((sum) => sum.elapsed.clear === 0 && sum.elapsed.blocked === 0 && sum.elapsed.unknown > 0)) verdict = `${lead}Unknown. Every sample is Unknown, so no ${what} can be named and none is ruled out.`;
+  else verdict = `${lead}No. ${names.length > 1 ? "Neither site has" : names[0] + " has no"} a ${what}.`;
+  const sites = state.runs.map((run, i) => decisionSiteHtml(run, i, sums[i], lane)).join("");
+  return { verdict, sites, ok };
+}
+
+/** The same question for the other saved cases, so a user can pick another supported site pair or time range. */
+function decisionCasesHtml() {
+  const lane = state.lane;
+  const min = state.minHours;
+  const others = CASES.filter((c) => !(state.source === c.id && !state.live));
+  const items = others.map((c) => {
+    const data = state.caseData[c.id];
+    if (!data) return `<li class="dec-case"><strong>${esc(c.label)}</strong> · loading saved results…</li>`;
+    const first = data.runs[0].payload.scenario;
+    const range = `${shortUtc(first.start_utc)} → ${shortUtc(first.end_utc)}, step ${fmtDuration(first.step_seconds)}`;
+    const per = data.runs.map((run) => {
+      const sum = windowSummary(run, lane, min, run.payload.samples.length);
+      const text = sum.keep.length
+        ? `yes, ${sum.keep.length} ${sum.keep.length === 1 ? "window" : "windows"}, longest ${fmtDuration(sum.longest)}`
+        : sum.clear.length ? `no, longest clear ${fmtDuration(sum.longest)}` : "no clear time";
+      return `${siteName(run)} ${text}`;
+    }).join(" · ");
+    return `<li class="dec-case"><div><strong>${esc(c.label)}</strong> <span class="win-hint">${esc(range)}</span></div><div>${esc(laneName(lane))}${esc(minPhrase(min))}: ${esc(per)}</div><button type="button" class="mini case-open" data-case="${esc(c.id)}">Open this case</button></li>`;
+  }).join("");
+  return `<h3 class="dec-sub">Other supported cases</h3><ul class="dec-cases">${items}</ul>
+    <p class="win-hint">Only saved Horizons inputs are offered. Each case is a practice input, and none is an eligible submission claim. The QA fixture is synthetic and is not listed.</p>`;
+}
+
+async function ensureCaseData(c) {
+  if (state.caseData[c.id]) return state.caseData[c.id];
+  const comparisonUrl = new URL(c.url, document.baseURI);
+  const comparison = await (await fetch(comparisonUrl)).json();
+  const runs = [];
+  for (const run of comparison.runs) {
+    const payload = await (await fetch(new URL(run.file, comparisonUrl))).json();
+    runs.push({ ...run, payload });
+  }
+  state.caseData[c.id] = { comparison, runs };
+  return state.caseData[c.id];
+}
+
+function prefetchCases() {
+  return Promise.all(CASES.map((c) => ensureCaseData(c).catch(() => null))).then(() => {
+    if (state.runs.length && sharedSampleCount()) renderDecision();
+  });
+}
+
+function renderDecision() {
+  const host = document.getElementById("decision");
+  if (!host) return;
+  const ready = state.runs.length > 0 && sharedSampleCount() > 0;
+  host.hidden = !ready;
+  if (!ready) return;
+  const view = decisionHtml();
+  document.getElementById("dec-answer").innerHTML = `<p class="dec-verdict" role="status">${esc(view.verdict)}</p><div class="dec-sites">${view.sites}</div>`;
+  document.getElementById("dec-cases").innerHTML = decisionCasesHtml();
+  const minValue = String(state.minHours);
+  const railMin = document.getElementById("min-duration");
+  if (railMin) railMin.value = minValue;
+}
+
+async function openCase(id) {
+  const c = CASES.find((item) => item.id === id);
+  if (!c) return;
+  abortLiveConsumer();
+  state.liveRunId = null;
+  state.liveComparisonId = null;
+  state.liveMode = null;
+  setLiveExport(null);
+  setPipeStage("idle");
+  setRunStatus("Idle. Showing " + c.label + ".");
+  await loadPackage(c.url, id);
+  setCaseHash(id);
+}
+
+/** Keep the open case in the address (#case=...) without adding history entries, so Back leaves the navigator. */
+function setCaseHash(id) {
+  try {
+    history.replaceState(null, "", id === "practice" ? location.pathname + location.search : "#case=" + id);
+  } catch (error) { /* file:// or sandboxed frames */ }
+}
+
+function requestedCase() {
+  const match = /case=([\w-]+)/.exec(location.hash);
+  return match && CASES.some((item) => item.id === match[1]) ? match[1] : null;
 }
 
 function render() {
   if (!state.runs.length || !state.runs[0].payload.samples.length || sharedSampleCount() === 0) {
     document.getElementById("show-practice").setAttribute("aria-pressed", String(state.source === "practice"));
     document.getElementById("show-qa").setAttribute("aria-pressed", String(state.source === "qa"));
+    document.getElementById("show-practice30").setAttribute("aria-pressed", String(state.source === "practice30"));
+    document.getElementById("show-jan03-10").setAttribute("aria-pressed", String(state.source === "jan03-10"));
+    renderDecision();
+    renderWhy();
     if (state.live && state.runs.length) renderWaiting();
     return;
   }
@@ -2576,7 +3178,11 @@ function render() {
   playhead.setAttribute("aria-valuetext", sample.timestamp_utc + (onTerminal ? ". This sample adds 0 elapsed time." : ""));
   document.getElementById("scenario-info").innerHTML = scenarioBarHtml();
   const banner = document.getElementById("banner");
-  if (state.partial) {
+  if (state.partial && state.runEnd) {
+    banner.textContent = (state.runEnd.kind === "failed" ? "Failed run. " : "Stopped run. ") + "Incomplete. Totals cover only the shared resolved interval.";
+  } else if (state.partial && state.stopping) {
+    banner.textContent = "Stopping. Totals are not final until the engine reports the cutoff.";
+  } else if (state.partial) {
     banner.textContent = state.liveMode === "comparison"
       ? "Partial comparison. Totals cover only the shared resolved interval."
       : "Partial totals. This run is incomplete.";
@@ -2589,11 +3195,12 @@ function render() {
   }
   document.getElementById("answers").innerHTML = answerHtml();
   document.getElementById("answers-details").innerHTML = answerDetailsHtml(detailsWasOpen);
+  renderWhy();
+  renderDecision();
   document.getElementById("readout").innerHTML = readoutHtml();
   renderTimeline();
   document.getElementById("windows").innerHTML = windowsHtml();
   document.getElementById("verdict").innerHTML = verdictHtml();
-  document.getElementById("why").innerHTML = whyHtml();
   updateContextMap();
   renderPreview();
   syncControls();
@@ -2603,13 +3210,14 @@ function render() {
   document.getElementById("limits").textContent = limits.join(" ");
   document.getElementById("show-practice").setAttribute("aria-pressed", String(state.source === "practice"));
   document.getElementById("show-qa").setAttribute("aria-pressed", String(state.source === "qa"));
+  document.getElementById("show-practice30").setAttribute("aria-pressed", String(state.source === "practice30"));
+  document.getElementById("show-jan03-10").setAttribute("aria-pressed", String(state.source === "jan03-10"));
 }
 
 /** Chart, lanes, margins and the sticky dock line. These depend on the container width, so resize re-runs them. */
 function renderTimeline() {
   document.getElementById("chart").innerHTML = chartHtml();
   document.getElementById("legend").innerHTML = legendHtml();
-  document.getElementById("margins").innerHTML = marginsHtml();
   document.getElementById("lanes").innerHTML = lanesHtml();
   const box = state.chartBox;
   const main = document.getElementById("explore-main");
@@ -2662,6 +3270,7 @@ async function loadPackage(url, source) {
   state.preview = null;
   state.sel = null;
   state.minHours = 0;
+  state.why = null;
   const minSelect = document.getElementById("min-duration");
   if (minSelect) minSelect.value = "0";
   state.notice = "";
@@ -2675,7 +3284,10 @@ async function loadPackage(url, source) {
   state.live = false;
   state.liveMode = null;
   state.partial = false;
+  state.runEnd = null;
+  state.stopping = false;
   state.liveComparisonId = null;
+  setLiveExport(null);
   state.siteProgress = state.runs.map((run) => run.payload.samples.length);
   render();
 }
@@ -2742,6 +3354,32 @@ function bind() {
     if (sharedSampleCount()) render();
   });
   document.getElementById("windows").addEventListener("click", jumpHandler);
+  document.getElementById("answers").addEventListener("click", (event) => {
+    if (!jumpHandler(event)) return;
+    if (event.target.closest(".win-scroll")) document.getElementById("explore").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  document.getElementById("decision").addEventListener("click", (event) => {
+    if (jumpHandler(event)) return;
+    const why = event.target.closest(".why-open");
+    if (why) {
+      state.why = why.dataset.why;
+      renderWhy();
+      document.getElementById("why-result").scrollIntoView({ block: "start" });
+      return;
+    }
+    const open = event.target.closest(".case-open");
+    if (open) openCase(open.dataset.case).catch((error) => setRunStatus("Failed to load. " + error));
+  });
+  document.getElementById("why-result").addEventListener("click", (event) => {
+    const question = event.target.closest(".why-q");
+    if (question) {
+      state.why = state.why === question.dataset.why ? null : question.dataset.why;
+      renderWhy();
+      return;
+    }
+    const jump = event.target.closest(".why-jump");
+    if (jump) jumpToSample(Number(jump.dataset.site), jump.dataset.lane, Number(jump.dataset.index));
+  });
   document.getElementById("sky-stage").addEventListener("click", jumpHandler);
   document.getElementById("readout").addEventListener("click", (event) => {
     const chip = event.target.closest(".ro-site");
@@ -2760,7 +3398,13 @@ function bind() {
     setLiveExport(null);
     setPipeStage("idle");
     setRunStatus("Idle. Showing the witnessed practice comparison.");
-    loadPackage(PRACTICE_URL, "practice");
+    loadPackage(PRACTICE_URL, "practice").then(() => setCaseHash("practice"));
+  });
+  document.getElementById("show-practice30").addEventListener("click", () => {
+    openCase("practice30").catch((error) => setRunStatus("Failed to load. " + error));
+  });
+  document.getElementById("show-jan03-10").addEventListener("click", () => {
+    openCase("jan03-10").catch((error) => setRunStatus("Failed to load. " + error));
   });
   document.getElementById("show-qa").addEventListener("click", () => {
     abortLiveConsumer();
@@ -2773,6 +3417,7 @@ function bind() {
     loadPackage(QA_URL, "qa");
   });
   document.getElementById("start-run").addEventListener("click", () => {
+    document.getElementById("run-more").open = false;
     setPipeStage("loading");
     const token = ++state.runToken;
     startLiveRun()
@@ -2893,12 +3538,19 @@ function bind() {
 }
 
 bind();
+document.getElementById("scenario").addEventListener("change", () => syncCatalogInputs(true));
+loadCatalog();
 initStarfield();
 bindSceneInteractions();
 updateContextMap();
 setPipeStage("idle");
 loadTerrainProfiles()
   .then(() => loadPackage(PRACTICE_URL, "practice"))
+  .then(() => {
+    const wanted = requestedCase();
+    return wanted && wanted !== "practice" ? openCase(wanted) : null;
+  })
+  .then(() => prefetchCases())
   .catch((error) => {
     document.getElementById("banner").textContent = "The saved replay did not load. Serve the web directory and open /review-candidate/. " + error;
   });

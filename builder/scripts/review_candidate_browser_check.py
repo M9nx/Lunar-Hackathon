@@ -93,17 +93,24 @@ class Driver:
 
 
 def main() -> int:
+    global EVIDENCE
     parser = argparse.ArgumentParser()
     parser.add_argument("--base", default="http://127.0.0.1:8766/review-candidate/")
-    parser.add_argument("--out", default=str(EVIDENCE / "review_candidate_browser.json"))
+    parser.add_argument("--out", default=None, help="Result JSON (default: <evidence-dir>/review_candidate_browser.json)")
+    parser.add_argument("--evidence-dir", default=str(EVIDENCE), help="Where screenshots and the result JSON are written")
+    parser.add_argument("--driver-port", type=int, default=9517)
+    parser.add_argument("--profile", default="/tmp/lunar-rc-profile")
     args = parser.parse_args()
+    EVIDENCE = Path(args.evidence_dir)
+    EVIDENCE.mkdir(parents=True, exist_ok=True)
+    out_path = Path(args.out) if args.out else EVIDENCE / "review_candidate_browser.json"
     results: list[dict] = []
 
     def check(name: str, ok: bool, detail=None) -> None:
         results.append({"check": name, "pass": bool(ok), "detail": detail})
         print(("PASS " if ok else "FAIL ") + name + (f" :: {detail}" if detail not in (None, "") else ""))
 
-    drv = Driver(9517, 1440, 2400, "/tmp/lunar-rc-profile")
+    drv = Driver(args.driver_port, 1440, 2400, args.profile)
 
     def click(selector: str) -> None:
         drv.js("document.querySelector(arguments[0]).click()", selector)
@@ -212,11 +219,12 @@ def main() -> int:
         pick_lane("both")
         both_labels = drv.js("return Array.from(document.querySelectorAll('#chart .ch-label')).map(n => n.textContent)")
         check("Both: joint lanes for each site", count("#lanes .lane-site") == 2 and "Both" in norm("#lanes"), norm("#lanes")[:120])
-        mg = norm("#margins")
+        # The Both-lane readout shows each centre's margin; the separate margins table was removed as a duplicate.
+        mg = norm("#readout")
         check(
             "Both: individual Sun and Earth centre margins at the selected time",
-            all(t in mg for t in ("Sun centre", "Earth centre", "+1.661532°", "−2.216453°")) and count("#margins tbody tr") == 2,
-            mg,
+            all(t in mg for t in ("+1.661532°", "−2.216453°")) and "Sun" in mg and "Earth" in mg,
+            mg[:280],
         )
         check("Both: chart carries Sun and Earth traces per site", count("#chart .ch-trace") == 4 and len(both_labels) == 4, both_labels)
         check("Both: no Closest offer", count("#windows .win-closest") == 0 and "No clear window in this range." in norm("#windows"))
@@ -667,7 +675,7 @@ def main() -> int:
         time.sleep(0.3)
         drv.shot(EVIDENCE / "review_candidate_stage_390_qa.png")
     finally:
-        Path(args.out).write_text(json.dumps(results, indent=2) + "\n")
+        out_path.write_text(json.dumps(results, indent=2) + "\n")
         drv.close()
     failed = [r for r in results if not r["pass"]]
     print(f"{len(results) - len(failed)} passed, {len(failed)} failed")
