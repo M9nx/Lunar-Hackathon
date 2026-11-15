@@ -1,0 +1,383 @@
+{
+  "server_revision": "browsercheck",
+  "results": [
+    {
+      "check": "catalog fills the scenario picker",
+      "pass": true,
+      "detail": [
+        "Saved catalog \u00b7 one site:12",
+        "Saved catalog \u00b7 shared two-site window:6",
+        "Synthetic QA cases \u00b7 not JPL output:3"
+      ]
+    },
+    {
+      "check": "synthetic cases are in their own labelled group",
+      "pass": true,
+      "detail": [
+        "Saved catalog \u00b7 one site:12",
+        "Saved catalog \u00b7 shared two-site window:6",
+        "Synthetic QA cases \u00b7 not JPL output:3"
+      ]
+    },
+    {
+      "check": "catalog range defaults to the saved coverage",
+      "pass": true,
+      "detail": [
+        "2024-06-01T00:00:00Z",
+        "2024-06-01T01:00:00Z",
+        false
+      ]
+    },
+    {
+      "check": "catalog info shows site, observer, cadence, gap and checksums",
+      "pass": true,
+      "detail": "qa-gap-north \u00b7 SYNTHETIC QA, not JPL output \u00b7 observer 10\u00b0E, -85\u00b0, 0 km \u00b7 2024-06-01T00:00:00Z \u2192 2024-06-01T01:00:00Z \u00b7 every 15 min \u00b7 5 rows \u00b7 missing angles: Sun 1, Earth 0 (kept as Unknown) \u00b7 SHA-256 Sun 13a21fe9ba6b, Earth 889df8315bd2"
+    },
+    {
+      "check": "page result equals the engine batch result",
+      "pass": true,
+      "detail": {
+        "run_id": "qa-gap-north-q4-centre-0deg-7fb030361136"
+      }
+    },
+    {
+      "check": "timeline hatches one merged Unknown span 00:15 to 00:45",
+      "pass": true,
+      "detail": [
+        [
+          "2024-06-01T00:15:00Z",
+          "2024-06-01T00:45:00Z"
+        ]
+      ]
+    },
+    {
+      "check": "the span is 30 minutes",
+      "pass": true,
+      "detail": [
+        [
+          "2024-06-01T00:15:00Z",
+          "2024-06-01T00:45:00Z"
+        ]
+      ]
+    },
+    {
+      "check": "window list gives the duration and both reasons",
+      "pass": true,
+      "detail": [
+        "06-01 00:15Z \u2192 06-01 00:45Z30 min \u00b7 missing_right_endpoint, missing_ephemeris"
+      ]
+    },
+    {
+      "check": "chart Unknown band covers 25% to 75% of the hour",
+      "pass": true,
+      "detail": {
+        "bands": [
+          [
+            301.9002990722656,
+            387.1673889160156
+          ]
+        ],
+        "w": 774.3347778320312,
+        "x": 108.31660461425781
+      }
+    },
+    {
+      "check": "chart trace is broken at the missing angle (two pieces, none at 00:30)",
+      "pass": true,
+      "detail": [
+        "M58.0 41.8 L251.5 139.0 M638.5 239.3 L832.0 163.3 "
+      ]
+    },
+    {
+      "check": "selected missing row shows Unknown, a reason and no invented margin",
+      "pass": true,
+      "detail": "Selected UTC 2024-06-01T00:30:00Z View evidence A qa-gap-north Unknown no saved margin Unknown, not a clearance: missing_ephemeris. Any margin shown is the saved sample value."
+    },
+    {
+      "check": "no zero placed on the chart at the missing sample",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "explanation names the saved table, not a calculation",
+      "pass": true,
+      "detail": "The saved table has no elevation for the Sun centre. This sample is Unknown."
+    },
+    {
+      "check": "result notice names Unknown per lane and says it is not clear or blocked",
+      "pass": true,
+      "detail": "Unknown time in this window, counted separately. qa-gap-north: Sun 30 min \u00b7 Earth 0 h \u00b7 Both 15 min. Unknown is not counted as clear or blocked.Show Sun Unknown on the timeline: 06-01 00:15Z \u2192 06-01 00:45Z (missing_right_endpoint, missing_ephemeris)"
+    },
+    {
+      "check": "Sun split bar is 25% clear, 25% blocked, 50% Unknown",
+      "pass": true,
+      "detail": {
+        "label": "qa-gap-north Sun centre: Clear 15 min, Blocked 15 min, Unknown 30 min",
+        "parts": [
+          [
+            "clear",
+            25
+          ],
+          [
+            "blocked",
+            25
+          ],
+          [
+            "unknown",
+            50
+          ]
+        ]
+      }
+    },
+    {
+      "check": "lane breakdown table: Sun, Earth, Both with Unknown separate",
+      "pass": true,
+      "detail": [
+        "Sun|15 min|15 min|30 min",
+        "Earth|45 min|15 min|0 h",
+        "Both|15 min|30 min|15 min"
+      ]
+    },
+    {
+      "check": "notice button selects the Unknown span on the timeline",
+      "pass": true,
+      "detail": [
+        "sun",
+        "2024-06-01T00:15:00Z",
+        "2024-06-01T00:45:00Z",
+        "unknown"
+      ]
+    },
+    {
+      "check": "Unknown counted separately: Sun 30 min, Earth 0 h, Both 15 min",
+      "pass": true,
+      "detail": "DetailsSun-centre clear, saved secondsqa-gap-north 900 sBoth centres clear, saved secondsqa-gap-north 900 sSamplesqa-gap-north 5Geometric Unknown durationqa-gap-north: Sun 30 min, Earth 0 h, Both 15 min.TerrainUnknown \u00b7 terrain_not_reviewed. No reviewed skyline is available. This is not the geometric Unknown duration.Runsqa-gap-north qa-gap-north-q4-centre-0deg-7fb030361136 (browsercheck)"
+    },
+    {
+      "check": "Both lane: clear, blocked, unknown, blocked",
+      "pass": true,
+      "detail": [
+        "clear 00:00-00:15",
+        "blocked 00:15-00:30",
+        "unknown 00:30-00:45",
+        "blocked 00:45-01:00"
+      ]
+    },
+    {
+      "check": "Earth blocker beats Sun Unknown at 00:15",
+      "pass": true,
+      "detail": "The Earth centre is on or below the horizon, so both centres are not clear."
+    },
+    {
+      "check": "downloaded export equals the page and the batch result",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "export: same interval, reasons and 1800 s",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "export row for 00:30 has null angles and the raw n.a. line",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "terrain run: every Sun state Unknown with a terrain reason",
+      "pass": true,
+      "detail": [
+        "terrain_not_reviewed",
+        "terrain_not_reviewed",
+        "missing_ephemeris",
+        "terrain_not_reviewed",
+        "terrain_not_reviewed"
+      ]
+    },
+    {
+      "check": "terrain run keeps the elevation and leaves horizon and margin blank",
+      "pass": true,
+      "detail": [
+        [
+          2,
+          0.4,
+          null,
+          -1.25,
+          0
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ]
+    },
+    {
+      "check": "terrain timeline is one Unknown span",
+      "pass": true,
+      "detail": [
+        "unknown"
+      ]
+    },
+    {
+      "check": "terrain headline says Unknown, not 0 h of clearance",
+      "pass": true,
+      "detail": "Sun-centre clearance Whole window \u00b7 centre-ray against a reviewed terrain skyline (none available) A qa-gap-northUnknown1 h UnknownClear 0 hBlocked 0 hUnknown 1 h Terrain mode: every state is Unknown (terrain_not_reviewed). No clear or blocked time is reported"
+    },
+    {
+      "check": "terrain decision answer is Unknown, not No",
+      "pass": true,
+      "detail": "Unknown. Every sample is Unknown, so no Sun-centre clearance window can be named and none is ruled out.A qa-gap-north Why?Unknown. Every sample in this range is Unknown (1 h). No clear window can be named, and none is ruled out."
+    },
+    {
+      "check": "terrain chart keeps the elevation trace and does not call 0\u00b0 the horizon",
+      "pass": true,
+      "detail": [
+        [
+          "M58.0 41.8 L251.5 139.0 M638.5 239.3 L832.0 163.3 "
+        ],
+        "0\u00b0 reference (not the horizon in terrain mode)"
+      ]
+    },
+    {
+      "check": "terrain readout: Unknown, reason code, no horizon or margin",
+      "pass": true,
+      "detail": "Selected UTC 2024-06-01T00:00:00Z View evidence A qa-gap-north Unknown no horizon, no margin Unknown in terrain mode: terrain_not_reviewed. The elevation is the saved value; there is no horizon or margin."
+    },
+    {
+      "check": "terrain details name the reason",
+      "pass": true,
+      "detail": "tion, terrain modeqa-gap-north: Sun 1 h, Earth 1 h, Both 1 h.TerrainTerrain mode \u00b7 terrain_not_reviewed \u00b7 no reviewed skyline is saved for any observerRunsqa-gap-north qa-gap-north-q4-centre-terrain-7fb030361136-20240601T000000Z-20240601T010000Z (browsercheck)"
+    },
+    {
+      "check": "terrain export carries the same result and the terrain block",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "two-site QA window: Sun Unknown 1800 s at A only",
+      "pass": true,
+      "detail": [
+        {
+          "blocked": 900,
+          "clear": 900,
+          "unknown": 1800
+        },
+        {
+          "blocked": 900,
+          "clear": 2700,
+          "unknown": 0
+        }
+      ]
+    },
+    {
+      "check": "comparison counts Unknown beside the known overlap",
+      "pass": true,
+      "detail": {
+        "site_a": {
+          "both": 900,
+          "earth": 0,
+          "sun": 1800
+        },
+        "site_b": {
+          "both": 0,
+          "earth": 0,
+          "sun": 0
+        }
+      }
+    },
+    {
+      "check": "an off-grid range is refused with the reason",
+      "pass": true,
+      "detail": "Failed to start. start and end must fall on the saved 15-minute grid"
+    },
+    {
+      "check": "partial real run: Pending past the cutoff, not Unknown, chart drawn through the cutoff",
+      "pass": true,
+      "detail": {
+        "cut": true,
+        "cutX": 75.3,
+        "label": "Pending \u00b7 not Unknown",
+        "lastX": 75.3,
+        "n": 16,
+        "pend": true,
+        "unknown": 0
+      }
+    },
+    {
+      "check": "real window: page result equals the engine batch result",
+      "pass": true,
+      "detail": "malapert-practice-q4-centre-0deg-d6262b73db76"
+    },
+    {
+      "check": "Malapert Earth lane: blocked until 01-03 09:00, then clear (a crossing)",
+      "pass": true,
+      "detail": [
+        [
+          "blocked",
+          "2025-01-03T00:00:00Z",
+          "2025-01-03T09:00:00Z"
+        ],
+        [
+          "clear",
+          "2025-01-03T09:00:00Z",
+          "2025-01-10T00:00:00Z"
+        ]
+      ]
+    },
+    {
+      "check": "Malapert Both lane: blocked, then clear from 01-05 09:30",
+      "pass": true,
+      "detail": [
+        [
+          "blocked",
+          "2025-01-03T00:00:00Z",
+          "2025-01-05T09:30:00Z"
+        ],
+        [
+          "clear",
+          "2025-01-05T09:30:00Z",
+          "2025-01-10T00:00:00Z"
+        ]
+      ]
+    },
+    {
+      "check": "real two-site window has no Unknown (no n.a. rows in real data)",
+      "pass": true,
+      "detail": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "check": "no Unknown notice when nothing is Unknown",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "two-site window runs both exports through the same engine path",
+      "pass": true,
+      "detail": [
+        "malapert-practice-q4-centre-0deg-d6262b73db76",
+        "site04-p02-practice-q4-centre-0deg-1fbe00ad8549"
+      ]
+    }
+  ]
+}
